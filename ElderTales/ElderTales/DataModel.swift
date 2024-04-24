@@ -13,7 +13,7 @@ struct User {
     var email: String
     var isElderly: Bool
     var password: String
-    var image: UIImage
+    var image: UIImage?
     var likedPosts: [Post]
     var savedPosts: [Post]
     var following: [User]
