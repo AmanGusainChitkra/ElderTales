@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3F4FAEE32BD8C471002DF688 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 3F4FAEE22BD8C471002DF688 /* .gitignore */; };
 		3FB8B30E2BD67A090061EB25 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB8B30D2BD67A090061EB25 /* DataModel.swift */; };
 		3FE5376C2BD6574600E3330C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE5376B2BD6574600E3330C /* AppDelegate.swift */; };
 		3FE5376E2BD6574600E3330C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE5376D2BD6574600E3330C /* SceneDelegate.swift */; };
@@ -18,7 +17,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3F4FAEE22BD8C471002DF688 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		3FB8B30D2BD67A090061EB25 /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		3FE537682BD6574600E3330C /* ElderTales.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ElderTales.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FE5376B2BD6574600E3330C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -68,7 +66,6 @@
 				3FE537742BD6574800E3330C /* Assets.xcassets */,
 				3FE537762BD6574800E3330C /* LaunchScreen.storyboard */,
 				3FE537792BD6574800E3330C /* Info.plist */,
-				3F4FAEE22BD8C471002DF688 /* .gitignore */,
 			);
 			path = ElderTales;
 			sourceTree = "<group>";
@@ -131,7 +128,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3F4FAEE32BD8C471002DF688 /* .gitignore in Resources */,
 				3FE537752BD6574800E3330C /* Assets.xcassets in Resources */,
 				3FE537782BD6574800E3330C /* Base in Resources */,
 				3FE537732BD6574600E3330C /* Base in Resources */,
