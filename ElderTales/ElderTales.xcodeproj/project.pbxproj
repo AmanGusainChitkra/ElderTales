@@ -11,6 +11,8 @@
 		3F4FAEEE2BD902E9002DF688 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4FAEED2BD902E9002DF688 /* HomeViewController.swift */; };
 		3F4FD6212BD917BC003A495E /* HomePostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4FD6202BD917BC003A495E /* HomePostTableViewCell.swift */; };
 		3FB8B30E2BD67A090061EB25 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB8B30D2BD67A090061EB25 /* DataModel.swift */; };
+		3FD19DB22BDA36C400B2AC11 /* LiveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FD19DB12BDA36C400B2AC11 /* LiveViewController.swift */; };
+		3FD19DB42BDA370100B2AC11 /* LiveOtherTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FD19DB32BDA370100B2AC11 /* LiveOtherTableViewCell.swift */; };
 		3FE5376C2BD6574600E3330C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE5376B2BD6574600E3330C /* AppDelegate.swift */; };
 		3FE5376E2BD6574600E3330C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE5376D2BD6574600E3330C /* SceneDelegate.swift */; };
 		3FE537732BD6574600E3330C /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 3FE537722BD6574600E3330C /* Base */; };
@@ -24,6 +26,8 @@
 		3F4FAEED2BD902E9002DF688 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		3F4FD6202BD917BC003A495E /* HomePostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePostTableViewCell.swift; sourceTree = "<group>"; };
 		3FB8B30D2BD67A090061EB25 /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
+		3FD19DB12BDA36C400B2AC11 /* LiveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveViewController.swift; sourceTree = "<group>"; };
+		3FD19DB32BDA370100B2AC11 /* LiveOtherTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveOtherTableViewCell.swift; sourceTree = "<group>"; };
 		3FE537682BD6574600E3330C /* ElderTales.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ElderTales.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FE5376B2BD6574600E3330C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3FE5376D2BD6574600E3330C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -63,6 +67,15 @@
 			path = Data;
 			sourceTree = "<group>";
 		};
+		3FD19DB52BDA370900B2AC11 /* Live */ = {
+			isa = PBXGroup;
+			children = (
+				3FD19DB12BDA36C400B2AC11 /* LiveViewController.swift */,
+				3FD19DB32BDA370100B2AC11 /* LiveOtherTableViewCell.swift */,
+			);
+			path = Live;
+			sourceTree = "<group>";
+		};
 		3FE5375F2BD6574600E3330C = {
 			isa = PBXGroup;
 			children = (
@@ -85,6 +98,7 @@
 				3FE5376B2BD6574600E3330C /* AppDelegate.swift */,
 				3FE5376D2BD6574600E3330C /* SceneDelegate.swift */,
 				3FE537712BD6574600E3330C /* Main.storyboard */,
+				3FD19DB52BDA370900B2AC11 /* Live */,
 				3FC0B0122BD9F6FA00990872 /* Home */,
 				3FC0B0132BD9F70600990872 /* Data */,
 				3FE537742BD6574800E3330C /* Assets.xcassets */,
@@ -168,7 +182,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				3F4FD6212BD917BC003A495E /* HomePostTableViewCell.swift in Sources */,
+				3FD19DB42BDA370100B2AC11 /* LiveOtherTableViewCell.swift in Sources */,
 				3FEFA90D2BD90E87001C53B6 /* DataController.swift in Sources */,
+				3FD19DB22BDA36C400B2AC11 /* LiveViewController.swift in Sources */,
 				3F4FAEEC2BD8CB48002DF688 /* MAIN.c in Sources */,
 				3FB8B30E2BD67A090061EB25 /* DataModel.swift in Sources */,
 				3FE5376C2BD6574600E3330C /* AppDelegate.swift in Sources */,
