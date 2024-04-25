@@ -58,6 +58,39 @@
             </objects>
             <point key="canvasLocation" x="4083" y="-504"/>
         </scene>
+        <!--Preview story-->
+        <scene sceneID="A1l-s6-bnH">
+            <objects>
+                <viewController title="Preview story" id="2D2-rd-JPf" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="wzj-DJ-QWA">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Fg4-wd-x6w">
+                                <rect key="frame" x="0.0" y="103" width="393" height="366"/>
+                            </imageView>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="10" translatesAutoresizingMaskIntoConstraints="NO" id="LtT-yc-Ain">
+                                <rect key="frame" x="18" y="479" width="357" height="31"/>
+                            </slider>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="CbL-Sd-2D9"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Fg4-wd-x6w" firstAttribute="leading" secondItem="CbL-Sd-2D9" secondAttribute="leading" id="MkZ-SU-plK"/>
+                            <constraint firstItem="LtT-yc-Ain" firstAttribute="leading" secondItem="CbL-Sd-2D9" secondAttribute="leading" constant="20" id="UGH-jI-pLM"/>
+                            <constraint firstItem="CbL-Sd-2D9" firstAttribute="trailing" secondItem="Fg4-wd-x6w" secondAttribute="trailing" id="WPp-Qh-lGZ"/>
+                            <constraint firstItem="Fg4-wd-x6w" firstAttribute="top" secondItem="CbL-Sd-2D9" secondAttribute="top" id="Ygx-sY-8rY"/>
+                            <constraint firstItem="CbL-Sd-2D9" firstAttribute="bottom" secondItem="Fg4-wd-x6w" secondAttribute="bottom" constant="300" id="j9f-xF-gob"/>
+                            <constraint firstItem="LtT-yc-Ain" firstAttribute="top" secondItem="Fg4-wd-x6w" secondAttribute="bottom" constant="10" id="ozl-F1-Xjs"/>
+                            <constraint firstAttribute="trailing" secondItem="LtT-yc-Ain" secondAttribute="trailing" constant="20" id="s4b-33-dgk"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Preview story" id="ana-B9-4rJ"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fF8-6o-fzl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-4428.2442748091598" y="1682.3943661971832"/>
+        </scene>
         <!--Camera View Controller-->
         <scene sceneID="pZ9-Rc-fkp">
             <objects>
@@ -110,7 +143,13 @@
                             <constraint firstItem="xqv-bk-8Jg" firstAttribute="centerX" secondItem="Stz-cH-HdD" secondAttribute="centerX" id="tnB-m4-hku"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="K1R-Qb-dQ2"/>
+                    <navigationItem key="navigationItem" id="K1R-Qb-dQ2">
+                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="done" id="gcc-oa-rVy">
+                            <connections>
+                                <segue destination="2D2-rd-JPf" kind="show" id="Tcv-lS-nYs"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="button" destination="Stz-cH-HdD" id="H2N-Dt-guj"/>
                         <outlet property="imageView" destination="xqv-bk-8Jg" id="57I-zB-hUg"/>
