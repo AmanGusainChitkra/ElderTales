@@ -45,6 +45,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3FC0B0122BD9F6FA00990872 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				3F4FAEED2BD902E9002DF688 /* HomeViewController.swift */,
+				3F4FD6202BD917BC003A495E /* HomePostTableViewCell.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		3FC0B0132BD9F70600990872 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				3FB8B30D2BD67A090061EB25 /* DataModel.swift */,
+				3FEFA90C2BD90E87001C53B6 /* DataController.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
 		3FE5375F2BD6574600E3330C = {
 			isa = PBXGroup;
 			children = (
@@ -66,11 +84,9 @@
 			children = (
 				3FE5376B2BD6574600E3330C /* AppDelegate.swift */,
 				3FE5376D2BD6574600E3330C /* SceneDelegate.swift */,
-				3F4FAEED2BD902E9002DF688 /* HomeViewController.swift */,
-				3FB8B30D2BD67A090061EB25 /* DataModel.swift */,
-				3FEFA90C2BD90E87001C53B6 /* DataController.swift */,
 				3FE537712BD6574600E3330C /* Main.storyboard */,
-				3F4FD6202BD917BC003A495E /* HomePostTableViewCell.swift */,
+				3FC0B0122BD9F6FA00990872 /* Home */,
+				3FC0B0132BD9F70600990872 /* Data */,
 				3FE537742BD6574800E3330C /* Assets.xcassets */,
 				3FE537762BD6574800E3330C /* LaunchScreen.storyboard */,
 				3FE537792BD6574800E3330C /* Info.plist */,
