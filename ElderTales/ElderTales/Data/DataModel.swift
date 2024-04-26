@@ -26,6 +26,7 @@ struct Post {
     var length: Int
     var title: String
     var cover: UIImage
+    var link: String
     var likes: Int
     var comments: [Comment]
     var shares: Int
@@ -37,6 +38,7 @@ struct Live{
     var postedOn: Date
     var beginsOn: Date
     var interested: [User]
+    var title: String
 }
 
 struct Comment {

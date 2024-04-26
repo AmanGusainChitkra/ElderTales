@@ -9,6 +9,21 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--View Controller-->
+        <scene sceneID="5rl-Y6-LYM">
+            <objects>
+                <viewController id="N87-el-xLU" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="xCJ-kc-ysD">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="B0G-MX-7Al"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="C4M-2q-hWE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3789" y="-504"/>
+        </scene>
         <!--Home-->
         <scene sceneID="OEN-6d-j9g">
             <objects>
@@ -107,7 +122,7 @@
                                                                                     <rect key="frame" x="0.0" y="0.0" width="70.666666666666671" height="74.333333333333329"/>
                                                                                     <state key="normal" title="Button"/>
                                                                                     <buttonConfiguration key="configuration" style="plain" imagePlacement="bottom">
-                                                                                        <imageReference key="image" image="heart" catalog="system" symbolScale="medium"/>
+                                                                                        <imageReference key="image" image="heart" catalog="system" symbolScale="small"/>
                                                                                     </buttonConfiguration>
                                                                                 </button>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="23K" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2IZ-f5-vl7">
@@ -125,7 +140,7 @@
                                                                                     <rect key="frame" x="0.0" y="0.0" width="70.333333333333329" height="74.333333333333329"/>
                                                                                     <state key="normal" title="Button"/>
                                                                                     <buttonConfiguration key="configuration" style="plain" imagePlacement="bottom">
-                                                                                        <imageReference key="image" image="arrowshape.turn.up.right" catalog="system" symbolScale="medium"/>
+                                                                                        <imageReference key="image" image="arrowshape.turn.up.right" catalog="system" symbolScale="small"/>
                                                                                     </buttonConfiguration>
                                                                                 </button>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="23K" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NXD-Z7-LEG">
@@ -143,7 +158,7 @@
                                                                                     <rect key="frame" x="0.0" y="0.0" width="70.666666666666671" height="74.333333333333329"/>
                                                                                     <state key="normal" title="Button"/>
                                                                                     <buttonConfiguration key="configuration" style="plain" imagePlacement="bottom">
-                                                                                        <imageReference key="image" image="message" catalog="system" symbolScale="medium"/>
+                                                                                        <imageReference key="image" image="message" catalog="system" symbolScale="small"/>
                                                                                     </buttonConfiguration>
                                                                                 </button>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="23K" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ieo-T1-NVe">
@@ -161,7 +176,7 @@
                                                                                     <rect key="frame" x="0.0" y="0.0" width="70.333333333333329" height="74.333333333333329"/>
                                                                                     <state key="normal" title="Button"/>
                                                                                     <buttonConfiguration key="configuration" style="plain" imagePlacement="bottom">
-                                                                                        <imageReference key="image" image="square.and.arrow.down" catalog="system" symbolScale="medium"/>
+                                                                                        <imageReference key="image" image="square.and.arrow.down" catalog="system" symbolScale="small"/>
                                                                                     </buttonConfiguration>
                                                                                 </button>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="23K" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UAR-1m-rMT">
@@ -176,7 +191,7 @@
                                                                 </stackView>
                                                             </subviews>
                                                         </stackView>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="redraw" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="myPhoto.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="pA9-JB-5NM">
+                                                        <imageView clipsSubviews="YES" contentMode="redraw" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="myPhoto.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="pA9-JB-5NM">
                                                             <rect key="frame" x="282" y="0.0" width="111" height="134"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="111" id="k16-kB-aPV"/>
@@ -224,7 +239,7 @@
                             <constraint firstItem="cJW-ic-Tz9" firstAttribute="bottom" secondItem="5hk-fu-Bfd" secondAttribute="bottom" constant="8" id="wwE-m6-6JA"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Home" largeTitleDisplayMode="always" id="QB3-2S-KmC"/>
+                    <navigationItem key="navigationItem" title="Home" id="QB3-2S-KmC"/>
                     <connections>
                         <outlet property="homeTableView" destination="5hk-fu-Bfd" id="D6e-pG-L8M"/>
                     </connections>
