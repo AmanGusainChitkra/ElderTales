@@ -38,12 +38,12 @@ func generateDummyData(){
     
     // Create dummy posts
     posts = [
-        Post(postedBy: users[0], postedOn: Date(), length: 120, title: "A Day in Rome", cover: UIImage(named: "rome") ?? UIImage(), likes: 123, comments: comments, shares: 10, suitableCategories: [categories[0]]),
-        Post(postedBy: users[1], postedOn: Date(), length: 90, title: "Home Cooking Tips", cover: UIImage(named: "cooking") ?? UIImage(), likes: 75, comments: comments, shares: 5, suitableCategories: [categories[1]]),
-        Post(postedBy: users[2], postedOn: Date(), length: 150, title: "My Favorite Sports Moments", cover: UIImage(named: "sports") ?? UIImage(), likes: 200, comments: comments, shares: 20, suitableCategories: [categories[2]]),
-        Post(postedBy: users[0], postedOn: Date(), length: 120, title: "How to Play the Guitar", cover: UIImage(named: "music") ?? UIImage(), likes: 150, comments: comments, shares: 15, suitableCategories: [categories[3]]),
-        Post(postedBy: users[1], postedOn: Date(), length: 90, title: "Traveling to Paris", cover: UIImage(named: "paris") ?? UIImage(), likes: 100, comments: comments, shares: 10, suitableCategories: [categories[0]]),
-        Post(postedBy: users[2], postedOn: Date(), length: 150, title: "My Favorite Recipes", cover: UIImage(named: "cooking") ?? UIImage(), likes: 180, comments: comments, shares: 18, suitableCategories: [categories[1]])
+        Post(postedBy: users[0], postedOn: Date(), length: 120, title: "A Day in Rome", cover: UIImage(named: "rome") ?? UIImage(), link: "", likes: 123, comments: comments, shares: 10, suitableCategories: [categories[0]]),
+        Post(postedBy: users[1], postedOn: Date(), length: 90, title: "Home Cooking Tips", cover: UIImage(named: "cooking") ?? UIImage(), link: "", likes: 75, comments: comments, shares: 5, suitableCategories: [categories[1]]),
+        Post(postedBy: users[2], postedOn: Date(), length: 150, title: "My Favorite Sports Moments", cover: UIImage(named: "sports") ?? UIImage(), link: "", likes: 200, comments: comments, shares: 20, suitableCategories: [categories[2]]),
+        Post(postedBy: users[0], postedOn: Date(), length: 120, title: "How to Play the Guitar", cover: UIImage(named: "music") ?? UIImage(), link: "", likes: 150, comments: comments, shares: 15, suitableCategories: [categories[3]]),
+        Post(postedBy: users[1], postedOn: Date(), length: 90, title: "Traveling to Paris", cover: UIImage(named: "paris") ?? UIImage(), link: "", likes: 100, comments: comments, shares: 10, suitableCategories: [categories[0]]),
+        Post(postedBy: users[2], postedOn: Date(), length: 150, title: "My Favorite Recipes", cover: UIImage(named: "cooking") ?? UIImage(), link: "", likes: 180, comments: comments, shares: 18, suitableCategories: [categories[1]])
     ]
     
     // Assign liked and saved posts to users
