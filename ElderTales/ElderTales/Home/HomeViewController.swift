@@ -85,10 +85,10 @@ class HomeViewController: UIViewController, UITableViewDataSource, HomePostTable
         cell.shareButton.setImage(UIImage(systemName: "arrowshape.turn.up.right"), for: .normal)
         cell.shareCount.text = "\(post.shares)"
         
-        cell.commentButton.setImage(UIImage(systemName: "bubble.right"), for: .normal)
+        cell.commentButton.setImage(UIImage(systemName: "message"), for: .normal)
         cell.commentCount.text = "\(post.comments.count)"
         
-        cell.saveButton.setImage(UIImage(systemName: "bookmark"), for: .normal)
+        cell.saveButton.setImage(UIImage(systemName: "square.and.arrow.down"), for: .normal)
 
         cell.saveLabel.text = "Save"
         cell.delegate = self
