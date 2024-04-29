@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class LiveViewController: UIViewController, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -16,6 +17,7 @@ class LiveViewController: UIViewController, UITableViewDataSource{
         let cell = tableView.dequeueReusableCell(withIdentifier: "liveOther", for: indexPath) as! LiveOtherTableViewCell
 
         let live = lives[indexPath.row]
+        return cell
         
     }
     
@@ -37,4 +39,4 @@ class LiveViewController: UIViewController, UITableViewDataSource{
     }
     */
 
-//}
+}
