@@ -10,11 +10,13 @@ import UIKit
 class HomePostTableViewCell: UITableViewCell {
 
     
+    var uuid: String?
     //post details
     @IBOutlet weak var profilePhotoUIImage: UIImageView!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var storyTitleLabel: UILabel!
     @IBOutlet weak var thumbnailUIImage: UIImageView!
+    @IBOutlet weak var listenButton: UIButton!
     
     //post interaction buttons
     @IBOutlet weak var likeButton: UIButton!
@@ -29,7 +31,7 @@ class HomePostTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        profilePhotoUIImage.layer.cornerRadius = 20
+        profilePhotoUIImage.layer.cornerRadius = 10
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -40,7 +42,37 @@ class HomePostTableViewCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
+//        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
     }
+    
+    @IBAction func tappedLikeButton(_ sender: UIButton) {
+        delegate?.didTapLikeButton(for: self)
+    }
+    
+    @IBAction func tappedShareButton(_ sender: UIButton) {
+        delegate?.didTapShareButton(for:self)
+    }
+    
+    @IBAction func tappedCommentButton(_ sender: UIButton) {
+    }
+    
+    @IBAction func tappedSaveButton(_ sender: UIButton) {
+    }
+    
+    weak var delegate: HomePostTableViewCellDelegate?
+    
+}
 
+protocol HomePostTableViewCellDelegate: AnyObject {
+    
+    func didTapListenButton(for cell: HomePostTableViewCell)
+    
+    func didTapSaveButton(for cell: HomePostTableViewCell)
+    
+    func didTapLikeButton(for cell: HomePostTableViewCell)
+    
+    func didTapShareButton(for cell: HomePostTableViewCell)
+    
+    func didTapCommentButton(for cell: HomePostTableViewCell)
+    
 }

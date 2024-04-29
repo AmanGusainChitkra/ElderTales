@@ -12,6 +12,7 @@ var posts: [Post] = []
 var lives: [Live] = []
 var comments: [Comment] = []
 var categories: [Category] = []
+var currentUser: User? = nil
 
 func generateDummyData(){
     // Create dummy categories
@@ -24,10 +25,11 @@ func generateDummyData(){
     
     // Create dummy users
     users = [
-        User(name: "Alice Smith", email: "alice@example.com", isElderly: false, password: "password123", image: UIImage(named: "profile1") ?? UIImage(), likedPosts: [], savedPosts: [], following: [], interests: categories),
-        User(name: "Bob Johnson", email: "bob@example.com", isElderly: true, password: "password456", image: UIImage(named: "profile2") ?? UIImage(), likedPosts: [], savedPosts: [], following: [], interests: categories),
-        User(name: "Charlie Brown", email: "charlie@example.com", isElderly: false, password: "password789", image: UIImage(named: "profile3") ?? UIImage(), likedPosts: [], savedPosts: [], following: [], interests: categories)
+        User(name: "Alice Smith", email: "alice@example.com", isElderly: false, password: "password123", image: UIImage(named: "profile1") ?? UIImage()),
+        User(name: "Bob Johnson", email: "bob@example.com", isElderly: true, password: "password456", image: UIImage(named: "profile2") ?? UIImage()),
+        User(name: "Charlie Brown", email: "charlie@example.com", isElderly: false, password: "password789", image: UIImage(named: "profile3") ?? UIImage())
     ]
+    
     
     // Create dummy comments
     comments = [
@@ -38,32 +40,44 @@ func generateDummyData(){
     
     // Create dummy posts
     posts = [
-        Post(postedBy: users[0], postedOn: Date(), length: 120, title: "A Day in Rome", cover: UIImage(named: "rome") ?? UIImage(), link: "", likes: 123, comments: comments, shares: 10, suitableCategories: [categories[0]]),
-        Post(postedBy: users[1], postedOn: Date(), length: 90, title: "Home Cooking Tips", cover: UIImage(named: "cooking") ?? UIImage(), link: "", likes: 75, comments: comments, shares: 5, suitableCategories: [categories[1]]),
-        Post(postedBy: users[2], postedOn: Date(), length: 150, title: "My Favorite Sports Moments", cover: UIImage(named: "sports") ?? UIImage(), link: "", likes: 200, comments: comments, shares: 20, suitableCategories: [categories[2]]),
-        Post(postedBy: users[0], postedOn: Date(), length: 120, title: "How to Play the Guitar", cover: UIImage(named: "music") ?? UIImage(), link: "", likes: 150, comments: comments, shares: 15, suitableCategories: [categories[3]]),
-        Post(postedBy: users[1], postedOn: Date(), length: 90, title: "Traveling to Paris", cover: UIImage(named: "paris") ?? UIImage(), link: "", likes: 100, comments: comments, shares: 10, suitableCategories: [categories[0]]),
-        Post(postedBy: users[2], postedOn: Date(), length: 150, title: "My Favorite Recipes", cover: UIImage(named: "cooking") ?? UIImage(), link: "", likes: 180, comments: comments, shares: 18, suitableCategories: [categories[1]])
+        Post(postedBy: users[0], length: 120, title: "A Day in Rome", cover: UIImage(named: "rome") ?? UIImage(), link: "", hasVideo: true),
+        Post(postedBy: users[1], length: 90, title: "Home Cooking Tips", cover: UIImage(named: "cooking") ?? UIImage(), link: "", hasVideo: true),
+        Post(postedBy: users[2], length: 150, title: "My Favorite Sports Moments", cover: UIImage(named: "sports") ?? UIImage(), link: "", hasVideo: true),
+        Post(postedBy: users[0], length: 120, title: "How to Play the Guitar", cover: UIImage(named: "music") ?? UIImage(), link: "", hasVideo: true),
+        Post(postedBy: users[1], length: 90, title: "Traveling to Paris", cover: UIImage(named: "paris") ?? UIImage(), link: "", hasVideo: true),
+        Post(postedBy: users[2], length: 150, title: "My Favorite Recipes", cover: UIImage(named: "cooking") ?? UIImage(), link: "", hasVideo: true),
+        Post(postedBy: users[0], length: 120, title: "Exploring the World", cover: UIImage(named: "world") ?? UIImage(), link: "", hasVideo: true),
+        Post(postedBy: users[1], length: 90, title: "Cooking for Beginners", cover: UIImage(named: "cooking") ?? UIImage(), link: "", hasVideo: true),
+        Post(postedBy: users[2], length: 150, title: "My Favorite Sports Teams", cover: UIImage(named: "sports") ?? UIImage(), link: "", hasVideo: true),
+        Post(postedBy: users[0], length: 120, title: "How to Play the Piano", cover: UIImage(named: "music") ?? UIImage(), link: "", hasVideo: true),
+        Post(postedBy: users[1], length: 90, title: "Traveling to New York", cover: UIImage(named: "newyork") ?? UIImage(), link: "", hasVideo: true)
     ]
     
     // Assign liked and saved posts to users
-    users[0].likedPosts.append(contentsOf: [posts[0], posts[2]])
-    users[0].savedPosts.append(posts[1])
-    users[1].likedPosts.append(posts[0])
-    users[1].savedPosts.append(contentsOf: posts)
-    users[2].likedPosts.append(contentsOf: [posts[1], posts[3]])
-    users[2].savedPosts.append(posts[4])
-    
-    // Users following each other
-    users[0].following.append(users[1])
-    users[0].following.append(users[2])
-    users[1].following.append(users[0])
-    users[2].following.append(users[1])
+    users[0].likePost(post: posts[0], liked: true)
+    posts[0].likePost(liked: true)
+    users[0].likePost(post: posts[2], liked: true)
+    posts[2].likePost(liked: true)
+    users[0].savePost(post: posts[1], saved: true)
+    posts[1].likePost(liked: true)
+
+
+    users[1].likePost(post: posts[0], liked: true)
+    posts[0].likePost(liked: true)
+    users[1].savePost(post: posts[0], saved: true)
+    users[1].savePost(post: posts[1], saved: true)
+    users[1].savePost(post: posts[2], saved: true)
+
+    users[2].likePost(post: posts[1], liked: true)
+    users[2].likePost(post: posts[3], liked: true)
+    users[2].savePost(post: posts[4], saved: true)
     
     // Create dummy lives
     lives = [
-        Live(postedBy: users[0], postedOn: Date(), beginsOn: Date().addingTimeInterval(3600), interested: users, title: "Live from Rome"),
-        Live(postedBy: users[1], postedOn: Date(), beginsOn: Date().addingTimeInterval(7200), interested: users, title: "Cooking Live"),
-        Live(postedBy: users[2], postedOn: Date(), beginsOn: Date().addingTimeInterval(10800), interested: users, title: "Sports Live")
+        Live(postedBy: users[0], postedOn: Date(), beginsOn: Date().addingTimeInterval(3600), title: "Live from Rome"),
+        Live(postedBy: users[1], postedOn: Date(), beginsOn: Date().addingTimeInterval(7200), title: "Cooking Live"),
+        Live(postedBy: users[2], postedOn: Date(), beginsOn: Date().addingTimeInterval(10800), title: "Sports Live")
     ]
+    
+    currentUser = users[0]
 }
