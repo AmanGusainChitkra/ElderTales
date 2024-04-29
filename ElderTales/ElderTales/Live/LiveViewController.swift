@@ -14,18 +14,30 @@ class LiveViewController: UIViewController, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "liveOther", for: indexPath) as! LiveOtherTableViewCell
+        let cell = liveTableView.dequeueReusableCell(withIdentifier: "liveOther", for: indexPath) as! LiveOtherTableViewCell
 
         let live = lives[indexPath.row]
+        
+        // Configure the cell with data from the post
+        cell.profilePhotoUIImage.image = UIImage(named: "otherPhoto")
+        cell.username.text = live.postedBy.name
+        cell.storyTitle.text = live.title
+        cell.thumbnailUIImage.image = UIImage(named: "otherPhoto")
+        
+        
+        
         return cell
         
     }
     
-
+    @IBOutlet weak var liveTableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        generateDummyData()
+        super.viewDidLoad()
+       liveTableView.dataSource = self
     }
     
 

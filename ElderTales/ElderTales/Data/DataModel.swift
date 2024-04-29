@@ -33,7 +33,7 @@ struct Post {
 }
 
 struct Live{
-   // var title: String
+   var title: String
     var postedBy: User
     var postedOn: Date
     var beginsOn: Date

@@ -27,6 +27,8 @@ func generateDummyData(){
         // Create dummy users
         users = [
             User(name: "Alice Smith", email: "alice@example.com", isElderly: false, password: "password123", image: UIImage(named: "profile1") ?? UIImage(), likedPosts: [], savedPosts: [], following: [], interests: categories),
+            User(name: "Bob Johnson", email: "bob@example.com", isElderly: true, password: "password456", image: UIImage(named: "profile2") ?? UIImage(), likedPosts: [], savedPosts: [], following: [], interests: categories),
+            User(name: "Bob Johnson", email: "bob@example.com", isElderly: true, password: "password456", image: UIImage(named: "profile2") ?? UIImage(), likedPosts: [], savedPosts: [], following: [], interests: categories),
             User(name: "Bob Johnson", email: "bob@example.com", isElderly: true, password: "password456", image: UIImage(named: "profile2") ?? UIImage(), likedPosts: [], savedPosts: [], following: [], interests: categories)
         ]
         
@@ -69,7 +71,28 @@ func generateDummyData(){
         users[1].following.append(users[0])
         
         // Create dummy lives
-        lives = [
-            Live(postedBy: users[0], postedOn: Date(), beginsOn: Date().addingTimeInterval(3600), interested: users)
-        ]
+   lives = [
+        Live(title: "Exploring Ancient Temples", postedBy: users[1], postedOn: Date(), beginsOn: Date().addingTimeInterval(7200), interested: [users[2]]),
+        Live(title: "Cooking Masterclass: Italian Cuisine", postedBy: users[1], postedOn: Date(), beginsOn: Date().addingTimeInterval(10800), interested: [users[3]]),
+        Live(title: "Art Appreciation: Renaissance Paintings", postedBy: users[1], postedOn: Date(), beginsOn: Date().addingTimeInterval(14400), interested: [users[2]]),
+        Live(title: "Historical Walk through Paris", postedBy: users[1], postedOn: Date(), beginsOn: Date().addingTimeInterval(18000), interested: [users[3]]),
+        Live(title: "Virtual Tour of the Louvre Museum", postedBy: users[1], postedOn: Date(), beginsOn: Date().addingTimeInterval(21600), interested: [users[2]]),
+        Live(title: "Gardening Tips for Beginners", postedBy: users[1], postedOn: Date(), beginsOn: Date().addingTimeInterval(25200), interested: [users[3]]),
+        Live(title: "Book Club: Classic Literature", postedBy: users[1], postedOn: Date(), beginsOn: Date().addingTimeInterval(28800), interested: [users[2]]),
+        Live(title: "Fitness for Seniors: Yoga and Meditation", postedBy: users[1], postedOn: Date(), beginsOn: Date().addingTimeInterval(32400), interested: [users[3]]),
+        Live(title: "Q&A with a Historian: World War II", postedBy: users[1], postedOn: Date(), beginsOn: Date().addingTimeInterval(36000), interested: [users[2]]),
+        Live(title: "Music Therapy Session: Relaxing Melodies", postedBy: users[1], postedOn: Date(), beginsOn: Date().addingTimeInterval(39600), interested: [users[3]]),
+        Live(title: "Digital Photography Workshop", postedBy: users[1], postedOn: Date(), beginsOn: Date().addingTimeInterval(43200), interested: [users[2]]),
+        Live(title: "Nature Sketching Class", postedBy: users[1], postedOn: Date(), beginsOn: Date().addingTimeInterval(46800), interested: [users[3]]),
+        Live(title: "Mindfulness and Well-being Seminar", postedBy: users[1], postedOn: Date(), beginsOn: Date().addingTimeInterval(50400), interested: [users[2]]),
+        Live(title: "Exploring Wildlife: Virtual Safari", postedBy: users[1], postedOn: Date(), beginsOn: Date().addingTimeInterval(54000), interested: [users[3]]),
+        Live(title: "Travel Tales: Adventures in South America", postedBy: users[1], postedOn: Date(), beginsOn: Date().addingTimeInterval(57600), interested: [users[2]]),
+        Live(title: "Healthy Cooking: Mediterranean Diet", postedBy: users[1], postedOn: Date(), beginsOn: Date().addingTimeInterval(61200), interested: [users[3]]),
+        Live(title: "Language Exchange: Spanish Conversations", postedBy: users[1], postedOn: Date(), beginsOn: Date().addingTimeInterval(64800), interested: [users[2]]),
+        Live(title: "Crafting Workshop: DIY Home Decor", postedBy: users[1], postedOn: Date(), beginsOn: Date().addingTimeInterval(68400), interested: [users[3]]),
+        Live(title: "Tech Talk: Latest Gadgets and Trends", postedBy: users[1], postedOn: Date(), beginsOn: Date().addingTimeInterval(72000), interested: [users[2]]),
+        Live(title: "History Trivia Night", postedBy: users[1], postedOn: Date(), beginsOn: Date().addingTimeInterval(75600), interested: [users[3]])
+       
+    ]
+   
     }

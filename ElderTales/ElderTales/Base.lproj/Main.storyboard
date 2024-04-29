@@ -242,14 +242,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="134" estimatedRowHeight="-1" sectionHeaderHeight="28" estimatedSectionHeaderHeight="-1" sectionFooterHeight="28" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="l3i-wO-TiC">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="134" estimatedRowHeight="-1" sectionHeaderHeight="28" estimatedSectionHeaderHeight="-1" sectionFooterHeight="28" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="l3i-wO-TiC" userLabel="liveTableView">
                                 <rect key="frame" x="0.0" y="142" width="393" height="622"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="622" id="mLg-i7-6gF"/>
                                 </constraints>
                                 <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="liveCard1" id="Ck0-3e-9E1" customClass="LiveOtherTableViewCell" customModule="ElderTales" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="liveOther" id="Ck0-3e-9E1" customClass="LiveOtherTableViewCell" customModule="ElderTales" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="50" width="393" height="134"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" tag="3" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ck0-3e-9E1" id="dP6-bX-toD">
@@ -331,7 +331,7 @@
                                                                                     <color key="textColor" name="AccentColor"/>
                                                                                     <nil key="highlightedColor"/>
                                                                                 </label>
-                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="6:00 pm" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hOm-Cf-pfn">
+                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="6:00 pm" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hOm-Cf-pfn" userLabel="timeOfLive">
                                                                                     <rect key="frame" x="0.0" y="74.333333333333329" width="141" height="15.666666666666671"/>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="height" constant="15.67" id="pMZ-uU-bng"/>
@@ -365,12 +365,14 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="commentCount" destination="Ont-gB-FDJ" id="lxl-30-vUk"/>
-                                            <outlet property="profilePhotoUIImage" destination="Z2D-Ue-HeN" id="bYZ-aQ-42e"/>
-                                            <outlet property="saveLabel" destination="hOm-Cf-pfn" id="fIA-rp-fIz"/>
-                                            <outlet property="storyTitleLabel" destination="pk8-wl-FCK" id="j2Z-Wz-GU7"/>
-                                            <outlet property="thumbnailUIImage" destination="oZM-Gh-a0J" id="wcv-dN-Ojs"/>
-                                            <outlet property="usernameLabel" destination="Hhy-Un-t4z" id="XgX-1i-Fr1"/>
+                                            <outlet property="dateOfLive" destination="Q3T-fz-GW0" id="hJI-tV-5rT"/>
+                                            <outlet property="intrested" destination="T9Q-Bq-gcc" id="dpo-d1-Ufx"/>
+                                            <outlet property="profilePhotoUIImage" destination="Z2D-Ue-HeN" id="atb-Pb-7Rc"/>
+                                            <outlet property="storyTitle" destination="pk8-wl-FCK" id="vMq-Cv-d1X"/>
+                                            <outlet property="thumbnailUIImage" destination="oZM-Gh-a0J" id="AUC-1i-fMG"/>
+                                            <outlet property="timeOfLive" destination="hOm-Cf-pfn" id="cNd-VJ-ckZ"/>
+                                            <outlet property="upcomming" destination="Ont-gB-FDJ" id="THl-t6-OOn"/>
+                                            <outlet property="username" destination="Hhy-Un-t4z" id="yGx-D4-lLF"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="liveCard2" id="384-f5-uju" customClass="LiveOtherTableViewCell" customModule="ElderTales" customModuleProvider="target">
@@ -767,6 +769,9 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Live" id="zjs-LR-K5L"/>
+                    <connections>
+                        <outlet property="liveTableView" destination="l3i-wO-TiC" id="XLy-xI-Eho"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lgC-HV-WQR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -933,7 +938,7 @@
         <image name="plus.square" catalog="system" width="128" height="114"/>
         <image name="square.and.arrow.down" catalog="system" width="112" height="128"/>
         <namedColor name="AccentColor">
-            <color red="0.28627452250000002" green="0.2588235438" blue="0.89411765340000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.28600001335144043" green="0.25900000333786011" blue="0.89399999380111694" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

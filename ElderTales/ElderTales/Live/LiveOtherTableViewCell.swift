@@ -10,11 +10,27 @@ import UIKit
 class LiveOtherTableViewCell: UITableViewCell {
 
     
+    @IBOutlet weak var profilePhotoUIImage: UIImageView!
     
+    @IBOutlet weak var storyTitle: UILabel!
+    
+    @IBOutlet weak var username: UILabel!
+    
+    @IBOutlet weak var upcomming: UILabel!
+    
+    @IBOutlet weak var intrested: UILabel!
+    
+    @IBOutlet weak var dateOfLive: UILabel!
+    
+    @IBOutlet weak var timeOfLive: UILabel!
+    
+    
+    
+    @IBOutlet weak var thumbnailUIImage: UIImageView!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-   //     profilePhotoUIImage.layer.cornerRadius = 20
+   profilePhotoUIImage.layer.cornerRadius = 20
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
