@@ -10,157 +10,124 @@ import AVFoundation
 import AVKit
 
 class NowPlayingViewController: UIViewController {
+    var player: AVPlayer?
+    var isPlaying = false
     var postId: String = ""
     var post: Post? {
         didSet {
             setupVideoPlayer()
         }
     }
-    private func setupVideoPlayer() {
-            guard let url = Bundle.main.url(forResource: "videoSong", withExtension: "mp4") else {
-                print("Video file not found.")
-                return
-            }
-
-            let player = AVPlayer(url: url)
-            let playerLayer = AVPlayerLayer(player: player)
-            playerLayer.frame = videoPlayView.bounds
-            playerLayer.videoGravity = .resizeAspect  // Adjust depending on how you want the video to fit
-
-            videoPlayView.layer.addSublayer(playerLayer)
-            player.play()
-        }
-        
+    
     @IBOutlet weak var videoPlayView: UIView!
+    @IBOutlet weak var playPauseButton: UIButton!
+    @IBOutlet weak var timeSlider: UISlider!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupVideoPlayer()
         loadPost()
+        addTimeObserver()
+        togglePlayPause()
     }
-
+    
+    private func setupVideoPlayer() {
+        guard let url = Bundle.main.url(forResource: "videoSong", withExtension: "mp4") else {
+            print("Video file not found.")
+            return
+        }
+        
+        player = AVPlayer(url: url)
+        let playerLayer = AVPlayerLayer(player: player!)
+        playerLayer.frame = videoPlayView.bounds
+        playerLayer.videoGravity = .resizeAspect
+        videoPlayView.layer.addSublayer(playerLayer)
+    }
+    
+    @IBAction func playPauseTapped(_ sender: UIButton) {
+        togglePlayPause()
+    }
+    
+    private func togglePlayPause() {
+        if isPlaying {
+            player?.pause()
+            playPauseButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
+        } else {
+            player?.play()
+            playPauseButton.setImage(UIImage(systemName: "pause.fill"), for: .normal)
+        }
+        isPlaying.toggle()
+    }
+    
+    @IBAction func sliderValueChanged(_ sender: UISlider) {
+        guard let duration = player?.currentItem?.duration else {
+            print("notfound")
+            return }
+        let totalSeconds = CMTimeGetSeconds(duration)
+        let value = Float64(sender.value) * totalSeconds
+        let seekTime = CMTime(value: Int64(value), timescale: 1)
+        player?.seek(to: seekTime)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        player?.currentItem?.addObserver(self, forKeyPath: "duration", options: [.new, .initial], context: nil)
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == "duration", let duration = player?.currentItem?.duration.seconds, duration > 0.0 {
+            timeSlider.maximumValue = Float(duration)
+        }
+    }
     private func loadPost() {
         // Assume 'posts' is accessible within the scope
         self.post = posts.first(where: { $0.id == postId })
     }
-}
-/*
-class NowPlayingViewController: UIViewController {
-    var postId: String = ""
-    var post: Post? {
-        didSet {
-            setupVideoPlayer()
+    
+    private func addTimeObserver() {
+        let interval = CMTime(seconds: 0.5, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
+        player?.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [weak self] time in
+            guard let strongSelf = self, let duration = strongSelf.player?.currentItem?.duration else { return }
+            let durationSeconds = CMTimeGetSeconds(duration)
+            let seconds = CMTimeGetSeconds(time)
+            strongSelf.timeSlider.value = Float(seconds / durationSeconds)
         }
     }
-    var player: AVPlayer?
-    var playerLayer: AVPlayerLayer?
     
-
     
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        loadPost()
-    }
-
-    func loadPost() {
-        // Simulate loading post data
-        self.post = posts.first(where: { $0.id == postId })
-    }
-
-    func setupVideoPlayer() {
-        guard let urlString = post?.link, let url = URL(string: urlString) else {
-            print("Invalid URL")
-            return
-        }
-
-        player = AVPlayer(url: url)
-        playerLayer = AVPlayerLayer(player: player)
-        playerLayer?.frame = view.bounds
-        playerLayer?.videoGravity = .resizeAspectFill // Ensure the video covers the whole area
-
-        view.layer.insertSublayer(playerLayer!, at: 0) // Add player layer at the bottom of all layers
-        player?.play()
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        playerLayer?.frame = view.bounds // Ensure the player layer covers the full bounds of the view
-    }
-
-    deinit {
-        player?.pause()
-        player?.removeObserver(self, forKeyPath: "status")
-    }
 }
- */
-//
 //
 //class NowPlayingViewController: UIViewController {
 //    var postId: String = ""
-//    var post: Post? = nil
-//    var player: AVPlayer?
-//    var playerLayer: AVPlayerLayer?
-//    
-//    override func viewDidLoad() {
-//            super.viewDidLoad()
-//
-//            post = posts.first(where: { $0.id == postId })
-//            namePostLabel.text = post?.title
-//
+//    var post: Post? {
+//        didSet {
 //            setupVideoPlayer()
 //        }
-//    override func viewDidLayoutSubviews() {
-//        super.viewDidLayoutSubviews()
-//        playerLayer?.frame = view.bounds
-//        view.layer.addSublayer(playerLayer!)
 //    }
+//    private func setupVideoPlayer() {
+//            guard let url = Bundle.main.url(forResource: "videoSong", withExtension: "mp4") else {
+//                print("Video file not found.")
+//                return
+//            }
 //
-//    
-//    func setupVideoPlayer() {
-//        guard let post = post, let url = URL(string: post.link) else {
-//            print("Invalid URL or post data")
-//            return
+//            let player = AVPlayer(url: url)
+//            let playerLayer = AVPlayerLayer(player: player)
+//            playerLayer.frame = videoPlayView.bounds
+//            playerLayer.videoGravity = .resizeAspect  // Adjust depending on how you want the video to fit
+//
+//            videoPlayView.layer.addSublayer(playerLayer)
+//            player.play()
 //        }
-//
-//        player = AVPlayer(url: url)
-//        playerLayer = AVPlayerLayer(player: player)
-//        playerLayer?.frame = view.bounds
-//        view.layer.addSublayer(playerLayer!)
-//
-//        player?.addObserver(self, forKeyPath: "status", options: [.new, .old], context: nil)
 //        
+//    @IBOutlet weak var videoPlayView: UIView!
+//    
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//        loadPost()
 //    }
 //
-//    override func observeValue(forKeyPath keyPath: String?,
-//                               of object: Any?,
-//                               change: [NSKeyValueChangeKey : Any]?,
-//                               context: UnsafeMutableRawPointer?) {
-//        if keyPath == "status" {
-//            switch player?.status {
-//            case .readyToPlay:
-//                player?.play()
-//            case .failed:
-//                print("Failed to load video")
-//            default:
-//                break
-//            }
-//        }
+//    private func loadPost() {
+//        // Assume 'posts' is accessible within the scope
+//        self.post = posts.first(where: { $0.id == postId })
 //    }
-//
-//    deinit {
-//        player?.removeObserver(self, forKeyPath: "status")
-//    }
-
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == "nowPlayingSegue" {
-//                if let destinationVC = segue.destination as? NowPlayingViewController,
-//                   let cell = sender as? HomePostTableViewCell,
-//                   let uuid = cell.uuid{
-//                    print("UUID: \(uuid)")
-//                    destinationVC.postId = uuid
-//                }
-//            }
-//    }
-
-
 //}
