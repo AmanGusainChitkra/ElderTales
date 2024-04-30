@@ -31,14 +31,8 @@ class HomeViewController: UIViewController, UITableViewDataSource, HomePostTable
     }
     
     func didTapListenButton(for cell: HomePostTableViewCell) {
-        if let uuid = cell.uuid {
-                if let post = posts.first(where: { $0.id == uuid }) {
-                    print("Playing post with UUID: \(uuid) titled: \(post.title)")
+        performSegue(withIdentifier: "nowPlayingSegue", sender: cell)
 
-                } else {
-                    print("Post with UUID: \(uuid) not found.")
-                }
-            }
     }
     
     func didTapSaveButton(for cell: HomePostTableViewCell) {
@@ -139,15 +133,16 @@ class HomeViewController: UIViewController, UITableViewDataSource, HomePostTable
     }
     */
     
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == "YourSegueIdentifier" { // Replace with your actual segue identifier
-//            if let destinationVC = segue.destination as? NowPlayingViewController,
-//               let selectedIndexPath = tableView.indexPathForSelectedRow {
-//                let selectedPostId = posts[selectedIndexPath.row].id
-//                destinationVC.postId = selectedPostId // Assuming your AVPlayerViewController has a postId property
-//            }
-//        }
-//    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "nowPlayingSegue" {
+                if let destinationVC = segue.destination as? NowPlayingViewController,
+                   let cell = sender as? HomePostTableViewCell,
+                   let uuid = cell.uuid{
+                    print("UUID: \(uuid)")
+                    destinationVC.postId = uuid
+                }
+            }
+    }
 
 
 }

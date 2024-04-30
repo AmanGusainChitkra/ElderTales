@@ -23,6 +23,7 @@
 		3FEFA90D2BD90E87001C53B6 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEFA90C2BD90E87001C53B6 /* DataController.swift */; };
 		3FF269A92BE0B94300E39CF0 /* LiveOtherTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF269A82BE0B94300E39CF0 /* LiveOtherTableViewCell.swift */; };
 		3FF269AB2BE0B96A00E39CF0 /* LiveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF269AA2BE0B96A00E39CF0 /* LiveViewController.swift */; };
+		3FF269AF2BE103D200E39CF0 /* videoSong.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 3FF269AE2BE103D200E39CF0 /* videoSong.mp4 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		3FEFA90C2BD90E87001C53B6 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		3FF269A82BE0B94300E39CF0 /* LiveOtherTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveOtherTableViewCell.swift; sourceTree = "<group>"; };
 		3FF269AA2BE0B96A00E39CF0 /* LiveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveViewController.swift; sourceTree = "<group>"; };
+		3FF269AE2BE103D200E39CF0 /* videoSong.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = videoSong.mp4; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,7 +81,7 @@
 			children = (
 				3F4FAEED2BD902E9002DF688 /* HomeViewController.swift */,
 				3F4FD6202BD917BC003A495E /* HomePostTableViewCell.swift */,
-				3F6B9BC22BDF71CA00A89409 /* NowPlayingViewController.swift */,
+				3FF269AC2BE0CBCC00E39CF0 /* NowPlaying */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -119,6 +121,7 @@
 				3F164C702BDFC0DE002BE024 /* Profile */,
 				3F813E032BDB91F000E5A9C8 /* NewPost */,
 				3FF269A72BE0B91300E39CF0 /* LiveScreen */,
+				3FF269AD2BE103B100E39CF0 /* Resources */,
 				3FE537742BD6574800E3330C /* Assets.xcassets */,
 				3FE537762BD6574800E3330C /* LaunchScreen.storyboard */,
 				3FE537712BD6574600E3330C /* Main.storyboard */,
@@ -135,6 +138,22 @@
 				3FF269AA2BE0B96A00E39CF0 /* LiveViewController.swift */,
 			);
 			path = LiveScreen;
+			sourceTree = "<group>";
+		};
+		3FF269AC2BE0CBCC00E39CF0 /* NowPlaying */ = {
+			isa = PBXGroup;
+			children = (
+				3F6B9BC22BDF71CA00A89409 /* NowPlayingViewController.swift */,
+			);
+			path = NowPlaying;
+			sourceTree = "<group>";
+		};
+		3FF269AD2BE103B100E39CF0 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				3FF269AE2BE103D200E39CF0 /* videoSong.mp4 */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -198,6 +217,7 @@
 			files = (
 				3FE537752BD6574800E3330C /* Assets.xcassets in Resources */,
 				3FE537782BD6574800E3330C /* Base in Resources */,
+				3FF269AF2BE103D200E39CF0 /* videoSong.mp4 in Resources */,
 				3FE537732BD6574600E3330C /* Base in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

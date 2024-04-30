@@ -40,17 +40,17 @@ func generateDummyData(){
     
     // Create dummy posts
     posts = [
-        Post(postedBy: users[0], length: 120, title: "A Day in Rome", cover: UIImage(named: "rome") ?? UIImage(), link: "", hasVideo: true),
-        Post(postedBy: users[1], length: 90, title: "Home Cooking Tips", cover: UIImage(named: "cooking") ?? UIImage(), link: "", hasVideo: true),
-        Post(postedBy: users[2], length: 150, title: "My Favorite Sports Moments", cover: UIImage(named: "sports") ?? UIImage(), link: "", hasVideo: true),
-        Post(postedBy: users[0], length: 120, title: "How to Play the Guitar", cover: UIImage(named: "music") ?? UIImage(), link: "", hasVideo: false),
-        Post(postedBy: users[1], length: 90, title: "Traveling to Paris", cover: UIImage(named: "paris") ?? UIImage(), link: "", hasVideo: true),
-        Post(postedBy: users[2], length: 150, title: "My Favorite Recipes", cover: UIImage(named: "cooking") ?? UIImage(), link: "", hasVideo: false),
-        Post(postedBy: users[0], length: 120, title: "Exploring the World", cover: UIImage(named: "world") ?? UIImage(), link: "", hasVideo: true),
-        Post(postedBy: users[1], length: 90, title: "Cooking for Beginners", cover: UIImage(named: "cooking") ?? UIImage(), link: "", hasVideo: true),
-        Post(postedBy: users[2], length: 150, title: "My Favorite Sports Teams", cover: UIImage(named: "sports") ?? UIImage(), link: "", hasVideo: true),
-        Post(postedBy: users[0], length: 120, title: "How to Play the Piano", cover: UIImage(named: "music") ?? UIImage(), link: "", hasVideo: false),
-        Post(postedBy: users[1], length: 90, title: "Traveling to New York", cover: UIImage(named: "newyork") ?? UIImage(), link: "", hasVideo: true)
+        Post(postedBy: users[0], length: 120, title: "A Day in Rome", cover: UIImage(named: "rome") ?? UIImage(), link: "videoSong", hasVideo: true),
+        Post(postedBy: users[1], length: 90, title: "Home Cooking Tips", cover: UIImage(named: "cooking") ?? UIImage(), link: "videoSong", hasVideo: true),
+        Post(postedBy: users[2], length: 150, title: "My Favorite Sports Moments", cover: UIImage(named: "sports") ?? UIImage(), link: "videoSong", hasVideo: true),
+        Post(postedBy: users[0], length: 120, title: "How to Play the Guitar", cover: UIImage(named: "music") ?? UIImage(), link: "videoSong", hasVideo: false),
+        Post(postedBy: users[1], length: 90, title: "Traveling to Paris", cover: UIImage(named: "paris") ?? UIImage(), link: "videoSong", hasVideo: true),
+        Post(postedBy: users[2], length: 150, title: "My Favorite Recipes", cover: UIImage(named: "cooking") ?? UIImage(), link: "videoSong", hasVideo: false),
+        Post(postedBy: users[0], length: 120, title: "Exploring the World", cover: UIImage(named: "world") ?? UIImage(), link: "videoSong", hasVideo: true),
+        Post(postedBy: users[1], length: 90, title: "Cooking for Beginners", cover: UIImage(named: "cooking") ?? UIImage(), link: "videoSong", hasVideo: true),
+        Post(postedBy: users[2], length: 150, title: "My Favorite Sports Teams", cover: UIImage(named: "sports") ?? UIImage(), link: "videoSong", hasVideo: true),
+        Post(postedBy: users[0], length: 120, title: "How to Play the Piano", cover: UIImage(named: "music") ?? UIImage(), link: "videoSong", hasVideo: false),
+        Post(postedBy: users[1], length: 90, title: "Traveling to New York", cover: UIImage(named: "newyork") ?? UIImage(), link: "videoSong ", hasVideo: true)
     ]
     
     // Assign liked and saved posts to users
