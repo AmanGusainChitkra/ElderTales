@@ -1,51 +1,39 @@
 //
-//  HomeViewController.swift
+//  MyProfileViewController.swift
 //  ElderTales
 //
-//  Created by student on 24/04/24.
+//  Created by student on 29/04/24.
 //
 
 import UIKit
-import SwiftUI
 
-class HomeViewController: UIViewController, UITableViewDataSource, HomePostTableViewCellDelegate {
+class MyProfileViewController:  UIViewController, UITableViewDataSource, MyProfileTableViewCellDelegate {
     
     var selectedPosts: [Post] {
         get {
             // Determine which posts to return based on the segmented control's selection.
             switch segmentedControl.selectedSegmentIndex {
-            case 0:
-                return posts
-            case 1:
-                return posts.filter { $0.hasVideo == true }
-            case 2:
-                return posts.filter { $0.hasVideo == false }
+            case 0: // My Posts
+                return posts.filter { $0.postedBy.id == currentUser?.id }
+            case 1: // Saved Posts
+                return currentUser?.savedPosts ?? []
             default:
                 return []
             }
         }
         set {
             // Reload the table view whenever the selection changes.
-            homeTableView.reloadData()
+            profileTableView.reloadData()
         }
     }
     
-    func didTapListenButton(for cell: HomePostTableViewCell) {
-        if let uuid = cell.uuid {
-                if let post = posts.first(where: { $0.id == uuid }) {
-                    print("Playing post with UUID: \(uuid) titled: \(post.title)")
-
-                } else {
-                    print("Post with UUID: \(uuid) not found.")
-                }
-            }
+    func didTapListenButton(for cell: MyProfileTableViewCell) {
     }
     
-    func didTapSaveButton(for cell: HomePostTableViewCell) {
-        print("hello")
+    func didTapSaveButton(for cell: MyProfileTableViewCell) {
     }
     
-    func didTapLikeButton(for cell: HomePostTableViewCell) {
+    func didTapLikeButton(for cell: MyProfileTableViewCell) {
         if let uuid = cell.uuid {
             if let postIndex = posts.firstIndex(where: { $0.id == uuid }) {
                 let isCurrentlyLiked = cell.likeButton.currentImage == UIImage(systemName: "heart.fill")
@@ -65,11 +53,11 @@ class HomeViewController: UIViewController, UITableViewDataSource, HomePostTable
     }
 
     
-    func didTapShareButton(for cell: HomePostTableViewCell) {
+    func didTapShareButton(for cell: MyProfileTableViewCell) {
         print("hello")
     }
     
-    func didTapCommentButton(for cell: HomePostTableViewCell) {
+    func didTapCommentButton(for cell: MyProfileTableViewCell) {
         print("hello")
     }
     
@@ -80,7 +68,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, HomePostTable
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "postHome", for: indexPath) as! HomePostTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "postMyProfile", for: indexPath) as! MyProfileTableViewCell
 
         let post = selectedPosts[indexPath.row]
         cell.uuid = post.id
@@ -116,19 +104,26 @@ class HomeViewController: UIViewController, UITableViewDataSource, HomePostTable
     
 
     
-    @IBOutlet weak var homeTableView: UITableView!
+    @IBOutlet weak var profileTableView: UITableView!
+    
     @IBOutlet weak var segmentedControl: UISegmentedControl!
+    @IBOutlet weak var profileImage: UIImageView!
     
     override func viewDidLoad() {
-        generateDummyData()
+//        generateDummyData()
         super.viewDidLoad()
-        homeTableView.dataSource = self
+        selectedPosts = []
+        profileTableView.dataSource = self
+        profileImage.layer.cornerRadius = 94/2
+        profileImage.layer.borderWidth = 2
     }
     
-    @IBAction func segmentUpdated(_ sender: UISegmentedControl) {
+    
+    @IBAction func segmentChanged(_ sender: UISegmentedControl) {
         selectedPosts = []
     }
     
+
     /*
     // MARK: - Navigation
 

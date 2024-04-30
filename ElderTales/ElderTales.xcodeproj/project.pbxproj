@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F164C722BDFC103002BE024 /* MyProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F164C712BDFC103002BE024 /* MyProfileViewController.swift */; };
+		3F164C742BDFC177002BE024 /* MyProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F164C732BDFC177002BE024 /* MyProfileTableViewCell.swift */; };
 		3F4FAEEC2BD8CB48002DF688 /* MAIN.c in Sources */ = {isa = PBXBuildFile; fileRef = 3F4FAEEB2BD8CB48002DF688 /* MAIN.c */; };
 		3F4FAEEE2BD902E9002DF688 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4FAEED2BD902E9002DF688 /* HomeViewController.swift */; };
 		3F4FD6212BD917BC003A495E /* HomePostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4FD6202BD917BC003A495E /* HomePostTableViewCell.swift */; };
@@ -19,9 +21,13 @@
 		3FE537752BD6574800E3330C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3FE537742BD6574800E3330C /* Assets.xcassets */; };
 		3FE537782BD6574800E3330C /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 3FE537772BD6574800E3330C /* Base */; };
 		3FEFA90D2BD90E87001C53B6 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEFA90C2BD90E87001C53B6 /* DataController.swift */; };
+		3FF269A52BE08FFC00E39CF0 /* LiveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF269A32BE08FFC00E39CF0 /* LiveViewController.swift */; };
+		3FF269A62BE08FFC00E39CF0 /* LiveOtherTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF269A42BE08FFC00E39CF0 /* LiveOtherTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3F164C712BDFC103002BE024 /* MyProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileViewController.swift; sourceTree = "<group>"; };
+		3F164C732BDFC177002BE024 /* MyProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileTableViewCell.swift; sourceTree = "<group>"; };
 		3F4FAEEB2BD8CB48002DF688 /* MAIN.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = MAIN.c; sourceTree = "<group>"; };
 		3F4FAEED2BD902E9002DF688 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		3F4FD6202BD917BC003A495E /* HomePostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePostTableViewCell.swift; sourceTree = "<group>"; };
@@ -36,6 +42,8 @@
 		3FE537772BD6574800E3330C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3FE537792BD6574800E3330C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3FEFA90C2BD90E87001C53B6 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
+		3FF269A32BE08FFC00E39CF0 /* LiveViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveViewController.swift; path = ../../../../ElderTales2/ElderTales/ElderTales/Live/LiveViewController.swift; sourceTree = "<group>"; };
+		3FF269A42BE08FFC00E39CF0 /* LiveOtherTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveOtherTableViewCell.swift; path = ../../../../ElderTales2/ElderTales/ElderTales/Live/LiveOtherTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +57,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3F164C702BDFC0DE002BE024 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				3F164C712BDFC103002BE024 /* MyProfileViewController.swift */,
+				3F164C732BDFC177002BE024 /* MyProfileTableViewCell.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
 		3F813E032BDB91F000E5A9C8 /* NewPost */ = {
 			isa = PBXGroup;
 			children = (
@@ -99,7 +116,9 @@
 				3FE5376D2BD6574600E3330C /* SceneDelegate.swift */,
 				3FC0B0122BD9F6FA00990872 /* Home */,
 				3FC0B0132BD9F70600990872 /* Data */,
+				3F164C702BDFC0DE002BE024 /* Profile */,
 				3F813E032BDB91F000E5A9C8 /* NewPost */,
+				3FF269A22BE08FD100E39CF0 /* Live */,
 				3FE537742BD6574800E3330C /* Assets.xcassets */,
 				3FE537762BD6574800E3330C /* LaunchScreen.storyboard */,
 				3FE537712BD6574600E3330C /* Main.storyboard */,
@@ -107,6 +126,15 @@
 				3F4FAEEB2BD8CB48002DF688 /* MAIN.c */,
 			);
 			path = ElderTales;
+			sourceTree = "<group>";
+		};
+		3FF269A22BE08FD100E39CF0 /* Live */ = {
+			isa = PBXGroup;
+			children = (
+				3FF269A42BE08FFC00E39CF0 /* LiveOtherTableViewCell.swift */,
+				3FF269A32BE08FFC00E39CF0 /* LiveViewController.swift */,
+			);
+			path = Live;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -181,14 +209,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F164C722BDFC103002BE024 /* MyProfileViewController.swift in Sources */,
 				3F4FD6212BD917BC003A495E /* HomePostTableViewCell.swift in Sources */,
 				3F6B9BC32BDF71CA00A89409 /* NowPlayingViewController.swift in Sources */,
 				3FEFA90D2BD90E87001C53B6 /* DataController.swift in Sources */,
 				3F4FAEEC2BD8CB48002DF688 /* MAIN.c in Sources */,
 				3FB8B30E2BD67A090061EB25 /* DataModel.swift in Sources */,
 				3F813E072BDB925D00E5A9C8 /* NewPostCameraViewController.swift in Sources */,
+				3FF269A62BE08FFC00E39CF0 /* LiveOtherTableViewCell.swift in Sources */,
 				3FE5376C2BD6574600E3330C /* AppDelegate.swift in Sources */,
 				3FE5376E2BD6574600E3330C /* SceneDelegate.swift in Sources */,
+				3F164C742BDFC177002BE024 /* MyProfileTableViewCell.swift in Sources */,
+				3FF269A52BE08FFC00E39CF0 /* LiveViewController.swift in Sources */,
 				3F4FAEEE2BD902E9002DF688 /* HomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
