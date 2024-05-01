@@ -22,6 +22,7 @@ class NowPlayingViewController: UIViewController {
     @IBOutlet weak var videoPlayView: UIView!
     @IBOutlet weak var playPauseButton: UIButton!
     @IBOutlet weak var timeSlider: UISlider!
+    @IBOutlet weak var titleLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +30,9 @@ class NowPlayingViewController: UIViewController {
         loadPost()
         addTimeObserver()
         togglePlayPause()
+        post = posts.first(where: {$0.id == postId})
+        titleLabel.text = post?.title
+        
     }
     
     private func setupVideoPlayer() {
