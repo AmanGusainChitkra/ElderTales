@@ -7,9 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F0D01672BE246B40020205C /* categoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0D01662BE246B40020205C /* categoriesViewController.swift */; };
+		3F0D01692BE2472D0020205C /* categoriesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F0D01682BE2472D0020205C /* categoriesCollectionViewCell.swift */; };
 		3F4FAEEC2BD8CB48002DF688 /* MAIN.c in Sources */ = {isa = PBXBuildFile; fileRef = 3F4FAEEB2BD8CB48002DF688 /* MAIN.c */; };
 		3F4FAEEE2BD902E9002DF688 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4FAEED2BD902E9002DF688 /* HomeViewController.swift */; };
 		3F4FD6212BD917BC003A495E /* HomePostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4FD6202BD917BC003A495E /* HomePostTableViewCell.swift */; };
+		3FAF52F92BE211000007C57E /* ScheduleLiveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAF52F82BE211000007C57E /* ScheduleLiveViewController.swift */; };
 		3FB8B30E2BD67A090061EB25 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB8B30D2BD67A090061EB25 /* DataModel.swift */; };
 		3FD19DB22BDA36C400B2AC11 /* LiveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FD19DB12BDA36C400B2AC11 /* LiveViewController.swift */; };
 		3FD19DB42BDA370100B2AC11 /* LiveOtherTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FD19DB32BDA370100B2AC11 /* LiveOtherTableViewCell.swift */; };
@@ -19,12 +22,16 @@
 		3FE537752BD6574800E3330C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3FE537742BD6574800E3330C /* Assets.xcassets */; };
 		3FE537782BD6574800E3330C /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 3FE537772BD6574800E3330C /* Base */; };
 		3FEFA90D2BD90E87001C53B6 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEFA90C2BD90E87001C53B6 /* DataController.swift */; };
+		3FF2A8F02BE0ABC0004AAC29 /* MyLiveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF2A8EF2BE0ABC0004AAC29 /* MyLiveViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3F0D01662BE246B40020205C /* categoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = categoriesViewController.swift; sourceTree = "<group>"; };
+		3F0D01682BE2472D0020205C /* categoriesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = categoriesCollectionViewCell.swift; sourceTree = "<group>"; };
 		3F4FAEEB2BD8CB48002DF688 /* MAIN.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = MAIN.c; sourceTree = "<group>"; };
 		3F4FAEED2BD902E9002DF688 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		3F4FD6202BD917BC003A495E /* HomePostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePostTableViewCell.swift; sourceTree = "<group>"; };
+		3FAF52F82BE211000007C57E /* ScheduleLiveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleLiveViewController.swift; sourceTree = "<group>"; };
 		3FB8B30D2BD67A090061EB25 /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		3FD19DB12BDA36C400B2AC11 /* LiveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveViewController.swift; sourceTree = "<group>"; };
 		3FD19DB32BDA370100B2AC11 /* LiveOtherTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveOtherTableViewCell.swift; sourceTree = "<group>"; };
@@ -36,6 +43,7 @@
 		3FE537772BD6574800E3330C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3FE537792BD6574800E3330C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3FEFA90C2BD90E87001C53B6 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
+		3FF2A8EF2BE0ABC0004AAC29 /* MyLiveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLiveViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,7 +79,9 @@
 			isa = PBXGroup;
 			children = (
 				3FD19DB12BDA36C400B2AC11 /* LiveViewController.swift */,
+				3FF2A8EF2BE0ABC0004AAC29 /* MyLiveViewController.swift */,
 				3FD19DB32BDA370100B2AC11 /* LiveOtherTableViewCell.swift */,
+				3FAF52F82BE211000007C57E /* ScheduleLiveViewController.swift */,
 			);
 			path = Live;
 			sourceTree = "<group>";
@@ -97,12 +107,14 @@
 			children = (
 				3FE5376B2BD6574600E3330C /* AppDelegate.swift */,
 				3FE5376D2BD6574600E3330C /* SceneDelegate.swift */,
-				3FE537712BD6574600E3330C /* Main.storyboard */,
 				3FD19DB52BDA370900B2AC11 /* Live */,
 				3FC0B0122BD9F6FA00990872 /* Home */,
 				3FC0B0132BD9F70600990872 /* Data */,
 				3FE537742BD6574800E3330C /* Assets.xcassets */,
 				3FE537762BD6574800E3330C /* LaunchScreen.storyboard */,
+				3FE537712BD6574600E3330C /* Main.storyboard */,
+				3F0D01682BE2472D0020205C /* categoriesCollectionViewCell.swift */,
+				3F0D01662BE246B40020205C /* categoriesViewController.swift */,
 				3FE537792BD6574800E3330C /* Info.plist */,
 				3F4FAEEB2BD8CB48002DF688 /* MAIN.c */,
 			);
@@ -182,13 +194,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				3F4FD6212BD917BC003A495E /* HomePostTableViewCell.swift in Sources */,
+				3FAF52F92BE211000007C57E /* ScheduleLiveViewController.swift in Sources */,
 				3FD19DB42BDA370100B2AC11 /* LiveOtherTableViewCell.swift in Sources */,
 				3FEFA90D2BD90E87001C53B6 /* DataController.swift in Sources */,
 				3FD19DB22BDA36C400B2AC11 /* LiveViewController.swift in Sources */,
+				3F0D01692BE2472D0020205C /* categoriesCollectionViewCell.swift in Sources */,
 				3F4FAEEC2BD8CB48002DF688 /* MAIN.c in Sources */,
 				3FB8B30E2BD67A090061EB25 /* DataModel.swift in Sources */,
+				3FF2A8F02BE0ABC0004AAC29 /* MyLiveViewController.swift in Sources */,
 				3FE5376C2BD6574600E3330C /* AppDelegate.swift in Sources */,
 				3FE5376E2BD6574600E3330C /* SceneDelegate.swift in Sources */,
+				3F0D01672BE246B40020205C /* categoriesViewController.swift in Sources */,
 				3F4FAEEE2BD902E9002DF688 /* HomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
