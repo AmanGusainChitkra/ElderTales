@@ -29,9 +29,9 @@
                                         </constraints>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A3Y-za-vas">
-                                        <rect key="frame" x="31" y="409" width="44" height="35"/>
+                                        <rect key="frame" x="31" y="409" width="42" height="35"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="tinted" image="play.fill" catalog="system">
+                                        <buttonConfiguration key="configuration" style="tinted" image="pause.fill" catalog="system">
                                             <backgroundConfiguration key="background" cornerRadius="50"/>
                                         </buttonConfiguration>
                                         <connections>
@@ -39,7 +39,7 @@
                                         </connections>
                                     </button>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="MUP-OB-T8W">
-                                        <rect key="frame" x="74" y="411.66666666666663" width="290" height="31"/>
+                                        <rect key="frame" x="72" y="411.66666666666663" width="290" height="31"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="286" id="LWD-gB-Zia"/>
                                         </constraints>
@@ -1629,9 +1629,9 @@
         <image name="house" catalog="system" width="128" height="104"/>
         <image name="message" catalog="system" width="128" height="116"/>
         <image name="otherPhoto" width="700" height="400"/>
+        <image name="pause.fill" catalog="system" width="117" height="128"/>
         <image name="person.2" catalog="system" width="128" height="87"/>
         <image name="person.circle" catalog="system" width="128" height="123"/>
-        <image name="play.fill" catalog="system" width="117" height="128"/>
         <image name="plus.square" catalog="system" width="128" height="114"/>
         <image name="safari" catalog="system" width="128" height="123"/>
         <image name="square.and.arrow.down" catalog="system" width="112" height="128"/>

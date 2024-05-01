@@ -28,11 +28,12 @@ class NowPlayingViewController: UIViewController {
         super.viewDidLoad()
         setupVideoPlayer()
         loadPost()
-        addTimeObserver()
-        togglePlayPause()
-        post = posts.first(where: {$0.id == postId})
-        titleLabel.text = post?.title
-        
+        if let postTitle = post?.title {
+            titleLabel.text = postTitle
+        }
+        player?.play()
+        setupPlaybackControls()
+        updatePlayPauseButtonForPlayingState()
     }
     
     private func setupVideoPlayer() {
@@ -46,6 +47,21 @@ class NowPlayingViewController: UIViewController {
         playerLayer.frame = videoPlayView.bounds
         playerLayer.videoGravity = .resizeAspect
         videoPlayView.layer.addSublayer(playerLayer)
+        // Don't automatically play the video
+        isPlaying = false
+        playPauseButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
+    }
+    
+    private func setupPlaybackControls() {
+        // Only set up observer and time observer if the player is initialized
+        guard player != nil else { return }
+        addTimeObserver()
+        player?.currentItem?.addObserver(self, forKeyPath: "duration", options: [.new, .initial], context: nil)
+    }
+    
+    private func updatePlayPauseButtonForPlayingState() {
+        playPauseButton.setImage(UIImage(systemName: "pause.fill"), for: .normal)
+        isPlaying = true
     }
     
     @IBAction func playPauseTapped(_ sender: UIButton) {
