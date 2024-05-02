@@ -122,27 +122,5 @@ class MyProfileViewController:  UIViewController, UITableViewDataSource, MyProfi
     @IBAction func segmentChanged(_ sender: UISegmentedControl) {
         selectedPosts = []
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-    
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == "YourSegueIdentifier" { // Replace with your actual segue identifier
-//            if let destinationVC = segue.destination as? NowPlayingViewController,
-//               let selectedIndexPath = tableView.indexPathForSelectedRow {
-//                let selectedPostId = posts[selectedIndexPath.row].id
-//                destinationVC.postId = selectedPostId // Assuming your AVPlayerViewController has a postId property
-//            }
-//        }
-//    }
-
 
 }

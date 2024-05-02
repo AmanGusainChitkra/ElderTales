@@ -13,6 +13,12 @@ class NewPostCameraViewController: UIViewController {
     @IBOutlet weak var recordButton: UIButton!
     @IBOutlet weak var videoView: UIView!
     
+    var recordingTimeLabel: UILabel!
+    var videoOutput: AVCaptureMovieFileOutput?
+    var timer: Timer?
+    var outputPath:URL? = nil
+
+    
     var captureSession: AVCaptureSession!
     var videoPreviewLayer: AVCaptureVideoPreviewLayer!
 
@@ -20,6 +26,11 @@ class NewPostCameraViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        setupTimingLabel()
+        ensureCameraPermission()
+    }
+    
+    func ensureCameraPermission(){
         switch AVCaptureDevice.authorizationStatus(for: .video) {
                 case .authorized:
                     setupCamera()
@@ -36,21 +47,36 @@ class NewPostCameraViewController: UIViewController {
             }
     }
     
+    func setupTimingLabel(){
+        recordingTimeLabel = UILabel()
+        recordingTimeLabel.textColor = UIColor.red
+        recordingTimeLabel.font = UIFont.boldSystemFont(ofSize: 14)
+        recordingTimeLabel.text = "00:00:00"
+        
+        recordingTimeLabel.sizeToFit()
+
+        
+        self.navigationItem.titleView = recordingTimeLabel
+    }
+    
     func setupCamera() {
         captureSession = AVCaptureSession()
         captureSession.sessionPreset = .high
 
-        guard let backCamera = AVCaptureDevice.default(for: .video),
-              let input = try? AVCaptureDeviceInput(device: backCamera) else {
-            print("Unable to access back camera!")
+        guard let frontCamera = AVCaptureDevice.default(for: .video),
+              let input = try? AVCaptureDeviceInput(device: frontCamera) else {
+            print("Unable to access camera!")
             return
         }
 
+        videoOutput = AVCaptureMovieFileOutput()
+
         if captureSession.canAddInput(input) {
             captureSession.addInput(input)
-        } else {
-            print("Failed to add camera input to capture session.")
-            return
+        }
+        
+        if captureSession.canAddOutput(videoOutput!) {
+            captureSession.addOutput(videoOutput!)
         }
 
         videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
@@ -60,15 +86,62 @@ class NewPostCameraViewController: UIViewController {
 
         captureSession.startRunning()
     }
+    @IBAction func recordButtonTapped(_ sender: UIButton) {
+        if let output = videoOutput {
+                if output.isRecording {
+                    output.stopRecording()
+                    recordButton.backgroundColor = UIColor.red // Stops recording, button becomes red
+                } else {
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "yyyyMMddHHmmss"
+                    let dateString = dateFormatter.string(from: Date())
+                    outputPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("output_\(dateString).mov")
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+//                    let outputPath = documentsPath.appendingPathComponent("output_\(dateString).mov")
+                    print("Recording to: \(outputPath!)")
+                    output.startRecording(to: outputPath!, recordingDelegate: self)
+                    recordButton.backgroundColor = UIColor.gray // Starts recording, button becomes gray
+                }
+            }
     }
-    */
+    
+    func startTimer() {
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateRecordingTime), userInfo: nil, repeats: true)
+    }
 
+    func stopTimer() {
+        timer?.invalidate()
+        timer = nil
+    }
+
+    @objc func updateRecordingTime() {
+        if let currentTime = videoOutput?.recordedDuration {
+            let totalSeconds = CMTimeGetSeconds(currentTime)
+            let hours = Int(totalSeconds / 3600)
+            let minutes = Int(totalSeconds / 60) % 60
+            let seconds = Int(totalSeconds) % 60
+            recordingTimeLabel.text = String(format: "%02i:%02i:%02i", hours, minutes, seconds)
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "recordingDoneAddNewPost" {
+            if let destinationVC = segue.destination as? NewPostDetailsViewController{
+                    destinationVC.postURL = outputPath
+                }
+            }
+    }
+    
+}
+
+extension NewPostCameraViewController: AVCaptureFileOutputRecordingDelegate {
+    func fileOutput(_ output: AVCaptureFileOutput, didFinishRecordingTo outputFileURL: URL, from connections: [AVCaptureConnection], error: Error?) {
+        if error == nil {
+                    // Optionally handle the file, e.g., saving the URL for further use
+                    print("Recording finished successfully.")
+                    self.performSegue(withIdentifier: "recordingDoneAddNewPost", sender: self)
+                } else {
+                    print("Recording failed: \(error!.localizedDescription)")
+                }
+    }
 }

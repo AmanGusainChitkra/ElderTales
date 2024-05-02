@@ -60,7 +60,10 @@ class HomeViewController: UIViewController, UITableViewDataSource, HomePostTable
 
     
     func didTapShareButton(for cell: HomePostTableViewCell) {
-        print("hello")
+        if let uuid = cell.uuid {
+                let postLink = "https://eldertales.com/post/\(uuid)"
+                sharePostLink(postLink)
+            }
     }
     
     func didTapCommentButton(for cell: HomePostTableViewCell) {
@@ -107,7 +110,18 @@ class HomeViewController: UIViewController, UITableViewDataSource, HomePostTable
         return cell
     }
 
-    
+    func sharePostLink(_ link: String) {
+        let items = [link]
+        let activityViewController = UIActivityViewController(activityItems: items, applicationActivities: nil)
+        // If using an iPad, configure the popover presentation controller.
+        if let popoverController = activityViewController.popoverPresentationController {
+            popoverController.sourceView = self.view // or button/view that triggered the sharing
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            popoverController.permittedArrowDirections = [] // Adjust if needed
+        }
+        self.present(activityViewController, animated: true)
+    }
+
 
     
     @IBOutlet weak var homeTableView: UITableView!
