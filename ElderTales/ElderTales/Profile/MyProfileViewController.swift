@@ -73,7 +73,7 @@ class MyProfileViewController:  UIViewController, UITableViewDataSource, MyProfi
         let post = selectedPosts[indexPath.row]
         cell.uuid = post.id
         
-        cell.profilePhotoUIImage.image = UIImage(named: "youngster")
+        cell.profilePhotoUIImage.image = post.postedBy.image
         cell.usernameLabel.text = post.postedBy.name
         cell.storyTitleLabel.text = post.title
         cell.thumbnailUIImage.image = UIImage(named: "youngster")
@@ -102,22 +102,36 @@ class MyProfileViewController:  UIViewController, UITableViewDataSource, MyProfi
     }
 
     
-
-    
     @IBOutlet weak var profileTableView: UITableView!
     
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var profileImage: UIImageView!
+    @IBOutlet weak var postsCountLabel: UILabel!
+    @IBOutlet weak var followersCountLabel: UILabel!
+    @IBOutlet weak var usernameLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UITextView!
     
     override func viewDidLoad() {
 //        generateDummyData()
         super.viewDidLoad()
+        setDetails()
         selectedPosts = []
         profileTableView.dataSource = self
         profileImage.layer.cornerRadius = 94/2
         profileImage.layer.borderWidth = 2
     }
     
+    func setDetails(){
+        var followersCount: Int = 0
+        followersCount = users.filter({$0.following.contains(where: {$0.id == currentUser?.id})}).count
+        
+        profileImage.image = currentUser?.image
+        postsCountLabel.text = "\(posts.filter({$0.postedBy.id == currentUser?.id}).count)"
+        followersCountLabel.text = "\(followersCount)"
+        descriptionLabel.text = currentUser?.description
+        usernameLabel.text = currentUser?.name  
+        print("details set")
+    }
     
     @IBAction func segmentChanged(_ sender: UISegmentedControl) {
         selectedPosts = []

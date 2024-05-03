@@ -10,15 +10,32 @@ import SwiftUI
 
 class LiveViewController: UIViewController, UITableViewDataSource{
     
+    var selectedLives: [Live] {
+        get {
+            // Determine which posts to return based on the segmented control's selection.
+            switch segmentedControl.selectedSegmentIndex {
+            case 0:
+                return lives.filter { $0.postedBy.id != currentUser?.id}
+            case 1:
+                return lives.filter { $0.postedBy.id == currentUser?.id }
+            default:
+                return []
+            }
+        }
+        set {
+            // Reload the table view whenever the selection changes.
+            liveTableView.reloadData()
+        }
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return lives.count
+        return selectedLives.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = liveTableView.dequeueReusableCell(withIdentifier: "liveOther", for: indexPath) as! LiveOtherTableViewCell
 
-        let live = lives[indexPath.row]
+        let live = selectedLives[indexPath.row]
         
         // Configure the cell with data from the post
         cell.profilePhotoUIImage.image = UIImage(named: "otherPhoto")
@@ -33,6 +50,7 @@ class LiveViewController: UIViewController, UITableViewDataSource{
     }
     
     @IBOutlet weak var liveTableView: UITableView!
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,7 +60,10 @@ class LiveViewController: UIViewController, UITableViewDataSource{
        liveTableView.dataSource = self
     }
     
-
+    @IBAction func segmentedChanged(_ sender: UISegmentedControl) {
+        selectedLives = []
+    }
+    
     /*
     // MARK: - Navigation
 

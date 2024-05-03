@@ -82,7 +82,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, HomePostTable
         let post = selectedPosts[indexPath.row]
         cell.uuid = post.id
         
-        cell.profilePhotoUIImage.image = UIImage(named: "youngster")
+        cell.profilePhotoUIImage.image = post.postedBy.image
         cell.usernameLabel.text = post.postedBy.name
         cell.storyTitleLabel.text = post.title
         cell.thumbnailUIImage.image = UIImage(named: "youngster")
@@ -145,6 +145,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, HomePostTable
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
     }
+     
     */
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

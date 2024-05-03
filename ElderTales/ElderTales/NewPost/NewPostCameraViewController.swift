@@ -61,20 +61,29 @@ class NewPostCameraViewController: UIViewController {
     
     func setupCamera() {
         captureSession = AVCaptureSession()
-        captureSession.sessionPreset = .high
+        captureSession.sessionPreset = .high // High quality video output
 
-        guard let frontCamera = AVCaptureDevice.default(for: .video),
-              let input = try? AVCaptureDeviceInput(device: frontCamera) else {
-            print("Unable to access camera!")
+        guard let frontCamera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front),
+              let input = try? AVCaptureDeviceInput(device: frontCamera),
+              let audioDevice = AVCaptureDevice.default(for: .audio),
+              let audioInput = try? AVCaptureDeviceInput(device: audioDevice) else {
+            print("Unable to access camera or microphone!")
             return
         }
 
         videoOutput = AVCaptureMovieFileOutput()
 
+        // Adding video input
         if captureSession.canAddInput(input) {
             captureSession.addInput(input)
         }
-        
+
+        // Adding audio input
+        if captureSession.canAddInput(audioInput) {
+            captureSession.addInput(audioInput)
+        }
+
+        // Adding video output
         if captureSession.canAddOutput(videoOutput!) {
             captureSession.addOutput(videoOutput!)
         }
@@ -86,6 +95,7 @@ class NewPostCameraViewController: UIViewController {
 
         captureSession.startRunning()
     }
+
     @IBAction func recordButtonTapped(_ sender: UIButton) {
         if let output = videoOutput {
                 if output.isRecording {

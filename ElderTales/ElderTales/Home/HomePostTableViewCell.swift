@@ -31,7 +31,7 @@ class HomePostTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        profilePhotoUIImage.layer.cornerRadius = 10
+        profilePhotoUIImage.layer.cornerRadius = profilePhotoUIImage.frame.width/2
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

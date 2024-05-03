@@ -19,8 +19,9 @@ struct User {
     var savedPosts: [Post]
     var following: [User]
     var interests: [Category]
+    var description: String
 
-    init(name: String, email: String, isElderly: Bool, password: String, image: UIImage? = nil) {
+    init(name: String, email: String, isElderly: Bool, password: String, image: UIImage? = nil, description: String? = nil) {
         self.id = UUID().uuidString
         self.name = name
         self.email = email
@@ -31,6 +32,7 @@ struct User {
         self.savedPosts = []
         self.following = []
         self.interests = []
+        self.description = description ?? ""
     }
     
     mutating func likePost(post: Post, liked: Bool) {

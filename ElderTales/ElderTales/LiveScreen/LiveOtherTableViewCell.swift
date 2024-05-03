@@ -23,14 +23,14 @@ class LiveOtherTableViewCell: UITableViewCell {
     @IBOutlet weak var dateOfLive: UILabel!
     
     @IBOutlet weak var timeOfLive: UILabel!
-    
-    
-    
+
     @IBOutlet weak var thumbnailUIImage: UIImageView!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-   profilePhotoUIImage.layer.cornerRadius = 20
+        profilePhotoUIImage.layer.cornerRadius = profilePhotoUIImage.frame.width/2
     }
     
     
@@ -43,7 +43,6 @@ class LiveOtherTableViewCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 20, left: 10, bottom: 20, right: 10))
     }
 
 }
