@@ -105,6 +105,7 @@ struct Live {
     var beginsOn: Date
     var interested: [User]
     var title: String
+    var isOngoing: Bool
 
     init(postedBy: User, postedOn: Date, beginsOn: Date, title: String) {
         self.id = UUID().uuidString
@@ -113,6 +114,7 @@ struct Live {
         self.beginsOn = beginsOn
         self.title = title
         self.interested = []
+        self.isOngoing = false
     }
 }
 
@@ -120,11 +122,13 @@ struct Comment {
     var postedBy: User
     var postedOn: Date
     var body: String
+    var isQuestion: Bool
 
-    init(postedBy: User, postedOn: Date, body: String) {
+    init(postedBy: User, postedOn: Date, body: String, isQuestion: Bool) {
         self.postedBy = postedBy
         self.postedOn = postedOn
         self.body = body
+        self.isQuestion = isQuestion
     }
     
 }

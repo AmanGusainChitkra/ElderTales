@@ -9,13 +9,28 @@ import UIKit
 import AVFoundation
 import AVKit
 
-class NowPlayingViewController: UIViewController {
+class NowPlayingViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return post!.comments.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = commentsTableView.dequeueReusableCell(withIdentifier: "commentTableCell", for: indexPath) as! CommentTableViewCell
+        let comment = post!.comments[indexPath.row]
+        cell.userProfileImage.image = comment.postedBy.image
+        cell.usernameLabel.text = comment.postedBy.name
+        cell.commentTextView.text = comment.body
+        print("cell created")
+        return cell
+    }
+    
     var player: AVPlayer?
     var isPlaying = false
     var postId: String = ""
     var post: Post? {
         didSet {
             setupVideoPlayer()
+            commentsTableView.reloadData()
         }
     }
     
@@ -23,6 +38,7 @@ class NowPlayingViewController: UIViewController {
     @IBOutlet weak var playPauseButton: UIButton!
     @IBOutlet weak var timeSlider: UISlider!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var commentsTableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,7 +50,18 @@ class NowPlayingViewController: UIViewController {
         player?.play()
         setupPlaybackControls()
         updatePlayPauseButtonForPlayingState()
+        commentsTableView.dataSource = self
+        commentsTableView.delegate = self
     }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        commentsTableView.isHidden = false
+        print("TableView Frame: \(commentsTableView.frame)")
+        print("TableView Visibility: \(commentsTableView.isHidden)")
+        print("TableView Alpha: \(commentsTableView.alpha)")
+    }
+    
+
     
     private func setupVideoPlayer() {
         guard let url = Bundle.main.url(forResource: "videoSong", withExtension: "mp4") else {
@@ -92,6 +119,9 @@ class NowPlayingViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         player?.currentItem?.addObserver(self, forKeyPath: "duration", options: [.new, .initial], context: nil)
+        let expectedHeight: CGFloat = 300  // Adjust based on your UI needs
+        commentsTableView.frame = CGRect(x: 0, y: 727, width: view.bounds.width, height: expectedHeight)
+
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -116,38 +146,3 @@ class NowPlayingViewController: UIViewController {
     
     
 }
-//
-//class NowPlayingViewController: UIViewController {
-//    var postId: String = ""
-//    var post: Post? {
-//        didSet {
-//            setupVideoPlayer()
-//        }
-//    }
-//    private func setupVideoPlayer() {
-//            guard let url = Bundle.main.url(forResource: "videoSong", withExtension: "mp4") else {
-//                print("Video file not found.")
-//                return
-//            }
-//
-//            let player = AVPlayer(url: url)
-//            let playerLayer = AVPlayerLayer(player: player)
-//            playerLayer.frame = videoPlayView.bounds
-//            playerLayer.videoGravity = .resizeAspect  // Adjust depending on how you want the video to fit
-//
-//            videoPlayView.layer.addSublayer(playerLayer)
-//            player.play()
-//        }
-//        
-//    @IBOutlet weak var videoPlayView: UIView!
-//    
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        loadPost()
-//    }
-//
-//    private func loadPost() {
-//        // Assume 'posts' is accessible within the scope
-//        self.post = posts.first(where: { $0.id == postId })
-//    }
-//}

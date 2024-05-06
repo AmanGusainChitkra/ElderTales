@@ -33,9 +33,19 @@ class LiveViewController: UIViewController, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = liveTableView.dequeueReusableCell(withIdentifier: "liveOther", for: indexPath) as! LiveOtherTableViewCell
-
         let live = selectedLives[indexPath.row]
+        var identifier = live.isOngoing ? "liveOtherLive" : "liveOther"
+        switch(segmentedControl.selectedSegmentIndex){
+        case 0:
+            identifier = live.isOngoing ? "liveOtherLive" : "liveOther"
+        
+        case 1:
+            identifier = live.isOngoing ? "liveMyLive" : "liveMy"
+        default:
+            identifier = "liveOtherLive"
+        }
+        let cell = liveTableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! LiveOtherTableViewCell
+
         
         // Configure the cell with data from the post
         cell.profilePhotoUIImage.image = UIImage(named: "otherPhoto")
@@ -51,6 +61,7 @@ class LiveViewController: UIViewController, UITableViewDataSource{
     
     @IBOutlet weak var liveTableView: UITableView!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
+    @IBOutlet weak var addLiveButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,6 +69,8 @@ class LiveViewController: UIViewController, UITableViewDataSource{
         generateDummyData()
         super.viewDidLoad()
        liveTableView.dataSource = self
+        addLiveButton.layer.borderWidth = 2
+        addLiveButton.layer.cornerRadius = 10
     }
     
     @IBAction func segmentedChanged(_ sender: UISegmentedControl) {

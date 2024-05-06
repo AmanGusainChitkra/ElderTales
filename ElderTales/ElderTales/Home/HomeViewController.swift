@@ -36,7 +36,9 @@ class HomeViewController: UIViewController, UITableViewDataSource, HomePostTable
     }
     
     func didTapSaveButton(for cell: HomePostTableViewCell) {
-        print("hello")
+        let postIndex = posts.firstIndex(where: {$0.id == cell.uuid})!
+        currentUser?.savedPosts.append(posts[postIndex])
+        cell.saveButton.setImage(UIImage(systemName: "square.and.arrow.down.fill"), for: .normal)
     }
     
     func didTapLikeButton(for cell: HomePostTableViewCell) {
@@ -89,10 +91,17 @@ class HomeViewController: UIViewController, UITableViewDataSource, HomePostTable
         
         // Set the interaction buttons and counts
         var heartState = ""
+        var saveState = ""
         if(currentUser!.likedPosts.contains(where: { $0.id == post.id})){
             heartState = "heart.fill"
         }
         else {heartState = "heart"}
+            cell.likeButton.setImage(UIImage(systemName: heartState), for: .normal)
+        
+        if(currentUser!.savedPosts.contains(where: { $0.id == post.id})){
+            saveState = "square.and.arrow.down.fill"
+        }
+        else {saveState = "square.and.arrow.down"}
             cell.likeButton.setImage(UIImage(systemName: heartState), for: .normal)
             
         cell.likeCount.text = "\(post.likes)"
@@ -103,7 +112,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, HomePostTable
         cell.commentButton.setImage(UIImage(systemName: "message"), for: .normal)
         cell.commentCount.text = "\(post.comments.count)"
         
-        cell.saveButton.setImage(UIImage(systemName: "square.and.arrow.down"), for: .normal)
+        cell.saveButton.setImage(UIImage(systemName: saveState), for: .normal)
 
         cell.saveLabel.text = "Save"
         cell.delegate = self

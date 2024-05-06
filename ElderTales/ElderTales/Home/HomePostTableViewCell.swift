@@ -57,6 +57,7 @@ class HomePostTableViewCell: UITableViewCell {
     }
     
     @IBAction func tappedSaveButton(_ sender: UIButton) {
+        delegate?.didTapSaveButton(for: self)
     }
     
     @IBAction func tappedListenButton(_ sender: UIButton) {

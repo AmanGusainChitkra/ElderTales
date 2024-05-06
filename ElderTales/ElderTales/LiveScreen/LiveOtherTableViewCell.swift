@@ -26,6 +26,9 @@ class LiveOtherTableViewCell: UITableViewCell {
 
     @IBOutlet weak var thumbnailUIImage: UIImageView!
     
+    @IBOutlet weak var addEventButton: UIButton!
+    
+    @IBOutlet weak var joinLiveButton: UIButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -44,5 +47,20 @@ class LiveOtherTableViewCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
     }
+    
+    @IBAction func tappedAddEvent(_ sender: Any) {
+        
+    }
+    
+    weak var delegate: LiveOtherViewCellDelegate?
 
+}
+
+
+protocol LiveOtherViewCellDelegate: AnyObject {
+    
+    func didTapAddEventButton(for cell: LiveOtherTableViewCell)
+    
+    func didTapJoinLiveButton(for cell: LiveOtherTableViewCell)
+    
 }

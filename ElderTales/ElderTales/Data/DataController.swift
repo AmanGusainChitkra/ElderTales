@@ -18,9 +18,27 @@ func generateDummyData(){
     // Create dummy categories
     categories = [
         Category(title: "Travel", image: UIImage(named: "travel") ?? UIImage(systemName: "person.fill") ?? UIImage()),
-        Category(title: "Cooking", image: UIImage(named: "cooking") ?? UIImage()),
-        Category(title: "Sports", image: UIImage(named: "sports") ?? UIImage()),
-        Category(title: "Music", image: UIImage(named: "music") ?? UIImage())
+        Category(title: "Cooking", image: UIImage(named: "cooking") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Sports", image: UIImage(named: "sports") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Music", image: UIImage(named: "music") ?? UIImage(systemName: "person.fill") ?? UIImage()),Category(title: "Travel", image: UIImage(named: "travel") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Cooking", image: UIImage(named: "cooking") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Sports", image: UIImage(named: "sports") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Music", image: UIImage(named: "music") ?? UIImage(systemName: "person.fill") ?? UIImage()),Category(title: "Travel", image: UIImage(named: "travel") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Cooking", image: UIImage(named: "cooking") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Sports", image: UIImage(named: "sports") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Music", image: UIImage(named: "music") ?? UIImage(systemName: "person.fill") ?? UIImage()),Category(title: "Travel", image: UIImage(named: "travel") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Cooking", image: UIImage(named: "cooking") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Sports", image: UIImage(named: "sports") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Music", image: UIImage(named: "music") ?? UIImage(systemName: "person.fill") ?? UIImage()),Category(title: "Travel", image: UIImage(named: "travel") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Cooking", image: UIImage(named: "cooking") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Sports", image: UIImage(named: "sports") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Music", image: UIImage(named: "music") ?? UIImage(systemName: "person.fill") ?? UIImage()),Category(title: "Travel", image: UIImage(named: "travel") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Cooking", image: UIImage(named: "cooking") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Sports", image: UIImage(named: "sports") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Music", image: UIImage(named: "music") ?? UIImage(systemName: "person.fill") ?? UIImage()),Category(title: "Travel", image: UIImage(named: "travel") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Cooking", image: UIImage(named: "cooking") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Sports", image: UIImage(named: "sports") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Music", image: UIImage(named: "music") ?? UIImage(systemName: "person.fill") ?? UIImage())
     ]
     
     // Create dummy users
@@ -33,9 +51,9 @@ func generateDummyData(){
     
     // Create dummy comments
     comments = [
-        Comment(postedBy: users[0], postedOn: Date(), body: "Great post!"),
-        Comment(postedBy: users[1], postedOn: Date(), body: "Really enjoyed this."),
-        Comment(postedBy: users[2], postedOn: Date(), body: "Love this!")
+        Comment(postedBy: users[0], postedOn: Date(), body: "Great post!", isQuestion: false),
+        Comment(postedBy: users[1], postedOn: Date(), body: "Really enjoyed this.", isQuestion: false),
+        Comment(postedBy: users[2], postedOn: Date(), body: "Love this!", isQuestion: false)
     ]
     
     // Create dummy posts
@@ -76,8 +94,15 @@ func generateDummyData(){
     lives = [
         Live(postedBy: users[0], postedOn: Date(), beginsOn: Date().addingTimeInterval(3600), title: "Live from Rome"),
         Live(postedBy: users[1], postedOn: Date(), beginsOn: Date().addingTimeInterval(7200), title: "Cooking Live"),
-        Live(postedBy: users[2], postedOn: Date(), beginsOn: Date().addingTimeInterval(10800), title: "Sports Live")
+        Live(postedBy: users[2], postedOn: Date(), beginsOn: Date().addingTimeInterval(10800), title: "Sports Live"),
+        Live(postedBy: users[2], postedOn: Date(), beginsOn: Date().addingTimeInterval(10800), title: "Sports Live"),
+        Live(postedBy: users[2], postedOn: Date(), beginsOn: Date().addingTimeInterval(10200), title: "Sports Live"),
+        Live(postedBy: users[2], postedOn: Date(), beginsOn: Date(), title: "Sports Live")
     ]
-    
+    lives[5].isOngoing = true
     currentUser = users[0]
+    
+    for (index, _) in posts.enumerated() {
+        posts[index].comments.append(contentsOf: comments)
+    }
 }
