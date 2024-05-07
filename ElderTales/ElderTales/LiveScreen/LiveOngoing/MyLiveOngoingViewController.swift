@@ -8,14 +8,14 @@
 import UIKit
 import AVFoundation
 
-
-class LiveOngoingViewController: UIViewController, UITableViewDataSource {
+class MyLiveOngoingViewController: UIViewController, UITableViewDataSource {
     
     var comments:[Comment] = []
     var live: Live?
     var liveId: String = ""
-    var player: AVPlayer?
-    var playerLayer: AVPlayerLayer?
+    var captureSession: AVCaptureSession?
+    var videoPreviewLayer: AVCaptureVideoPreviewLayer?
+
 
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -35,33 +35,52 @@ class LiveOngoingViewController: UIViewController, UITableViewDataSource {
     
     
 
-    
     @IBOutlet weak var commentTableView: UITableView!
     @IBOutlet weak var liveView: UIView!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         live = lives.first(where: {$0.id == liveId})
         commentTableView.dataSource = self
         startCommentSimulation()
-        configureVideoPlayer()
+        setupVideoCapture()
     }
+    
+    func setupVideoCapture() {
+        // Create a capture session
+        let session = AVCaptureSession()
+        session.sessionPreset = .high
 
-    func configureVideoPlayer() {
-        guard let filePath = Bundle.main.path(forResource: "videoSong", ofType: "mp4") else {
-            print("Video file not found")
+        guard let frontCamera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front),
+              let input = try? AVCaptureDeviceInput(device: frontCamera) else {
+            print("Unable to access front camera")
             return
         }
-        let fileURL = URL(fileURLWithPath: filePath)
-        player = AVPlayer(url: fileURL)
-        playerLayer = AVPlayerLayer(player: player)
-        
-        if let playerLayer = playerLayer {
-            playerLayer.frame = liveView.bounds
-            liveView.layer.addSublayer(playerLayer)
-            player?.play()
+
+        // Add input to session
+        if session.canAddInput(input) {
+            session.addInput(input)
+        } else {
+            print("Failed to add input to capture session")
+            return
         }
+
+        // Setup the preview layer
+        let previewLayer = AVCaptureVideoPreviewLayer(session: session)
+        previewLayer.frame = liveView.bounds
+        previewLayer.videoGravity = .resizeAspectFill // Adjust as needed
+        liveView.layer.addSublayer(previewLayer)
+
+        // Save session and preview layer
+        captureSession = session
+        videoPreviewLayer = previewLayer
+
+        // Start the session
+        session.startRunning()
     }
+
+
 
     func startCommentSimulation() {
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] timer in
@@ -84,19 +103,20 @@ class LiveOngoingViewController: UIViewController, UITableViewDataSource {
             }
         }
     }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        playerLayer?.frame = liveView.bounds
+        videoPreviewLayer?.frame = liveView.bounds
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        captureSession?.startRunning()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        player?.pause()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        player?.play()
+        captureSession?.stopRunning()
     }
 
 

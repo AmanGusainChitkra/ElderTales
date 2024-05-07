@@ -24,6 +24,7 @@
 		3FCC1F002BE9E95E00C92A7C /* ViewProfileOtherTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCC1EFF2BE9E95E00C92A7C /* ViewProfileOtherTableViewCell.swift */; };
 		3FCC1F052BEA2E3700C92A7C /* LiveOngoingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCC1F042BEA2E3700C92A7C /* LiveOngoingViewController.swift */; };
 		3FCC1F072BEA2F2700C92A7C /* LiveCommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCC1F062BEA2F2700C92A7C /* LiveCommentTableViewCell.swift */; };
+		3FCC1F092BEA53AA00C92A7C /* MyLiveOngoingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCC1F082BEA53AA00C92A7C /* MyLiveOngoingViewController.swift */; };
 		3FE5376C2BD6574600E3330C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE5376B2BD6574600E3330C /* AppDelegate.swift */; };
 		3FE5376E2BD6574600E3330C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE5376D2BD6574600E3330C /* SceneDelegate.swift */; };
 		3FE537732BD6574600E3330C /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 3FE537722BD6574600E3330C /* Base */; };
@@ -53,6 +54,7 @@
 		3FCC1EFF2BE9E95E00C92A7C /* ViewProfileOtherTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewProfileOtherTableViewCell.swift; sourceTree = "<group>"; };
 		3FCC1F042BEA2E3700C92A7C /* LiveOngoingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveOngoingViewController.swift; sourceTree = "<group>"; };
 		3FCC1F062BEA2F2700C92A7C /* LiveCommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveCommentTableViewCell.swift; sourceTree = "<group>"; };
+		3FCC1F082BEA53AA00C92A7C /* MyLiveOngoingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLiveOngoingViewController.swift; sourceTree = "<group>"; };
 		3FE537682BD6574600E3330C /* ElderTales.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ElderTales.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FE5376B2BD6574600E3330C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3FE5376D2BD6574600E3330C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 			children = (
 				3FCC1F042BEA2E3700C92A7C /* LiveOngoingViewController.swift */,
 				3FCC1F062BEA2F2700C92A7C /* LiveCommentTableViewCell.swift */,
+				3FCC1F082BEA53AA00C92A7C /* MyLiveOngoingViewController.swift */,
 			);
 			path = LiveOngoing;
 			sourceTree = "<group>";
@@ -284,6 +287,7 @@
 				3FCC1F072BEA2F2700C92A7C /* LiveCommentTableViewCell.swift in Sources */,
 				3FF269AB2BE0B96A00E39CF0 /* LiveViewController.swift in Sources */,
 				3F4FAEEC2BD8CB48002DF688 /* MAIN.c in Sources */,
+				3FCC1F092BEA53AA00C92A7C /* MyLiveOngoingViewController.swift in Sources */,
 				3FB8B30E2BD67A090061EB25 /* DataModel.swift in Sources */,
 				3FCC1F002BE9E95E00C92A7C /* ViewProfileOtherTableViewCell.swift in Sources */,
 				3F813E072BDB925D00E5A9C8 /* NewPostCameraViewController.swift in Sources */,
