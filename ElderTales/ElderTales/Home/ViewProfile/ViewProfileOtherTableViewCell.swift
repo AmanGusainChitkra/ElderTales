@@ -1,13 +1,13 @@
 //
-//  HomePostTableViewCell.swift
+//  ViewProfileOtherTableViewCell.swift
 //  ElderTales
 //
-//  Created by student on 24/04/24.
+//  Created by student on 07/05/24.
 //
 
 import UIKit
 
-class HomePostTableViewCell: UITableViewCell {
+class ViewProfileOtherTableViewCell: UITableViewCell {
 
     
     var uuid: String?
@@ -28,28 +28,23 @@ class HomePostTableViewCell: UITableViewCell {
     @IBOutlet weak var saveButton: UIButton!
     @IBOutlet weak var saveLabel: UILabel!
     
+    @IBOutlet weak var upcomming: UILabel!
+    @IBOutlet weak var intrested: UILabel!
+    @IBOutlet weak var dateOfLive: UILabel!
+    @IBOutlet weak var timeOfLive: UILabel!
+    @IBOutlet weak var addEventButton: UIButton!
+
+    @IBOutlet weak var joinLiveButton: UIButton!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        setupProfilePhotoGesture()
         profilePhotoUIImage.layer.cornerRadius = profilePhotoUIImage.frame.width/2
     }
 
-    private func setupProfilePhotoGesture() {
-            let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(profilePhotoTapped))
-            profilePhotoUIImage.isUserInteractionEnabled = true
-            profilePhotoUIImage.addGestureRecognizer(tapGestureRecognizer)
-//        usernameLabel.addGestureRecognizer(tapGestureRecognizer)
-        }
-        
-        @objc private func profilePhotoTapped() {
-            // Call delegate or handle navigation to profile page
-            delegate?.didTapProfilePhoto(for: self)
-        }
-    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-//        delegate?.didTapListenButton(for: self)
+        super.setSelected(false, animated: animated)
         // Configure the view for the selected state
     }
     
@@ -67,34 +62,25 @@ class HomePostTableViewCell: UITableViewCell {
     }
     
     @IBAction func tappedCommentButton(_ sender: UIButton) {
-        delegate?.didTapListenButton(for: self)
     }
     
     @IBAction func tappedSaveButton(_ sender: UIButton) {
-        delegate?.didTapSaveButton(for: self)
     }
     
-    @IBAction func tappedListenButton(_ sender: UIButton) {
-        delegate?.didTapListenButton(for: self)
-    }
-    
-    
-    weak var delegate: HomePostTableViewCellDelegate?
+    weak var delegate: ViewProfileOtherTableViewCellDelegate?
     
 }
 
-protocol HomePostTableViewCellDelegate: AnyObject {
+protocol ViewProfileOtherTableViewCellDelegate: AnyObject {
     
-    func didTapListenButton(for cell: HomePostTableViewCell)
+    func didTapListenButton(for cell: ViewProfileOtherTableViewCell)
     
-    func didTapSaveButton(for cell: HomePostTableViewCell)
+    func didTapSaveButton(for cell: ViewProfileOtherTableViewCell)
     
-    func didTapLikeButton(for cell: HomePostTableViewCell)
+    func didTapLikeButton(for cell: ViewProfileOtherTableViewCell)
     
-    func didTapShareButton(for cell: HomePostTableViewCell)
+    func didTapShareButton(for cell: ViewProfileOtherTableViewCell)
     
-    func didTapCommentButton(for cell: HomePostTableViewCell)
-    
-    func didTapProfilePhoto(for cell: HomePostTableViewCell)
+    func didTapCommentButton(for cell: ViewProfileOtherTableViewCell)
     
 }

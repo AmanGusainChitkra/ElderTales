@@ -8,7 +8,17 @@
 import UIKit
 import SwiftUI
 
-class HomeViewController: UIViewController, UITableViewDataSource, HomePostTableViewCellDelegate {
+class HomeViewController: UIViewController, UITableViewDataSource,UITableViewDelegate, HomePostTableViewCellDelegate {
+    
+    func didTapProfilePhoto(for cell: HomePostTableViewCell) {
+        performSegue(withIdentifier: "viewProfileSegue", sender: cell)
+
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath) as? HomePostTableViewCell
+            cell?.delegate?.didTapListenButton(for: cell!)
+    }
     
     var selectedPosts: [Post] {
         get {
@@ -140,6 +150,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, HomePostTable
         generateDummyData()
         super.viewDidLoad()
         homeTableView.dataSource = self
+        homeTableView.delegate = self
     }
     
     @IBAction func segmentUpdated(_ sender: UISegmentedControl) {
@@ -166,6 +177,14 @@ class HomeViewController: UIViewController, UITableViewDataSource, HomePostTable
                     destinationVC.postId = uuid
                 }
             }
+        if segue.identifier == "viewProfileSegue"{
+            if let destinationVC = segue.destination as? ViewProfileOtherViewController,
+               let cell = sender as? HomePostTableViewCell,
+               let uuid = cell.uuid{
+                let postedBy = posts.first(where: {$0.id == uuid})?.postedBy
+                destinationVC.userId = postedBy?.id ?? ""
+            }
+        }
     }
 
 

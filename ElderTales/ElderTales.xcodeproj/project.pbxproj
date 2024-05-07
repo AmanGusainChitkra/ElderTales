@@ -20,6 +20,10 @@
 		3F813E072BDB925D00E5A9C8 /* NewPostCameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F813E062BDB925D00E5A9C8 /* NewPostCameraViewController.swift */; };
 		3FB8B30E2BD67A090061EB25 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB8B30D2BD67A090061EB25 /* DataModel.swift */; };
 		3FC31C002BE7B09F008EB060 /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC31BFF2BE7B09F008EB060 /* CommentTableViewCell.swift */; };
+		3FCC1EFE2BE9D5FB00C92A7C /* ViewProfileOtherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCC1EFD2BE9D5FB00C92A7C /* ViewProfileOtherViewController.swift */; };
+		3FCC1F002BE9E95E00C92A7C /* ViewProfileOtherTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCC1EFF2BE9E95E00C92A7C /* ViewProfileOtherTableViewCell.swift */; };
+		3FCC1F052BEA2E3700C92A7C /* LiveOngoingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCC1F042BEA2E3700C92A7C /* LiveOngoingViewController.swift */; };
+		3FCC1F072BEA2F2700C92A7C /* LiveCommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCC1F062BEA2F2700C92A7C /* LiveCommentTableViewCell.swift */; };
 		3FE5376C2BD6574600E3330C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE5376B2BD6574600E3330C /* AppDelegate.swift */; };
 		3FE5376E2BD6574600E3330C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE5376D2BD6574600E3330C /* SceneDelegate.swift */; };
 		3FE537732BD6574600E3330C /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 3FE537722BD6574600E3330C /* Base */; };
@@ -45,6 +49,10 @@
 		3F813E062BDB925D00E5A9C8 /* NewPostCameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostCameraViewController.swift; sourceTree = "<group>"; };
 		3FB8B30D2BD67A090061EB25 /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		3FC31BFF2BE7B09F008EB060 /* CommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
+		3FCC1EFD2BE9D5FB00C92A7C /* ViewProfileOtherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewProfileOtherViewController.swift; sourceTree = "<group>"; };
+		3FCC1EFF2BE9E95E00C92A7C /* ViewProfileOtherTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewProfileOtherTableViewCell.swift; sourceTree = "<group>"; };
+		3FCC1F042BEA2E3700C92A7C /* LiveOngoingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveOngoingViewController.swift; sourceTree = "<group>"; };
+		3FCC1F062BEA2F2700C92A7C /* LiveCommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveCommentTableViewCell.swift; sourceTree = "<group>"; };
 		3FE537682BD6574600E3330C /* ElderTales.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ElderTales.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FE5376B2BD6574600E3330C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3FE5376D2BD6574600E3330C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -95,6 +103,7 @@
 				3F4FD6202BD917BC003A495E /* HomePostTableViewCell.swift */,
 				3F71FA262BE88BE000D174CE /* CategoriesCollectionViewCell.swift */,
 				3F71FA282BE88C0500D174CE /* CategoriesViewController.swift */,
+				3FCC1EFC2BE9598300C92A7C /* ViewProfile */,
 				3FF269AC2BE0CBCC00E39CF0 /* NowPlaying */,
 			);
 			path = Home;
@@ -107,6 +116,24 @@
 				3FEFA90C2BD90E87001C53B6 /* DataController.swift */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		3FCC1EFC2BE9598300C92A7C /* ViewProfile */ = {
+			isa = PBXGroup;
+			children = (
+				3FCC1EFD2BE9D5FB00C92A7C /* ViewProfileOtherViewController.swift */,
+				3FCC1EFF2BE9E95E00C92A7C /* ViewProfileOtherTableViewCell.swift */,
+			);
+			path = ViewProfile;
+			sourceTree = "<group>";
+		};
+		3FCC1F032BEA2DEC00C92A7C /* LiveOngoing */ = {
+			isa = PBXGroup;
+			children = (
+				3FCC1F042BEA2E3700C92A7C /* LiveOngoingViewController.swift */,
+				3FCC1F062BEA2F2700C92A7C /* LiveCommentTableViewCell.swift */,
+			);
+			path = LiveOngoing;
 			sourceTree = "<group>";
 		};
 		3FE5375F2BD6574600E3330C = {
@@ -150,6 +177,7 @@
 			children = (
 				3FF269A82BE0B94300E39CF0 /* LiveOtherTableViewCell.swift */,
 				3FF269AA2BE0B96A00E39CF0 /* LiveViewController.swift */,
+				3FCC1F032BEA2DEC00C92A7C /* LiveOngoing */,
 			);
 			path = LiveScreen;
 			sourceTree = "<group>";
@@ -244,16 +272,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FCC1EFE2BE9D5FB00C92A7C /* ViewProfileOtherViewController.swift in Sources */,
 				3F71FA272BE88BE000D174CE /* CategoriesCollectionViewCell.swift in Sources */,
+				3FCC1F052BEA2E3700C92A7C /* LiveOngoingViewController.swift in Sources */,
 				3F164C722BDFC103002BE024 /* MyProfileViewController.swift in Sources */,
 				3F71FA292BE88C0500D174CE /* CategoriesViewController.swift in Sources */,
 				3F4FD6212BD917BC003A495E /* HomePostTableViewCell.swift in Sources */,
 				3F06443A2BE24D4B007B9A1E /* NewPostDetailsViewController.swift in Sources */,
 				3F6B9BC32BDF71CA00A89409 /* NowPlayingViewController.swift in Sources */,
 				3FEFA90D2BD90E87001C53B6 /* DataController.swift in Sources */,
+				3FCC1F072BEA2F2700C92A7C /* LiveCommentTableViewCell.swift in Sources */,
 				3FF269AB2BE0B96A00E39CF0 /* LiveViewController.swift in Sources */,
 				3F4FAEEC2BD8CB48002DF688 /* MAIN.c in Sources */,
 				3FB8B30E2BD67A090061EB25 /* DataModel.swift in Sources */,
+				3FCC1F002BE9E95E00C92A7C /* ViewProfileOtherTableViewCell.swift in Sources */,
 				3F813E072BDB925D00E5A9C8 /* NewPostCameraViewController.swift in Sources */,
 				3FF269A92BE0B94300E39CF0 /* LiveOtherTableViewCell.swift in Sources */,
 				3FE5376C2BD6574600E3330C /* AppDelegate.swift in Sources */,
@@ -415,10 +447,11 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6A8ZX8YBJ5;
+				DEVELOPMENT_TEAM = 276MLJ4GC8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ElderTales/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "Please allow access to record video";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Please grant access to camera";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Please provide access to microphone";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -430,7 +463,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ghostrider.ElderTales;
+				PRODUCT_BUNDLE_IDENTIFIER = ghost.ElderTales;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -448,10 +481,11 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6A8ZX8YBJ5;
+				DEVELOPMENT_TEAM = 276MLJ4GC8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ElderTales/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "Please allow access to record video";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Please grant access to camera";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Please provide access to microphone";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -463,7 +497,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ghostrider.ElderTales;
+				PRODUCT_BUNDLE_IDENTIFIER = ghost.ElderTales;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

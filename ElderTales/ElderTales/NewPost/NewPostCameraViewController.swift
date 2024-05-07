@@ -61,41 +61,64 @@ class NewPostCameraViewController: UIViewController {
     
     func setupCamera() {
         captureSession = AVCaptureSession()
-        captureSession.sessionPreset = .high // High quality video output
+        captureSession.sessionPreset = .high
 
-        guard let frontCamera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front),
-              let input = try? AVCaptureDeviceInput(device: frontCamera),
-              let audioDevice = AVCaptureDevice.default(for: .audio),
-              let audioInput = try? AVCaptureDeviceInput(device: audioDevice) else {
-            print("Unable to access camera or microphone!")
-            return
+        do {
+            var videoInput: AVCaptureDeviceInput?
+            var audioInput: AVCaptureDeviceInput?
+
+            // Get the front camera
+            if let frontCamera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front) {
+                videoInput = try AVCaptureDeviceInput(device: frontCamera)
+            } else {
+                print("Front camera not available.")
+            }
+
+            // Get the audio recorder
+            if let audioDevice = AVCaptureDevice.default(for: .audio) {
+                audioInput = try AVCaptureDeviceInput(device: audioDevice)
+            } else {
+                print("Audio recorder not available.")
+            }
+
+            // Add video input
+            if let videoInput = videoInput, captureSession.canAddInput(videoInput) {
+                captureSession.addInput(videoInput)
+            } else {
+                print("Cannot add video input")
+            }
+
+            // Add audio input
+            if let audioInput = audioInput, captureSession.canAddInput(audioInput) {
+                captureSession.addInput(audioInput)
+            } else {
+                print("Cannot add audio input")
+            }
+
+            // Create a movie file output
+            videoOutput = AVCaptureMovieFileOutput()
+
+            // Add video output
+            if captureSession.canAddOutput(videoOutput!) {
+                captureSession.addOutput(videoOutput!)
+            } else {
+                print("Cannot add video output")
+            }
+
+            // Create a video preview layer
+            videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+            videoPreviewLayer.videoGravity = .resizeAspectFill
+            videoPreviewLayer.frame = videoView.bounds
+            videoView.layer.addSublayer(videoPreviewLayer)
+
+            // Start the capture session on a background thread
+            DispatchQueue.global(qos: .background).async {
+                self.captureSession.startRunning()
+            }
+        } catch {
+            print("Error setting up camera: \(error)")
         }
-
-        videoOutput = AVCaptureMovieFileOutput()
-
-        // Adding video input
-        if captureSession.canAddInput(input) {
-            captureSession.addInput(input)
-        }
-
-        // Adding audio input
-        if captureSession.canAddInput(audioInput) {
-            captureSession.addInput(audioInput)
-        }
-
-        // Adding video output
-        if captureSession.canAddOutput(videoOutput!) {
-            captureSession.addOutput(videoOutput!)
-        }
-
-        videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-        videoPreviewLayer.videoGravity = .resizeAspectFill
-        videoPreviewLayer.frame = videoView.bounds
-        videoView.layer.addSublayer(videoPreviewLayer)
-
-        captureSession.startRunning()
     }
-
     @IBAction func recordButtonTapped(_ sender: UIButton) {
         if let output = videoOutput {
                 if output.isRecording {

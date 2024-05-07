@@ -30,6 +30,8 @@ class LiveOtherTableViewCell: UITableViewCell {
     
     @IBOutlet weak var joinLiveButton: UIButton!
     
+    var uuid:String = ""
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -49,7 +51,7 @@ class LiveOtherTableViewCell: UITableViewCell {
     }
     
     @IBAction func tappedAddEvent(_ sender: Any) {
-        
+        delegate?.didTapAddEventButton(for: self)
     }
     
     weak var delegate: LiveOtherViewCellDelegate?
