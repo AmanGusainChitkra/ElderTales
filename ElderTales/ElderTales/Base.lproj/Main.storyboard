@@ -877,6 +877,7 @@
                     <navigationItem key="navigationItem" id="fS0-sf-3oW"/>
                     <connections>
                         <outlet property="datePicker" destination="DFF-EN-mjZ" id="nWh-vu-b8l"/>
+                        <outlet property="startTiime" destination="5jX-Hw-fxd" id="omU-Qx-wFE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FQ9-Dx-wwi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
