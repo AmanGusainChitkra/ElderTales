@@ -9,21 +9,35 @@ import UIKit
 
 class ScheduleLiveViewController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        @IBOutlet weak var datePicker: UIDatePicker!
+   
+    
+        override func viewDidLoad() {
+            super.viewDidLoad()
+            
+            // Set minimum date to today
+                    datePicker.minimumDate = Date()
+                    
+                    // Set date picker mode to date and time
+                    datePicker.datePickerMode = .dateAndTime
+                    
+                    // Optional: Set locale to user's current locale
+                    datePicker.locale = Locale.current
+                    
+                    // Optional: Set date picker to 24-hour time format
+                    datePicker.locale = Locale(identifier: "en_US_POSIX")
+                    datePicker.calendar = Calendar(identifier: .gregorian)
+                    datePicker.timeZone = TimeZone.autoupdatingCurrent
+        }
+//        
+//        @objc func dateChanged(_ datePicker: UIDatePicker) {
+//            let dateFormatter = DateFormatter()
+//            dateFormatter.dateStyle = .medium
+//            dateFormatter.timeStyle = .none
+//            
+//            let selectedDate = dateFormatter.string(from: datePicker.date)
+//            print("Selected date: \(selectedDate)")
+//        }
     }
-    */
 
-}
