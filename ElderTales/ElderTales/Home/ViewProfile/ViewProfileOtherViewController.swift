@@ -102,6 +102,8 @@ class ViewProfileOtherViewController: UIViewController, UITableViewDataSource, V
     @IBOutlet weak var descriptionText: UITextView!
     @IBOutlet weak var viewOtherProfileTableView: UITableView!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
+    @IBOutlet weak var followButton: UIButton!
+    
     
     
     
@@ -117,6 +119,10 @@ class ViewProfileOtherViewController: UIViewController, UITableViewDataSource, V
         setupData()
         viewOtherProfileTableView.dataSource = self
     }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        
+    }
     
     func loadData(){
         user = users.first(where: {$0.id == userId})
@@ -131,6 +137,28 @@ class ViewProfileOtherViewController: UIViewController, UITableViewDataSource, V
         
     }
     
+    
+    @IBAction func didTapFollow(_ sender: UIButton) {
+        guard let user = user else { return }
+
+        if let index = currentUser?.following.firstIndex(where: { $0.id == user.id }) {
+            // User is already followed, unfollow them
+            currentUser?.following.remove(at: index)
+            followButton.layer.cornerRadius = 17
+            followButton.setTitle("Follow", for: .normal)
+            followButton.tintColor = .blue
+            followButton.layer.borderWidth = 0
+        } else {
+            // Follow the user
+            currentUser?.following.append(user)
+            followButton.layer.cornerRadius = 17
+            followButton.setTitle("Unfollow", for: .normal)
+            followButton.tintColor = .clear
+            followButton.layer.borderWidth = 1
+            
+        }
+    }
+
     
     @IBAction func segmenteChanged(_ sender: UISegmentedControl) {
         viewOtherProfileTableView.reloadData()

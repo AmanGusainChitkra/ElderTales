@@ -17,6 +17,9 @@ class HomePostTableViewCell: UITableViewCell {
     @IBOutlet weak var storyTitleLabel: UILabel!
     @IBOutlet weak var thumbnailUIImage: UIImageView!
     @IBOutlet weak var listenButton: UIButton!
+    @IBOutlet weak var audioVideoIndicatorImage: UIImageView!
+    @IBOutlet weak var followButton: UIButton!
+    
     
     //post interaction buttons
     @IBOutlet weak var likeButton: UIButton!
@@ -78,6 +81,9 @@ class HomePostTableViewCell: UITableViewCell {
         delegate?.didTapListenButton(for: self)
     }
     
+    @IBAction func tappedFollowButton(_ sender: Any) {
+        delegate?.didTapFollowButton(for: self)
+    }
     
     weak var delegate: HomePostTableViewCellDelegate?
     
@@ -96,5 +102,6 @@ protocol HomePostTableViewCellDelegate: AnyObject {
     func didTapCommentButton(for cell: HomePostTableViewCell)
     
     func didTapProfilePhoto(for cell: HomePostTableViewCell)
+    func didTapFollowButton(for cell: HomePostTableViewCell)
     
 }

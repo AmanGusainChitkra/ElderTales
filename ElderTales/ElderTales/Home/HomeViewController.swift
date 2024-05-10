@@ -8,37 +8,111 @@
 import UIKit
 import SwiftUI
 
-class HomeViewController: UIViewController, UITableViewDataSource,UITableViewDelegate, HomePostTableViewCellDelegate {
+class HomeViewController: UIViewController, UITableViewDataSource,UITableViewDelegate, HomePostTableViewCellDelegate, CategoriesViewControllerDelegate {
+    
+    
+    @IBOutlet weak var homeTableView: UITableView!
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
+    @IBOutlet weak var forYouSegmentedControl: UISegmentedControl!
+    @IBOutlet weak var clearFilterButton: UIButton!
+    @IBOutlet weak var storiesLabel: UILabel!
+    
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        clearFilterButton.isHidden = true
+        homeTableView.dataSource = self
+        homeTableView.delegate = self
+    }
+    
+    @IBAction func didTapClearFilters(_ sender: Any) {
+        self.selectedCategory = nil
+        self.selectedPosts = []
+        self.storiesLabel.text = "All Stories"
+        self.clearFilterButton.isHidden = true
+    }
+    
+    
+    @IBAction func segmentUpdated(_ sender: UISegmentedControl) {
+        selectedPosts = []
+    }
+    
+    @IBAction func didTapFilterButton(_ sender: UIButton) {
+        if let modalViewController = storyboard?.instantiateViewController(withIdentifier: "selectCategoriesNavigation") as? UINavigationController {
+                // Set modal presentation style if necessary
+                modalViewController.modalPresentationStyle = .formSheet
+                if let categoriesViewController = modalViewController.viewControllers.first as? CategoriesViewController {
+                        categoriesViewController.delegate = self
+                    }
+                present(modalViewController, animated: true, completion: nil)
+            }
+    }
+    
+    var selectedCategory: Category?
+    var selectedPosts: [Post] {
+        get {
+            // Filter posts based on whether they are from followed users or all users
+            let basePosts: [Post] = {
+                switch forYouSegmentedControl.selectedSegmentIndex {
+                case 0:  // "For You" - Posts from followed users
+                    return posts.filter { post in
+                        currentUser!.following.contains { followedUser in
+                            followedUser.id == post.postedBy.id
+                        }
+                    }
+                case 1:  // "Explore" - All posts
+                    return posts
+                default:
+                    return []
+                }
+            }()
+
+            // Filter the above results based on whether they have video or not
+            let mediaFilteredPosts: [Post] = {
+                switch segmentedControl.selectedSegmentIndex {
+                case 0:
+                    return basePosts
+                case 1:
+                    return basePosts.filter { $0.hasVideo == true }
+                case 2:
+                    return basePosts.filter { $0.hasVideo == false }
+                default:
+                    return []
+                }
+            }()
+
+            // Further filter by the selected category, if any
+            if let selectedCategory = selectedCategory {
+                return mediaFilteredPosts.filter { post in
+                    post.suitableCategories.contains(where: { $0.title == selectedCategory.title })
+                }
+            } else {
+                return mediaFilteredPosts
+            }
+        }
+        set {
+            homeTableView.reloadData()
+        }
+    }
+
     
     func didTapProfilePhoto(for cell: HomePostTableViewCell) {
         performSegue(withIdentifier: "viewProfileSegue", sender: cell)
 
     }
     
+    func categoryViewController(_ controller: CategoriesViewController, didSelectCategory category: Category) {
+        self.clearFilterButton.isHidden = false
+        self.storiesLabel.text = "\"\(category.title)\" stories"
+        self.selectedCategory = category
+        self.selectedPosts = []
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as? HomePostTableViewCell
             cell?.delegate?.didTapListenButton(for: cell!)
     }
-    
-    var selectedPosts: [Post] {
-        get {
-            // Determine which posts to return based on the segmented control's selection.
-            switch segmentedControl.selectedSegmentIndex {
-            case 0:
-                return posts
-            case 1:
-                return posts.filter { $0.hasVideo == true }
-            case 2:
-                return posts.filter { $0.hasVideo == false }
-            default:
-                return []
-            }
-        }
-        set {
-            // Reload the table view whenever the selection changes.
-            homeTableView.reloadData()
-        }
-    }
+  
     
     func didTapListenButton(for cell: HomePostTableViewCell) {
         performSegue(withIdentifier: "nowPlayingSegue", sender: cell)
@@ -50,6 +124,43 @@ class HomeViewController: UIViewController, UITableViewDataSource,UITableViewDel
         currentUser?.savedPosts.append(posts[postIndex])
         cell.saveButton.setImage(UIImage(systemName: "square.and.arrow.down.fill"), for: .normal)
     }
+    
+    func didTapFollowButton(for cell: HomePostTableViewCell) {
+        guard let postId = cell.uuid else { return  }
+        guard let post = posts.first(where: {$0.id == postId}) else {
+            print("Post not found.")
+            return
+        }
+
+        if let index = currentUser?.following.firstIndex(where: { $0.id == post.postedBy.id }) {
+            // User is already followed, unfollow them
+            currentUser?.following.remove(at: index)
+            configureFollowButton(cell.followButton, isFollowing: false)
+            print("unfollowed")
+        } else {
+            // Follow the user
+            currentUser?.following.append(post.postedBy)
+            configureFollowButton(cell.followButton, isFollowing: true)
+            print("followed")
+        }
+    }
+
+    func configureFollowButton(_ button: UIButton, isFollowing: Bool) {
+        var config = UIButton.Configuration.filled()
+        config.title = isFollowing ? "Unfollow" : "Follow"
+        config.baseBackgroundColor = isFollowing ? .clear : .tertiarySystemFill
+        config.baseForegroundColor = isFollowing ? .white : .link
+
+        let font = UIFont(name: "Helvetica Neue", size: 11.0) ?? UIFont.systemFont(ofSize: 11)
+        let attributes = AttributeContainer([
+            .font: UIFont(descriptor: font.fontDescriptor, size: 11),
+            .foregroundColor: UIColor.accent
+        ])
+        config.attributedTitle = AttributedString(config.title ?? "None", attributes: attributes)
+        
+        button.configuration = config
+    }
+
     
     func didTapLikeButton(for cell: HomePostTableViewCell) {
         if let uuid = cell.uuid {
@@ -113,6 +224,12 @@ class HomeViewController: UIViewController, UITableViewDataSource,UITableViewDel
         }
         else {saveState = "square.and.arrow.down"}
             cell.likeButton.setImage(UIImage(systemName: heartState), for: .normal)
+        
+        if(currentUser?.following.contains(where: {$0.id == post.postedBy.id}) ?? false){
+            cell.followButton.isHidden = true
+        } else {
+            cell.followButton.isHidden = false
+        }
             
         cell.likeCount.text = "\(post.likes)"
         
@@ -123,6 +240,8 @@ class HomeViewController: UIViewController, UITableViewDataSource,UITableViewDel
         cell.commentCount.text = "\(post.comments.count)"
         
         cell.saveButton.setImage(UIImage(systemName: saveState), for: .normal)
+        cell.audioVideoIndicatorImage.image = UIImage(systemName: post.hasVideo ? "video.fill" : "headphones")
+        cell.listenButton.titleLabel?.text = post.hasVideo ? "Play" : "Listen"
 
         cell.saveLabel.text = "Save"
         cell.delegate = self
@@ -141,32 +260,6 @@ class HomeViewController: UIViewController, UITableViewDataSource,UITableViewDel
         self.present(activityViewController, animated: true)
     }
 
-
-    
-    @IBOutlet weak var homeTableView: UITableView!
-    @IBOutlet weak var segmentedControl: UISegmentedControl!
-    
-    override func viewDidLoad() {
-        generateDummyData()
-        super.viewDidLoad()
-        homeTableView.dataSource = self
-        homeTableView.delegate = self
-    }
-    
-    @IBAction func segmentUpdated(_ sender: UISegmentedControl) {
-        selectedPosts = []
-    }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-     
-    */
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "nowPlayingSegue" {
@@ -186,6 +279,7 @@ class HomeViewController: UIViewController, UITableViewDataSource,UITableViewDel
             }
         }
     }
+    
 
 
 }

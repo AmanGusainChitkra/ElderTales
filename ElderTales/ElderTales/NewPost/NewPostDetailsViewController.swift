@@ -66,7 +66,8 @@ class NewPostDetailsViewController: UIViewController {
             link: videoLink,
             hasVideo: hasVideo
         )
-        posts.append(newPost)
+        posts.insert(newPost, at: 0)
+        print("podt added: \(newPost.title)")
         
     }
     

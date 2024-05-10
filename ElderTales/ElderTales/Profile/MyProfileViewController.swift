@@ -37,6 +37,7 @@ class MyProfileViewController:  UIViewController, UITableViewDataSource, MyProfi
         if let uuid = cell.uuid {
             if let postIndex = posts.firstIndex(where: { $0.id == uuid }) {
                 let isCurrentlyLiked = cell.likeButton.currentImage == UIImage(systemName: "heart.fill")
+                
                 // Toggle the like state based on the current image
                 posts[postIndex].likePost(liked: !isCurrentlyLiked)
                 currentUser?.likePost(post: posts[postIndex], liked: !isCurrentlyLiked)
@@ -119,6 +120,11 @@ class MyProfileViewController:  UIViewController, UITableViewDataSource, MyProfi
         profileTableView.dataSource = self
         profileImage.layer.cornerRadius = 94/2
         profileImage.layer.borderWidth = 2
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.profileTableView.reloadData()
+        setDetails()
     }
     
     func setDetails(){

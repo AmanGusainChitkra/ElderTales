@@ -4,6 +4,8 @@
 <dict>
 	<key>NSCalendarsWriteOnlyAccessUsageDescription</key>
 	<string>Please provide access to calendar</string>
+	<key>NSCalendarsFullAccessUsageDescription</key>
+	<string>Please grant access to calendar</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

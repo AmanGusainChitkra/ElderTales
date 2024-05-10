@@ -43,7 +43,7 @@ func generateDummyData(){
     
     // Create dummy users
     users = [
-        User(name: "Alice Smith", email: "alice@example.com", isElderly: false, password: "password123", image: UIImage(named: "elder") ?? UIImage(), description: "Hi, I am a passionate developer"),
+        User(name: "Alice Smith", email: "alice@example.com", isElderly: true, password: "password123", image: UIImage(named: "elder") ?? UIImage(), description: "Hi, I am a passionate developer"),
         User(name: "Bob Johnson", email: "bob@example.com", isElderly: true, password: "password456", image: UIImage(named: "youngster") ?? UIImage()),
         User(name: "Charlie Brown", email: "charlie@example.com", isElderly: false, password: "password789", image: UIImage(named: "youngster") ?? UIImage())
     ]

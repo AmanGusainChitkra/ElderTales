@@ -7,7 +7,10 @@
 
 import UIKit
 
-class CategoriesViewController: UIViewController, UICollectionViewDataSource {
+class CategoriesViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+    
+    weak var delegate: CategoriesViewControllerDelegate?
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return categories.count
     }
@@ -20,12 +23,21 @@ class CategoriesViewController: UIViewController, UICollectionViewDataSource {
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) as! CategoriesCollectionViewCell
+        let category = categories.first(where: {$0.title == cell.categoryNameLabel.text})
+        
+        delegate?.categoryViewController(self, didSelectCategory: category!)
+            dismiss(animated: true, completion: nil)
+    }
+    
     @IBOutlet weak var collectionView: UICollectionView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCollectionViewLayout()
         collectionView.dataSource = self
+        collectionView.delegate = self
     }
 
     private func configureCollectionViewLayout() {
@@ -59,5 +71,17 @@ class CategoriesViewController: UIViewController, UICollectionViewDataSource {
         // Pass the selected object to the new view controller.
     }
     */
+    
 
+    @IBAction func cancelButtonTapped(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
+    }
+    
 }
+
+
+protocol CategoriesViewControllerDelegate: AnyObject {
+    func categoryViewController(_ controller: CategoriesViewController, didSelectCategory category: Category)
+}
+
+
