@@ -187,6 +187,9 @@
                                                         <rect key="frame" x="320.33333333333331" y="0.0" width="50.666666666666686" height="34"/>
                                                         <state key="normal" title="Button"/>
                                                         <buttonConfiguration key="configuration" style="tinted" image="paperplane.fill" catalog="system" title=""/>
+                                                        <connections>
+                                                            <action selector="didTapSendComment:" destination="4QO-rm-p4g" eventType="touchUpInside" id="Hwu-SG-5Wh"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                                 <constraints>
@@ -206,7 +209,7 @@
                                                 </constraints>
                                                 <segments>
                                                     <segment title="Comments"/>
-                                                    <segment title="Second"/>
+                                                    <segment title="Doubts"/>
                                                 </segments>
                                             </segmentedControl>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" estimatedSectionHeaderHeight="-1" sectionFooterHeight="28" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="0FS-i1-vqH">
@@ -440,6 +443,7 @@
                     <navigationItem key="navigationItem" title="Now Playing" id="CBz-ri-3Bx"/>
                     <size key="freeformSize" width="431" height="2000"/>
                     <connections>
+                        <outlet property="commentTextField" destination="e9c-7w-DsH" id="V6u-iA-saL"/>
                         <outlet property="commentsTableView" destination="0FS-i1-vqH" id="g2S-CX-DIK"/>
                         <outlet property="playPauseButton" destination="A3Y-za-vas" id="wTZ-tB-lB2"/>
                         <outlet property="timeSlider" destination="MUP-OB-T8W" id="n7g-hE-leS"/>
@@ -2377,7 +2381,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="nnN-vk-5VZ">
-                        <barButtonItem key="leftBarButtonItem" style="plain" systemItem="cancel" id="DUj-Zv-iA4"/>
+                        <barButtonItem key="leftBarButtonItem" style="plain" systemItem="cancel" id="DUj-Zv-iA4">
+                            <connections>
+                                <action selector="didTapCancel:" destination="8PV-9e-cel" id="FsY-do-VYe"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
@@ -3098,7 +3106,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="tBG-M6-FbK">
-                        <barButtonItem key="leftBarButtonItem" style="plain" systemItem="cancel" id="mYT-bn-Fnu"/>
+                        <barButtonItem key="leftBarButtonItem" style="plain" systemItem="cancel" id="mYT-bn-Fnu">
+                            <connections>
+                                <action selector="didTapCancel:" destination="IOX-bf-sKt" id="noQ-ks-rhx"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>

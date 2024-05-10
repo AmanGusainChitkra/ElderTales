@@ -144,5 +144,34 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource, UITable
         }
     }
     
+    @IBOutlet weak var commentTextField: UITextField!
+    
+    @IBAction func didTapSendComment(_ sender: Any) {
+        // Step 1: Retrieve text from the UITextField
+        guard let commentText = commentTextField.text, !commentText.isEmpty else {
+            // Step 2: If comment is nil or empty, show an alert
+            showAlert(message: "Please enter a comment before sending.")
+            return
+        }
+
+        // Step 3: Create a new Comment
+        let newComment = Comment(postedBy: currentUser!, postedOn: Date(), body: commentText, isQuestion: false) // Adjust `isQuestion` as needed
+
+        // Step 4: Find the current post and add the comment to it
+        if let index = posts.firstIndex(where: { $0.id == postId }) {
+            posts[index].comments.append(newComment)
+        }
+        post?.comments.append(newComment)
+
+        // Step 5: Reload the comment table
+        commentsTableView.reloadData()
+    }
+
+    private func showAlert(message: String) {
+        let alert = UIAlertController(title: "Warning", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+
     
 }

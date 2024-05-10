@@ -98,6 +98,10 @@ class LiveOngoingViewController: UIViewController, UITableViewDataSource {
         super.viewWillAppear(animated)
         player?.play()
     }
-
+    
+    @IBAction func didTapCancel(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
 
 }

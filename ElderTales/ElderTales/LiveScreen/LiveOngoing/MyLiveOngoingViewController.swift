@@ -119,5 +119,8 @@ class MyLiveOngoingViewController: UIViewController, UITableViewDataSource {
         captureSession?.stopRunning()
     }
 
-
+    @IBAction func didTapCancel(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
 }
