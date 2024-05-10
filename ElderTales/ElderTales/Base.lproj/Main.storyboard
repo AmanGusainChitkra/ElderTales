@@ -898,7 +898,7 @@
                     <navigationItem key="navigationItem" title="Home" id="2HV-o5-Is8">
                         <barButtonItem key="rightBarButtonItem" style="plain" id="IuY-Oy-6Of">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="CNt-Qr-4E9">
-                                <rect key="frame" x="332" y="14" width="44" height="28"/>
+                                <rect key="frame" x="366" y="14" width="44" height="28"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="tinted" image="line.horizontal.3.decrease" catalog="system" title="" buttonSize="small">
@@ -1038,6 +1038,7 @@
                                                         </buttonConfiguration>
                                                         <connections>
                                                             <action selector="didTapEditProfile:" destination="xhc-l0-XOQ" eventType="touchUpInside" id="scr-de-c7a"/>
+                                                            <segue destination="a8y-Le-zTF" kind="presentation" identifier="editProfileSegue" id="iXV-wR-HOd"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
@@ -3547,10 +3548,166 @@
             </objects>
             <point key="canvasLocation" x="6622" y="-790"/>
         </scene>
+        <!--Edit Profile-->
+        <scene sceneID="la3-oh-mZ8">
+            <objects>
+                <viewController id="yg8-bo-iFY" customClass="EditProfileViewController" customModule="ElderTales" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ZeB-9H-MMr">
+                        <rect key="frame" x="0.0" y="0.0" width="430" height="922"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="MI7-MV-60u">
+                                <rect key="frame" x="168" y="66" width="94" height="94"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="94" id="7j5-5A-J2L"/>
+                                    <constraint firstAttribute="width" constant="94" id="xtq-Yg-RIP"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kym-a1-6EK">
+                                <rect key="frame" x="159.66666666666666" y="170" width="110.99999999999997" height="34.333333333333343"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Edit picture"/>
+                            </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="FK3-fQ-IrU">
+                                <rect key="frame" x="0.0" y="264.33333333333331" width="430" height="657.66666666666674"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="nameCell" rowHeight="57" id="jLL-qr-yKy" customClass="EditProfileTableViewCell" customModule="ElderTales" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="50" width="430" height="57"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="jLL-qr-yKy" id="uPp-J0-z32">
+                                            <rect key="frame" x="0.0" y="0.0" width="430" height="57"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KzK-fm-S16">
+                                                    <rect key="frame" x="20" y="18" width="45" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YuT-Pt-yCE">
+                                                    <rect key="frame" x="112" y="12" width="305" height="34"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="nameTextField" destination="YuT-Pt-yCE" id="6h3-vi-3Jw"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="usernameCell" rowHeight="56" id="MMi-g2-Hwd" customClass="EditProfileTableViewCell" customModule="ElderTales" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="107" width="430" height="56"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="MMi-g2-Hwd" id="cXA-RU-gIu">
+                                            <rect key="frame" x="0.0" y="0.0" width="430" height="56"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ouK-bg-Uwq">
+                                                    <rect key="frame" x="20" y="18" width="79" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="P1Q-Ew-Kgh">
+                                                    <rect key="frame" x="114" y="11" width="303" height="34"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="usernameTextField" destination="P1Q-Ew-Kgh" id="qnJ-RS-RNs"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="bioCell" rowHeight="56" id="UfR-Mv-7Pj" customClass="EditProfileTableViewCell" customModule="ElderTales" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="163" width="430" height="56"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="UfR-Mv-7Pj" id="hJm-bZ-DSU">
+                                            <rect key="frame" x="0.0" y="0.0" width="430" height="56"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Bio" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XlK-Sd-Soq">
+                                                    <rect key="frame" x="20" y="18" width="25" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WPL-HI-4DD">
+                                                    <rect key="frame" x="113" y="11" width="304" height="34"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="bioTextField" destination="WPL-HI-4DD" id="cd1-9x-rAe"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="DdV-gT-zig"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="tintColor" systemColor="systemCyanColor"/>
+                        <constraints>
+                            <constraint firstItem="Kym-a1-6EK" firstAttribute="centerX" secondItem="ZeB-9H-MMr" secondAttribute="centerX" id="8sp-wI-9WY"/>
+                            <constraint firstItem="MI7-MV-60u" firstAttribute="top" secondItem="DdV-gT-zig" secondAttribute="top" constant="10" id="Cd2-G4-SPI"/>
+                            <constraint firstItem="FK3-fQ-IrU" firstAttribute="trailing" secondItem="DdV-gT-zig" secondAttribute="trailing" id="RcA-Vf-ltO"/>
+                            <constraint firstItem="FK3-fQ-IrU" firstAttribute="top" secondItem="Kym-a1-6EK" secondAttribute="bottom" constant="60" id="UCx-x1-k4H"/>
+                            <constraint firstItem="FK3-fQ-IrU" firstAttribute="leading" secondItem="DdV-gT-zig" secondAttribute="leading" id="qkV-Ct-yjc"/>
+                            <constraint firstItem="MI7-MV-60u" firstAttribute="centerX" secondItem="ZeB-9H-MMr" secondAttribute="centerX" id="r2G-75-O1q"/>
+                            <constraint firstItem="Kym-a1-6EK" firstAttribute="top" secondItem="MI7-MV-60u" secondAttribute="bottom" constant="10" id="ubF-Ok-gTS"/>
+                            <constraint firstItem="DdV-gT-zig" firstAttribute="bottom" secondItem="FK3-fQ-IrU" secondAttribute="bottom" id="zJG-b5-cMU"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Edit Profile" id="OQv-ob-PC8">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="N6C-bf-Rx3">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="bWA-Dd-mF9">
+                                <rect key="frame" x="315" y="11" width="95" height="34.333333333333336"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Save"/>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="editTableView" destination="FK3-fQ-IrU" id="g5S-kj-eq5"/>
+                        <outlet property="profileImage" destination="MI7-MV-60u" id="q5O-DM-Vwe"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Gtw-3W-ciy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4650.6976744186049" y="1176.8240343347641"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="OQH-Gl-0Vn">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="a8y-Le-zTF" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="AQ5-zO-1f7">
+                        <rect key="frame" x="0.0" y="0.0" width="430" height="56"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="yg8-bo-iFY" kind="relationship" relationship="rootViewController" id="hyw-ql-Jfh"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GqI-cH-JvJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3752.0930232558139" y="1176.8240343347641"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="C9K-ZV-IBI"/>
-        <segue reference="Kan-0S-WxQ"/>
+        <segue reference="Mt1-BD-6CG"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Image" width="510" height="158"/>
@@ -3584,6 +3741,9 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemCyanColor">
+            <color red="0.19607843137254902" green="0.67843137254901964" blue="0.90196078431372551" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGreenColor">
             <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

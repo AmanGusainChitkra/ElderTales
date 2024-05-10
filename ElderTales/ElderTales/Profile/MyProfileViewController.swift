@@ -11,7 +11,6 @@ class MyProfileViewController:  UIViewController, UITableViewDataSource, MyProfi
     
     var selectedPosts: [Post] {
         get {
-            // Determine which posts to return based on the segmented control's selection.
             switch segmentedControl.selectedSegmentIndex {
             case 0: // My Posts
                 return posts.filter { $0.postedBy.id == currentUser?.id }
@@ -22,7 +21,6 @@ class MyProfileViewController:  UIViewController, UITableViewDataSource, MyProfi
             }
         }
         set {
-            // Reload the table view whenever the selection changes.
             profileTableView.reloadData()
         }
     }
@@ -113,7 +111,6 @@ class MyProfileViewController:  UIViewController, UITableViewDataSource, MyProfi
     @IBOutlet weak var descriptionLabel: UITextView!
     
     override func viewDidLoad() {
-//        generateDummyData()
         super.viewDidLoad()
         setDetails()
         selectedPosts = []
@@ -121,7 +118,35 @@ class MyProfileViewController:  UIViewController, UITableViewDataSource, MyProfi
         profileImage.clipsToBounds = true
         profileImage.layer.cornerRadius = 35
         profileImage.layer.borderWidth = 1
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(profileImageTapped))
+        profileImage.isUserInteractionEnabled = true  // Make sure user interaction is enabled
+        profileImage.addGestureRecognizer(tapGesture)
     }
+
+    @objc func profileImageTapped() {
+        let imageView = UIImageView(image: profileImage.image)
+        imageView.frame = UIScreen.main.bounds
+        imageView.backgroundColor = UIColor.lightGray.withAlphaComponent(0.7)
+        imageView.contentMode = .scaleAspectFit
+        imageView.isUserInteractionEnabled = true
+
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissFullscreenImage))
+        imageView.addGestureRecognizer(tap)
+
+        let viewController = UIViewController()
+        viewController.view = imageView
+        viewController.modalPresentationStyle = .overFullScreen  // Optional: Use .fullScreen for iOS versions below 13
+        viewController.modalTransitionStyle = .crossDissolve  // Optional: Adds a fade-in, fade-out effect
+
+        present(viewController, animated: true, completion: nil)
+    }
+
+    @objc func dismissFullscreenImage(_ sender: UITapGestureRecognizer) {
+        sender.view?.removeFromSuperview()
+        dismiss(animated: true, completion: nil)
+    }
+
     
     override func viewDidAppear(_ animated: Bool) {
         self.profileTableView.reloadData()
@@ -181,6 +206,13 @@ class MyProfileViewController:  UIViewController, UITableViewDataSource, MyProfi
                 destinationVC.userId = postedBy?.id ?? ""
             }
         }
+        if segue.identifier == "editProfileSegue" { // Replace with your actual segue identifier
+                if let navigationController = segue.destination as? UINavigationController,
+                   let editProfileVC = navigationController.viewControllers.first as? EditProfileViewController {
+                    editProfileVC.userId = currentUser?.id ?? ""
+                    // Set any other data needed for the EditProfileViewController
+                }
+            }
     }
     
     func shareUserProfile(url: URL) {
@@ -195,6 +227,8 @@ class MyProfileViewController:  UIViewController, UITableViewDataSource, MyProfi
         
         self.present(activityViewController, animated: true, completion: nil)
     }
+    
+    
 
 
 }

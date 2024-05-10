@@ -17,6 +17,8 @@
 		3F4FAEEE2BD902E9002DF688 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4FAEED2BD902E9002DF688 /* HomeViewController.swift */; };
 		3F4FD6212BD917BC003A495E /* HomePostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4FD6202BD917BC003A495E /* HomePostTableViewCell.swift */; };
 		3F6B9BC32BDF71CA00A89409 /* NowPlayingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6B9BC22BDF71CA00A89409 /* NowPlayingViewController.swift */; };
+		3F6F3E2B2BEE3A9F001DCC19 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6F3E2A2BEE3A9F001DCC19 /* EditProfileViewController.swift */; };
+		3F6F3E2D2BEE3B4D001DCC19 /* EditProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6F3E2C2BEE3B4D001DCC19 /* EditProfileTableViewCell.swift */; };
 		3F71FA272BE88BE000D174CE /* CategoriesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F71FA262BE88BE000D174CE /* CategoriesCollectionViewCell.swift */; };
 		3F71FA292BE88C0500D174CE /* CategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F71FA282BE88C0500D174CE /* CategoriesViewController.swift */; };
 		3F813E072BDB925D00E5A9C8 /* NewPostCameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F813E062BDB925D00E5A9C8 /* NewPostCameraViewController.swift */; };
@@ -49,6 +51,8 @@
 		3F4FAEED2BD902E9002DF688 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		3F4FD6202BD917BC003A495E /* HomePostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePostTableViewCell.swift; sourceTree = "<group>"; };
 		3F6B9BC22BDF71CA00A89409 /* NowPlayingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingViewController.swift; sourceTree = "<group>"; };
+		3F6F3E2A2BEE3A9F001DCC19 /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
+		3F6F3E2C2BEE3B4D001DCC19 /* EditProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileTableViewCell.swift; sourceTree = "<group>"; };
 		3F71FA262BE88BE000D174CE /* CategoriesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesCollectionViewCell.swift; sourceTree = "<group>"; };
 		3F71FA282BE88C0500D174CE /* CategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesViewController.swift; sourceTree = "<group>"; };
 		3F813E062BDB925D00E5A9C8 /* NewPostCameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostCameraViewController.swift; sourceTree = "<group>"; };
@@ -88,8 +92,18 @@
 			children = (
 				3F164C712BDFC103002BE024 /* MyProfileViewController.swift */,
 				3F164C732BDFC177002BE024 /* MyProfileTableViewCell.swift */,
+				3F6F3E292BEE3A85001DCC19 /* EditProfile */,
 			);
 			path = Profile;
+			sourceTree = "<group>";
+		};
+		3F6F3E292BEE3A85001DCC19 /* EditProfile */ = {
+			isa = PBXGroup;
+			children = (
+				3F6F3E2A2BEE3A9F001DCC19 /* EditProfileViewController.swift */,
+				3F6F3E2C2BEE3B4D001DCC19 /* EditProfileTableViewCell.swift */,
+			);
+			path = EditProfile;
 			sourceTree = "<group>";
 		};
 		3F813E032BDB91F000E5A9C8 /* NewPost */ = {
@@ -281,6 +295,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F6F3E2B2BEE3A9F001DCC19 /* EditProfileViewController.swift in Sources */,
+				3F6F3E2D2BEE3B4D001DCC19 /* EditProfileTableViewCell.swift in Sources */,
 				3FCC1EFE2BE9D5FB00C92A7C /* ViewProfileOtherViewController.swift in Sources */,
 				3F71FA272BE88BE000D174CE /* CategoriesCollectionViewCell.swift in Sources */,
 				3F11A0562BECA41D007C125A /* CustomTabBarController.swift in Sources */,
