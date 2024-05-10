@@ -106,13 +106,27 @@ class LiveViewController: UIViewController, UITableViewDataSource, LiveOtherView
         event.calendar = eventStore.defaultCalendarForNewEvents
         event.notes = "Live event hosted by \(live.postedBy.name)"
         
+        // Add an alarm to the event to remind the user
+        let alarm = EKAlarm(relativeOffset: -1800)  // 1 hour before the event
+        event.addAlarm(alarm)
+
         do {
             try eventStore.save(event, span: .thisEvent)
-            print("Event added to calendar successfully.")
+            showAlertWith(title: "Success", message: "Event added to calendar successfully, with a reminder set for 1 hour before the event.")
         } catch let error as NSError {
-            print("Failed to save event: \(error)")
+            showAlertWith(title: "Error", message: "Failed to save event: \(error.localizedDescription)")
         }
     }
+
+    // Utility function to show alerts
+    func showAlertWith(title: String, message: String) {
+        DispatchQueue.main.async { [weak self] in
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            self?.present(alert, animated: true, completion: nil)
+        }
+    }
+
 
     
     let eventStore = EKEventStore()

@@ -16,6 +16,7 @@ class HomeViewController: UIViewController, UITableViewDataSource,UITableViewDel
     @IBOutlet weak var forYouSegmentedControl: UISegmentedControl!
     @IBOutlet weak var clearFilterButton: UIButton!
     @IBOutlet weak var storiesLabel: UILabel!
+    var audioVideoSelect:Int = 0 // 0 - All, 1 - Audio, 2 - Video
     
 
     override func viewDidLoad() {
@@ -72,7 +73,7 @@ class HomeViewController: UIViewController, UITableViewDataSource,UITableViewDel
 
             // Filter the above results based on whether they have video or not
             let mediaFilteredPosts: [Post] = {
-                switch segmentedControl.selectedSegmentIndex {
+                switch audioVideoSelect {
                 case 0:
                     return basePosts
                 case 1:

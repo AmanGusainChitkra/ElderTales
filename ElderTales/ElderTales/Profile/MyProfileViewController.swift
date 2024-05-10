@@ -149,8 +149,19 @@ class MyProfileViewController:  UIViewController, UITableViewDataSource, MyProfi
     
     
     @IBAction func didTapShareProfile(_ sender: Any) {
-        let userId = currentUser?.id
-        
+        guard let userId = currentUser?.id else {
+               print("User ID is unavailable")
+               return
+           }
+           
+           let urlString = "https://eldertales.com/userId=\(userId)"
+           guard let url = URL(string: urlString) else {
+               print("Failed to create URL")
+               return
+           }
+           
+           // Proceed to share the URL
+           shareUserProfile(url: url)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -172,18 +183,18 @@ class MyProfileViewController:  UIViewController, UITableViewDataSource, MyProfi
         }
     }
     
-    
-    
-    func sharePostLink(_ link: String) {
-        let items = [link]
-        let activityViewController = UIActivityViewController(activityItems: items, applicationActivities: nil)
-        // If using an iPad, configure the popover presentation controller.
+    func shareUserProfile(url: URL) {
+        let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        
+        // For iPad, you must present the activity view controller in a popover.
         if let popoverController = activityViewController.popoverPresentationController {
-            popoverController.sourceView = self.view // or button/view that triggered the sharing
+            popoverController.sourceView = self.view  // Configure the view from which the popover arises
             popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
-            popoverController.permittedArrowDirections = [] // Adjust if needed
+            popoverController.permittedArrowDirections = []  // No arrow directions
         }
-        self.present(activityViewController, animated: true)
+        
+        self.present(activityViewController, animated: true, completion: nil)
     }
+
 
 }
