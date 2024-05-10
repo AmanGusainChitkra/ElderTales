@@ -118,8 +118,9 @@ class MyProfileViewController:  UIViewController, UITableViewDataSource, MyProfi
         setDetails()
         selectedPosts = []
         profileTableView.dataSource = self
-        profileImage.layer.cornerRadius = 94/2
-        profileImage.layer.borderWidth = 2
+        profileImage.clipsToBounds = true
+        profileImage.layer.cornerRadius = 35
+        profileImage.layer.borderWidth = 1
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -143,6 +144,15 @@ class MyProfileViewController:  UIViewController, UITableViewDataSource, MyProfi
         selectedPosts = []
     }
     
+    @IBAction func didTapEditProfile(_ sender: Any) {
+    }
+    
+    
+    @IBAction func didTapShareProfile(_ sender: Any) {
+        let userId = currentUser?.id
+        
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "nowPlayingSegue" {
                 if let destinationVC = segue.destination as? NowPlayingViewController,
@@ -160,6 +170,20 @@ class MyProfileViewController:  UIViewController, UITableViewDataSource, MyProfi
                 destinationVC.userId = postedBy?.id ?? ""
             }
         }
+    }
+    
+    
+    
+    func sharePostLink(_ link: String) {
+        let items = [link]
+        let activityViewController = UIActivityViewController(activityItems: items, applicationActivities: nil)
+        // If using an iPad, configure the popover presentation controller.
+        if let popoverController = activityViewController.popoverPresentationController {
+            popoverController.sourceView = self.view // or button/view that triggered the sharing
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            popoverController.permittedArrowDirections = [] // Adjust if needed
+        }
+        self.present(activityViewController, animated: true)
     }
 
 }

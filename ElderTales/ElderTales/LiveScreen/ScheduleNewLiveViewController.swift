@@ -39,6 +39,9 @@ class ScheduleNewLiveViewController: UIViewController {
         if let selectedDate = UserDefaults.standard.string(forKey: "selectedDate") {
             startTime.text = "Selected Date: \(selectedDate)"
         }
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+            view.addGestureRecognizer(tapGesture)
     }
         //
         //        @objc func dateChanged(_ datePicker: UIDatePicker) {
@@ -61,7 +64,30 @@ class ScheduleNewLiveViewController: UIViewController {
             UserDefaults.standard.set(selectedDate, forKey: "selectedDate")
             startTime.text = selectedDate
         }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
         
+    @IBAction func scheduleLiveButtonTapped(_ sender: UIButton) {
+        // Create the live session
+        let newLive = Live(postedBy: currentUser!, postedOn: Date(), beginsOn: datePicker.date, title: "Live Session")
         
+        // Add to the global lives array
+        lives.append(newLive)
+        
+        // Optionally, show confirmation to user
+        showConfirmationAndPop()
+    }
+
+    private func showConfirmationAndPop() {
+        let alert = UIAlertController(title: "Success", message: "Your live session has been scheduled.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak self] _ in
+            // Pop the view controller
+            self?.navigationController?.popViewController(animated: true)
+        }))
+        present(alert, animated: true)
+    }
+
 
 }

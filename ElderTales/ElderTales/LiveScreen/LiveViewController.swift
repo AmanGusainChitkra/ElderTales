@@ -64,7 +64,7 @@ class LiveViewController: UIViewController, UITableViewDataSource, LiveOtherView
     
     @IBOutlet weak var liveTableView: UITableView!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
-    @IBOutlet weak var addLiveButton: UIButton!
+//    @IBOutlet weak var addLiveButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,12 +72,16 @@ class LiveViewController: UIViewController, UITableViewDataSource, LiveOtherView
         generateDummyData()
         super.viewDidLoad()
        liveTableView.dataSource = self
-        addLiveButton.layer.borderWidth = 2
-        addLiveButton.layer.cornerRadius = 10
+//        addLiveButton.layer.borderWidth = 2
+//        addLiveButton.layer.cornerRadius = 10
     }
     
     @IBAction func segmentedChanged(_ sender: UISegmentedControl) {
         selectedLives = []
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        liveTableView.reloadData()
     }
     
     func didTapAddEventButton(for cell: LiveOtherTableViewCell) {

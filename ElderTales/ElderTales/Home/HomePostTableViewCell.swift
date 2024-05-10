@@ -36,6 +36,7 @@ class HomePostTableViewCell: UITableViewCell {
         // Initialization code
         setupProfilePhotoGesture()
         profilePhotoUIImage.layer.cornerRadius = profilePhotoUIImage.frame.width/2
+        thumbnailUIImage.layer.cornerRadius = 8
     }
 
     private func setupProfilePhotoGesture() {
