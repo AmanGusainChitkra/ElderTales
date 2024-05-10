@@ -142,5 +142,24 @@ class MyProfileViewController:  UIViewController, UITableViewDataSource, MyProfi
     @IBAction func segmentChanged(_ sender: UISegmentedControl) {
         selectedPosts = []
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "nowPlayingSegue" {
+                if let destinationVC = segue.destination as? NowPlayingViewController,
+                   let cell = sender as? HomePostTableViewCell,
+                   let uuid = cell.uuid{
+                    print("UUID: \(uuid)")
+                    destinationVC.postId = uuid
+                }
+            }
+        if segue.identifier == "viewProfileSegue"{
+            if let destinationVC = segue.destination as? ViewProfileOtherViewController,
+               let cell = sender as? HomePostTableViewCell,
+               let uuid = cell.uuid{
+                let postedBy = posts.first(where: {$0.id == uuid})?.postedBy
+                destinationVC.userId = postedBy?.id ?? ""
+            }
+        }
+    }
 
 }

@@ -118,6 +118,22 @@ class ViewProfileOtherViewController: UIViewController, UITableViewDataSource, V
         profileImage.layer.cornerRadius = profileImage.frame.width/2
         setupData()
         viewOtherProfileTableView.dataSource = self
+        guard let user = user else { return }
+
+        if let index = currentUser?.following.firstIndex(where: { $0.id == user.id }) {
+            followButton.layer.cornerRadius = 17
+            followButton.setTitle("Unfollow", for: .normal)
+            followButton.tintColor = .clear
+            followButton.layer.borderWidth = 1
+        } else {
+            // Follow the user
+            
+            followButton.layer.cornerRadius = 17
+            followButton.setTitle("Follow", for: .normal)
+            followButton.tintColor = .blue
+            followButton.layer.borderWidth = 0
+            
+        }
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)

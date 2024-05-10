@@ -24,6 +24,9 @@ class HomeViewController: UIViewController, UITableViewDataSource,UITableViewDel
         homeTableView.dataSource = self
         homeTableView.delegate = self
     }
+    override func viewDidAppear(_ animated: Bool) {
+        homeTableView.reloadData()
+    }
     
     @IBAction func didTapClearFilters(_ sender: Any) {
         self.selectedCategory = nil

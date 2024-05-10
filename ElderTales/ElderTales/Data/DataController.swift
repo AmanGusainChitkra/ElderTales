@@ -101,6 +101,7 @@ func generateDummyData(){
     ]
     lives[5].isOngoing = true
     currentUser = users[0]
+    currentUser?.following.append(users[1])
     
     for (index, _) in posts.enumerated() {
         posts[index].comments.append(contentsOf: comments)
