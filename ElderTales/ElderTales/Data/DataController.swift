@@ -19,10 +19,31 @@ var categories: [Category] = []
 func generateDummyData(){
         
         // Create dummy categories
-        categories = [
-            Category(title: "Travel", image: (UIImage(named: "travel") ?? UIImage(systemName: "person.fill")) ?? UIImage()),
-            Category(title: "Cooking", image: UIImage(named: "cooking") ?? UIImage())
-        ]
+    categories = [
+        Category(title: "Travel", image: UIImage(named: "travel") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Cooking", image: UIImage(named: "cooking") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Sports", image: UIImage(named: "sports") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Music", image: UIImage(named: "music") ?? UIImage(systemName: "person.fill") ?? UIImage()),Category(title: "Travel", image: UIImage(named: "travel") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Cooking", image: UIImage(named: "cooking") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Sports", image: UIImage(named: "sports") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Music", image: UIImage(named: "music") ?? UIImage(systemName: "person.fill") ?? UIImage()),Category(title: "Travel", image: UIImage(named: "travel") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Cooking", image: UIImage(named: "cooking") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Sports", image: UIImage(named: "sports") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Music", image: UIImage(named: "music") ?? UIImage(systemName: "person.fill") ?? UIImage()),Category(title: "Travel", image: UIImage(named: "travel") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Cooking", image: UIImage(named: "cooking") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Sports", image: UIImage(named: "sports") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Music", image: UIImage(named: "music") ?? UIImage(systemName: "person.fill") ?? UIImage()),Category(title: "Travel", image: UIImage(named: "travel") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Cooking", image: UIImage(named: "cooking") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Sports", image: UIImage(named: "sports") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Music", image: UIImage(named: "music") ?? UIImage(systemName: "person.fill") ?? UIImage()),Category(title: "Travel", image: UIImage(named: "travel") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Cooking", image: UIImage(named: "cooking") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Sports", image: UIImage(named: "sports") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Music", image: UIImage(named: "music") ?? UIImage(systemName: "person.fill") ?? UIImage()),Category(title: "Travel", image: UIImage(named: "travel") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Cooking", image: UIImage(named: "cooking") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Sports", image: UIImage(named: "sports") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Music", image: UIImage(named: "music") ?? UIImage(systemName: "person.fill") ?? UIImage())
+    ]
+    
         
         // Create dummy users
         users = [
