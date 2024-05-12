@@ -39,10 +39,9 @@ class LiveViewController: UIViewController, UITableViewDataSource, LiveOtherView
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let live = selectedLives[indexPath.row]
         var identifier = live.isOngoing ? "liveOtherLive" : "liveOther"
-        switch(segmentedControl.selectedSegmentIndex){
+        switch(segmentedControl.selectedSegmentIndex) {
         case 0:
             identifier = live.isOngoing ? "liveOtherLive" : "liveOther"
-        
         case 1:
             identifier = live.isOngoing ? "liveMyLive" : "liveMy"
         default:
@@ -50,17 +49,32 @@ class LiveViewController: UIViewController, UITableViewDataSource, LiveOtherView
         }
         let cell = liveTableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! LiveOtherTableViewCell
 
-        
-        cell.profilePhotoUIImage.image = UIImage(named: "otherPhoto")
+        // Format and set the date of the live event
+        cell.dateOfLive.text = formatDate(live.beginsOn)
+        cell.timeOfLive.text = formatTime(live.beginsOn)
+
+        cell.profilePhotoUIImage.image = UIImage(named: "otherPhoto") // Assuming you have a default or placeholder image
         cell.username.text = live.postedBy.name
         cell.storyTitle.text = live.title
-        cell.thumbnailUIImage.image = UIImage(named: "otherPhoto")
+        cell.thumbnailUIImage.image = UIImage(named: "otherPhoto") // Placeholder or default image
         cell.uuid = live.id
         cell.delegate = self
         
         return cell
-        
     }
+
+    private func formatDate(_ date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "d MMM" // e.g., 2 March
+        return dateFormatter.string(from: date)
+    }
+
+    private func formatTime(_ date: Date) -> String {
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateFormat = "h:mm a" // e.g., 6:00 PM
+        return timeFormatter.string(from: date)
+    }
+
     
     @IBOutlet weak var liveTableView: UITableView!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
@@ -161,6 +175,15 @@ class LiveViewController: UIViewController, UITableViewDataSource, LiveOtherView
 //        }
     }
 
-
+    @IBAction func didTapPlusIcon(_ sender: Any) {
+        if let newNavigationController = storyboard?.instantiateViewController(withIdentifier: "scheduleNewLiveNavigation") as? UINavigationController {
+            newNavigationController.modalPresentationStyle = .formSheet
+            if let scheduleLiveViewController = newNavigationController.viewControllers.first as? ScheduleNewLiveViewController {
+                scheduleLiveViewController.onDismiss = { [weak self] in self?.liveTableView.reloadData()}
+                present(newNavigationController, animated: true, completion:nil)
+            }
+        }
+    }
+    
 
 }

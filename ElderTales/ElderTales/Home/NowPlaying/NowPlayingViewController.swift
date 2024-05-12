@@ -53,31 +53,38 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource, UITable
         commentsTableView.dataSource = self
         commentsTableView.delegate = self
     }
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        commentsTableView.isHidden = false
-        print("TableView Frame: \(commentsTableView.frame)")
-        print("TableView Visibility: \(commentsTableView.isHidden)")
-        print("TableView Alpha: \(commentsTableView.alpha)")
-    }
-    
-
     
     private func setupVideoPlayer() {
-        guard let url = Bundle.main.url(forResource: "videoSong", withExtension: "mp4") else {
-            print("Video file not found.")
+        // Create a variable for the URL to be used with AVPlayer
+        var videoURL: URL?
+        guard let post = self.post else {return}
+        
+        // Check if there's a link in the post and it points to a valid file
+        if FileManager.default.fileExists(atPath: post.link) {
+            videoURL = URL(string: post.link)
+        } else {
+            // Fallback to the default video included in the app bundle
+            videoURL = Bundle.main.url(forResource: "videoSong", withExtension: "mp4")
+        }
+        
+        // Make sure there's a URL to play, otherwise log an error
+        guard let validVideoURL = videoURL else {
+            print("No valid video file found.")
             return
         }
         
-        player = AVPlayer(url: url)
-        let playerLayer = AVPlayerLayer(player: player!)
+        // Initialize the player with the chosen video URL
+        player = AVPlayer(url: validVideoURL)
+        let playerLayer = AVPlayerLayer(player: player)
         playerLayer.frame = videoPlayView.bounds
         playerLayer.videoGravity = .resizeAspect
         videoPlayView.layer.addSublayer(playerLayer)
-        // Don't automatically play the video
+        
+        // Set the initial playing state and update the play/pause button accordingly
         isPlaying = false
         playPauseButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
     }
+
     
     private func setupPlaybackControls() {
         // Only set up observer and time observer if the player is initialized

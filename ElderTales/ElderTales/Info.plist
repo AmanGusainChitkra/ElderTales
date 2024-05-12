@@ -6,6 +6,10 @@
 	<string>Please provide access to calendar</string>
 	<key>NSCalendarsFullAccessUsageDescription</key>
 	<string>Please grant access to calendar</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Please provide camera access</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Please provide photo library access</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

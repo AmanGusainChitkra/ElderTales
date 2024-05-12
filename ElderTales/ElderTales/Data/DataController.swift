@@ -17,26 +17,26 @@ var currentUser: User? = nil
 func generateDummyData(){
     // Create dummy categories
     categories = [
-        Category(title: "Travel", image: UIImage(named: "travel") ?? UIImage(systemName: "person.fill") ?? UIImage()),
-        Category(title: "Cooking", image: UIImage(named: "cooking") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Action", image: UIImage(named: "Action") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Adventure", image: UIImage(named: "Adventure") ?? UIImage(systemName: "person.fill") ?? UIImage()),
         Category(title: "Sports", image: UIImage(named: "sports") ?? UIImage(systemName: "person.fill") ?? UIImage()),
-        Category(title: "Music", image: UIImage(named: "music") ?? UIImage(systemName: "person.fill") ?? UIImage()),Category(title: "Travel", image: UIImage(named: "travel") ?? UIImage(systemName: "person.fill") ?? UIImage()),
-        Category(title: "Cooking", image: UIImage(named: "cooking") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Music", image: UIImage(named: "music") ?? UIImage(systemName: "person.fill") ?? UIImage()),Category(title: "Action", image: UIImage(named: "Action") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Adventure", image: UIImage(named: "Adventure") ?? UIImage(systemName: "person.fill") ?? UIImage()),
         Category(title: "Sports", image: UIImage(named: "sports") ?? UIImage(systemName: "person.fill") ?? UIImage()),
-        Category(title: "Music", image: UIImage(named: "music") ?? UIImage(systemName: "person.fill") ?? UIImage()),Category(title: "Travel", image: UIImage(named: "travel") ?? UIImage(systemName: "person.fill") ?? UIImage()),
-        Category(title: "Cooking", image: UIImage(named: "cooking") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Music", image: UIImage(named: "music") ?? UIImage(systemName: "person.fill") ?? UIImage()),Category(title: "Action", image: UIImage(named: "Action") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Adventure", image: UIImage(named: "Adventure") ?? UIImage(systemName: "person.fill") ?? UIImage()),
         Category(title: "Sports", image: UIImage(named: "sports") ?? UIImage(systemName: "person.fill") ?? UIImage()),
-        Category(title: "Music", image: UIImage(named: "music") ?? UIImage(systemName: "person.fill") ?? UIImage()),Category(title: "Travel", image: UIImage(named: "travel") ?? UIImage(systemName: "person.fill") ?? UIImage()),
-        Category(title: "Cooking", image: UIImage(named: "cooking") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Music", image: UIImage(named: "music") ?? UIImage(systemName: "person.fill") ?? UIImage()),Category(title: "Action", image: UIImage(named: "Action") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Adventure", image: UIImage(named: "Adventure") ?? UIImage(systemName: "person.fill") ?? UIImage()),
         Category(title: "Sports", image: UIImage(named: "sports") ?? UIImage(systemName: "person.fill") ?? UIImage()),
-        Category(title: "Music", image: UIImage(named: "music") ?? UIImage(systemName: "person.fill") ?? UIImage()),Category(title: "Travel", image: UIImage(named: "travel") ?? UIImage(systemName: "person.fill") ?? UIImage()),
-        Category(title: "Cooking", image: UIImage(named: "cooking") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Music", image: UIImage(named: "music") ?? UIImage(systemName: "person.fill") ?? UIImage()),Category(title: "Action", image: UIImage(named: "Action") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Adventure", image: UIImage(named: "Adventure") ?? UIImage(systemName: "person.fill") ?? UIImage()),
         Category(title: "Sports", image: UIImage(named: "sports") ?? UIImage(systemName: "person.fill") ?? UIImage()),
-        Category(title: "Music", image: UIImage(named: "music") ?? UIImage(systemName: "person.fill") ?? UIImage()),Category(title: "Travel", image: UIImage(named: "travel") ?? UIImage(systemName: "person.fill") ?? UIImage()),
-        Category(title: "Cooking", image: UIImage(named: "cooking") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Music", image: UIImage(named: "music") ?? UIImage(systemName: "person.fill") ?? UIImage()),Category(title: "Action", image: UIImage(named: "Action") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Adventure", image: UIImage(named: "Adventure") ?? UIImage(systemName: "person.fill") ?? UIImage()),
         Category(title: "Sports", image: UIImage(named: "sports") ?? UIImage(systemName: "person.fill") ?? UIImage()),
-        Category(title: "Music", image: UIImage(named: "music") ?? UIImage(systemName: "person.fill") ?? UIImage()),Category(title: "Travel", image: UIImage(named: "travel") ?? UIImage(systemName: "person.fill") ?? UIImage()),
-        Category(title: "Cooking", image: UIImage(named: "cooking") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Music", image: UIImage(named: "music") ?? UIImage(systemName: "person.fill") ?? UIImage()),Category(title: "Action", image: UIImage(named: "Action") ?? UIImage(systemName: "person.fill") ?? UIImage()),
+        Category(title: "Adventure", image: UIImage(named: "Adventure") ?? UIImage(systemName: "person.fill") ?? UIImage()),
         Category(title: "Sports", image: UIImage(named: "sports") ?? UIImage(systemName: "person.fill") ?? UIImage()),
         Category(title: "Music", image: UIImage(named: "music") ?? UIImage(systemName: "person.fill") ?? UIImage())
     ]
@@ -59,16 +59,16 @@ func generateDummyData(){
     // Create dummy posts
     posts = [
         Post(postedBy: users[0], length: 120, title: "A Day in Rome", cover: UIImage(named: "rome") ?? UIImage(), link: "videoSong", hasVideo: true),
-        Post(postedBy: users[1], length: 90, title: "Home Cooking Tips", cover: UIImage(named: "cooking") ?? UIImage(), link: "videoSong", hasVideo: true),
+        Post(postedBy: users[1], length: 90, title: "Home Adventure Tips", cover: UIImage(named: "Adventure") ?? UIImage(), link: "videoSong", hasVideo: true),
         Post(postedBy: users[2], length: 150, title: "My Favorite Sports Moments", cover: UIImage(named: "sports") ?? UIImage(), link: "videoSong", hasVideo: true),
         Post(postedBy: users[0], length: 120, title: "How to Play the Guitar", cover: UIImage(named: "music") ?? UIImage(), link: "videoSong", hasVideo: false),
-        Post(postedBy: users[1], length: 90, title: "Traveling to Paris", cover: UIImage(named: "paris") ?? UIImage(), link: "videoSong", hasVideo: true),
-        Post(postedBy: users[2], length: 150, title: "My Favorite Recipes", cover: UIImage(named: "cooking") ?? UIImage(), link: "videoSong", hasVideo: false),
+        Post(postedBy: users[1], length: 90, title: "Actioning to Paris", cover: UIImage(named: "paris") ?? UIImage(), link: "videoSong", hasVideo: true),
+        Post(postedBy: users[2], length: 150, title: "My Favorite Recipes", cover: UIImage(named: "Adventure") ?? UIImage(), link: "videoSong", hasVideo: false),
         Post(postedBy: users[0], length: 120, title: "Exploring the World", cover: UIImage(named: "world") ?? UIImage(), link: "videoSong", hasVideo: true),
-        Post(postedBy: users[1], length: 90, title: "Cooking for Beginners", cover: UIImage(named: "cooking") ?? UIImage(), link: "videoSong", hasVideo: true),
+        Post(postedBy: users[1], length: 90, title: "Adventure for Beginners", cover: UIImage(named: "Adventure") ?? UIImage(), link: "videoSong", hasVideo: true),
         Post(postedBy: users[2], length: 150, title: "My Favorite Sports Teams", cover: UIImage(named: "sports") ?? UIImage(), link: "videoSong", hasVideo: true),
         Post(postedBy: users[0], length: 120, title: "How to Play the Piano", cover: UIImage(named: "music") ?? UIImage(), link: "videoSong", hasVideo: false),
-        Post(postedBy: users[1], length: 90, title: "Traveling to New York", cover: UIImage(named: "newyork") ?? UIImage(), link: "videoSong ", hasVideo: true)
+        Post(postedBy: users[1], length: 90, title: "Actioning to New York", cover: UIImage(named: "newyork") ?? UIImage(), link: "videoSong ", hasVideo: true)
     ]
     
     // Assign liked and saved posts to users
@@ -93,7 +93,7 @@ func generateDummyData(){
     // Create dummy lives
     lives = [
         Live(postedBy: users[0], postedOn: Date(), beginsOn: Date().addingTimeInterval(3600), title: "Live from Rome"),
-        Live(postedBy: users[1], postedOn: Date(), beginsOn: Date().addingTimeInterval(7200), title: "Cooking Live"),
+        Live(postedBy: users[1], postedOn: Date(), beginsOn: Date().addingTimeInterval(7200), title: "Adventure Live"),
         Live(postedBy: users[2], postedOn: Date(), beginsOn: Date().addingTimeInterval(10800), title: "Sports Live"),
         Live(postedBy: users[2], postedOn: Date(), beginsOn: Date().addingTimeInterval(10800), title: "Sports Live"),
         Live(postedBy: users[2], postedOn: Date(), beginsOn: Date().addingTimeInterval(10200), title: "Sports Live"),

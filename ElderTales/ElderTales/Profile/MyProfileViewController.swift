@@ -7,7 +7,117 @@
 
 import UIKit
 
-class MyProfileViewController:  UIViewController, UITableViewDataSource, MyProfileTableViewCellDelegate {
+class MyProfileViewController:  UIViewController, UITableViewDataSource, HomePostTableViewCellDelegate {
+    
+    func didTapListenButton(for cell: HomePostTableViewCell) {
+        if let nowPlayingVC = storyboard?.instantiateViewController(withIdentifier: "nowPlayingViewController") as? NowPlayingViewController {
+            if let uuid = cell.uuid {
+                nowPlayingVC.postId = uuid
+//                nowPlayingVC.post = fetchPost(with: uuid)
+                navigationController?.pushViewController(nowPlayingVC, animated: true)
+            }
+        }
+    }
+    
+    func didTapSaveButton(for cell: HomePostTableViewCell) {
+        guard let postIndex = posts.firstIndex(where: {$0.id == cell.uuid}) else { return }
+        let post = posts[postIndex]
+        
+        if let savedIndex = currentUser?.savedPosts.firstIndex(where: {$0.id == post.id}) {
+            // Post is already saved, so unsave it
+            currentUser?.savedPosts.remove(at: savedIndex)
+            cell.saveButton.setImage(UIImage(systemName: "square.and.arrow.down"), for: .normal) // Icon for unsaved
+            cell.saveLabel.text = "Save" // Text for unsaved state
+        } else {
+            // Post is not saved, so save it
+            currentUser?.savedPosts.append(post)
+            cell.saveButton.setImage(UIImage(systemName: "square.and.arrow.down.fill"), for: .normal) // Icon for saved
+            cell.saveLabel.text = "Saved" // Text for saved state
+        }
+    }
+    
+    func didTapLikeButton(for cell: HomePostTableViewCell) {
+        if let uuid = cell.uuid {
+            if let postIndex = posts.firstIndex(where: { $0.id == uuid }) {
+                let isCurrentlyLiked = cell.likeButton.currentImage == UIImage(systemName: "heart.fill")
+                // Toggle the like state based on the current image
+                posts[postIndex].likePost(liked: !isCurrentlyLiked)
+                currentUser?.likePost(post: posts[postIndex], liked: !isCurrentlyLiked)
+                
+                // Update the button's image and like count display
+                let newImageName = isCurrentlyLiked ? "heart" : "heart.fill"
+                cell.likeButton.setImage(UIImage(systemName: newImageName), for: .normal)
+                cell.likeCount.text = "\(posts[postIndex].likes)"
+                
+            } else {
+                print("Post with UUID: \(uuid) not found.")
+            }
+        }
+    }
+    
+    func didTapShareButton(for cell: HomePostTableViewCell) {
+        if let uuid = cell.uuid {
+                let postLink = "https://eldertales.com/post/\(uuid)"
+                sharePostLink(postLink)
+            }
+    }
+    
+    func didTapCommentButton(for cell: HomePostTableViewCell) {
+        print("hello")
+    }
+    
+    func didTapProfilePhoto(for cell: HomePostTableViewCell) {
+        performSegue(withIdentifier: "viewProfileSegue", sender: cell)
+
+    }
+    
+    func didTapFollowButton(for cell: HomePostTableViewCell) {
+        guard let postId = cell.uuid else { return  }
+        guard let post = posts.first(where: {$0.id == postId}) else {
+            print("Post not found.")
+            return
+        }
+
+        if let index = currentUser?.following.firstIndex(where: { $0.id == post.postedBy.id }) {
+            // User is already followed, unfollow them
+            currentUser?.following.remove(at: index)
+            configureFollowButton(cell.followButton, isFollowing: false)
+            print("unfollowed")
+        } else {
+            // Follow the user
+            currentUser?.following.append(post.postedBy)
+            configureFollowButton(cell.followButton, isFollowing: true)
+            print("followed")
+        }
+    }
+    
+    func configureFollowButton(_ button: UIButton, isFollowing: Bool) {
+        var config = UIButton.Configuration.filled()
+        config.title = isFollowing ? "Unfollow" : "Follow"
+        config.baseBackgroundColor = isFollowing ? .clear : .tertiarySystemFill
+        config.baseForegroundColor = isFollowing ? .white : .link
+
+        let font = UIFont(name: "Helvetica Neue", size: 11.0) ?? UIFont.systemFont(ofSize: 11)
+        let attributes = AttributeContainer([
+            .font: UIFont(descriptor: font.fontDescriptor, size: 11),
+            .foregroundColor: UIColor.accent
+        ])
+        config.attributedTitle = AttributedString(config.title ?? "None", attributes: attributes)
+        
+        button.configuration = config
+    }
+    func sharePostLink(_ link: String) {
+        let items = [link]
+        let activityViewController = UIActivityViewController(activityItems: items, applicationActivities: nil)
+        // If using an iPad, configure the popover presentation controller.
+        if let popoverController = activityViewController.popoverPresentationController {
+            popoverController.sourceView = self.view // or button/view that triggered the sharing
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            popoverController.permittedArrowDirections = [] // Adjust if needed
+        }
+        self.present(activityViewController, animated: true)
+    }
+    
     
     var selectedPosts: [Post] {
         get {
@@ -24,54 +134,18 @@ class MyProfileViewController:  UIViewController, UITableViewDataSource, MyProfi
             profileTableView.reloadData()
         }
     }
-    
-    func didTapListenButton(for cell: MyProfileTableViewCell) {
-    }
-    
-    func didTapSaveButton(for cell: MyProfileTableViewCell) {
-    }
-    
-    func didTapLikeButton(for cell: MyProfileTableViewCell) {
-        if let uuid = cell.uuid {
-            if let postIndex = posts.firstIndex(where: { $0.id == uuid }) {
-                let isCurrentlyLiked = cell.likeButton.currentImage == UIImage(systemName: "heart.fill")
-                
-                // Toggle the like state based on the current image
-                posts[postIndex].likePost(liked: !isCurrentlyLiked)
-                currentUser?.likePost(post: posts[postIndex], liked: !isCurrentlyLiked)
-                
-                // Update the button's image and like count display
-                let newImageName = isCurrentlyLiked ? "heart" : "heart.fill"
-                cell.likeButton.setImage(UIImage(systemName: newImageName), for: .normal)
-                cell.likeCount.text = "\(posts[postIndex].likes)"
-                
-            } else {
-                print("Post with UUID: \(uuid) not found.")
-            }
-        }
-    }
 
-    
-    func didTapShareButton(for cell: MyProfileTableViewCell) {
-        print("hello")
-    }
-    
-    func didTapCommentButton(for cell: MyProfileTableViewCell) {
-        print("hello")
-    }
-    
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return selectedPosts.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "postMyProfile", for: indexPath) as! MyProfileTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "postHome", for: indexPath) as! HomePostTableViewCell
 
         let post = selectedPosts[indexPath.row]
         cell.uuid = post.id
-        
+        let isSaved = currentUser?.savedPosts.contains(where: {$0.id == post.id}) ?? false
         cell.profilePhotoUIImage.image = post.postedBy.image
         cell.usernameLabel.text = post.postedBy.name
         cell.storyTitleLabel.text = post.title
@@ -84,6 +158,13 @@ class MyProfileViewController:  UIViewController, UITableViewDataSource, MyProfi
         }
         else {heartState = "heart"}
             cell.likeButton.setImage(UIImage(systemName: heartState), for: .normal)
+
+        
+        if(currentUser?.following.contains(where: {$0.id == post.postedBy.id}) ?? false){
+            cell.followButton.isHidden = true
+        } else {
+            cell.followButton.isHidden = false
+        }
             
         cell.likeCount.text = "\(post.likes)"
         
@@ -92,10 +173,18 @@ class MyProfileViewController:  UIViewController, UITableViewDataSource, MyProfi
         
         cell.commentButton.setImage(UIImage(systemName: "message"), for: .normal)
         cell.commentCount.text = "\(post.comments.count)"
-        
-        cell.saveButton.setImage(UIImage(systemName: "square.and.arrow.down"), for: .normal)
 
-        cell.saveLabel.text = "Save"
+        cell.audioVideoIndicatorImage.image = UIImage(systemName: post.hasVideo ? "video.fill" : "headphones")
+        cell.listenButton.titleLabel?.text = post.hasVideo ? "Play" : "Listen"
+        
+        if isSaved {
+                cell.saveButton.setImage(UIImage(systemName: "square.and.arrow.down.fill"), for: .normal)
+                cell.saveLabel.text = "Unsave"
+            } else {
+                cell.saveButton.setImage(UIImage(systemName: "square.and.arrow.down"), for: .normal)
+                cell.saveLabel.text = "Save"
+            }
+        
         cell.delegate = self
         return cell
     }
@@ -109,6 +198,9 @@ class MyProfileViewController:  UIViewController, UITableViewDataSource, MyProfi
     @IBOutlet weak var followersCountLabel: UILabel!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UITextView!
+    @IBOutlet weak var postCountStack: UIStackView!
+    @IBOutlet weak var contentScrollView: UIScrollView!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -122,8 +214,26 @@ class MyProfileViewController:  UIViewController, UITableViewDataSource, MyProfi
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(profileImageTapped))
         profileImage.isUserInteractionEnabled = true  // Make sure user interaction is enabled
         profileImage.addGestureRecognizer(tapGesture)
+        
+        let tapPostCountGesture = UITapGestureRecognizer(target:self,action: #selector(postCountStackTapped))
+        postCountStack.isUserInteractionEnabled = true
+        postCountStack.addGestureRecognizer(tapPostCountGesture)
+    }
+    
+    @objc func postCountStackTapped() {
+        // Calculate the new y-offset
+        let newYOffset = self.contentScrollView.contentOffset.y + 400
+        
+        let maxOffsetY = self.contentScrollView.contentSize.height - self.contentScrollView.bounds.height
+        
+        if newYOffset > maxOffsetY {
+            self.contentScrollView.setContentOffset(CGPoint(x: 0, y: maxOffsetY), animated: true)
+        } else {
+            self.contentScrollView.setContentOffset(CGPoint(x: 0, y: newYOffset), animated: true)
+        }
     }
 
+    
     @objc func profileImageTapped() {
         let imageView = UIImageView(image: profileImage.image)
         imageView.frame = UIScreen.main.bounds
@@ -154,6 +264,8 @@ class MyProfileViewController:  UIViewController, UITableViewDataSource, MyProfi
     }
     
     func setDetails(){
+        currentUser = users.first(where: {$0.id == currentUser?.id})
+        print("Refresehd")
         var followersCount: Int = 0
         followersCount = users.filter({$0.following.contains(where: {$0.id == currentUser?.id})}).count
         

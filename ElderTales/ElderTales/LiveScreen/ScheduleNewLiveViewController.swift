@@ -13,8 +13,11 @@ class ScheduleNewLiveViewController: UIViewController {
 //    @IBOutlet weak var datePicker: UIDatePicker!
 //    
 //    @IBOutlet weak var startTiime: UILabel!
+    
+    var onDismiss: (() -> Void)?
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var startTime: UILabel!
+    @IBOutlet weak var titleTextField: UITextField!
     
     
     override func viewDidLoad() {
@@ -42,40 +45,60 @@ class ScheduleNewLiveViewController: UIViewController {
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
             view.addGestureRecognizer(tapGesture)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object:nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
-        //
-        //        @objc func dateChanged(_ datePicker: UIDatePicker) {
-        //            let dateFormatter = DateFormatter()
-        //            dateFormatter.dateStyle = .medium
-        //            dateFormatter.timeStyle = .none
-        //
-        //            let selectedDate = dateFormatter.string(from: datePicker.date)
-        //            print("Selected date: \(selectedDate)")
-        //        }
-        
     
-        
-        
-        func datePickerChanged(_ sender: UIDatePicker) {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateStyle = .medium
-            dateFormatter.timeStyle = .short
-            let selectedDate = dateFormatter.string(from: sender.date)
-            UserDefaults.standard.set(selectedDate, forKey: "selectedDate")
-            startTime.text = selectedDate
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            if view.frame.origin.y == 0 {
+                let adjustmentHeight = keyboardSize.height - (view.frame.height - titleTextField.frame.origin.y - titleTextField.frame.height)
+                if adjustmentHeight > 0 {
+                    view.frame.origin.y -= adjustmentHeight
+                }
+            }
         }
+    }
+
+    @objc func keyboardWillHide(notification: NSNotification) {
+        view.frame.origin.y = 0
+    }
+
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self)
+        onDismiss?()
+    }
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    func datePickerChanged(_ sender: UIDatePicker) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .short
+        let selectedDate = dateFormatter.string(from: sender.date)
+        UserDefaults.standard.set(selectedDate, forKey: "selectedDate")
+        startTime.text = selectedDate
+    }
     
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
-        
+    
+    
+    @IBAction func didTapSave(_ sender: UIButton) {
+        scheduleLiveButtonTapped(sender)
+    }
+    
     @IBAction func scheduleLiveButtonTapped(_ sender: UIButton) {
         // Create the live session
-        let newLive = Live(postedBy: currentUser!, postedOn: Date(), beginsOn: datePicker.date, title: "Live Session")
+        guard let title = titleTextField.text else {return}
+        let newLive = Live(postedBy: currentUser!, postedOn: Date(), beginsOn: datePicker.date, title: title)
         
         // Add to the global lives array
-        lives.append(newLive)
-        
+        lives.insert(newLive, at: 0)
         // Optionally, show confirmation to user
         showConfirmationAndPop()
     }
@@ -84,7 +107,7 @@ class ScheduleNewLiveViewController: UIViewController {
         let alert = UIAlertController(title: "Success", message: "Your live session has been scheduled.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak self] _ in
             // Pop the view controller
-            self?.navigationController?.popViewController(animated: true)
+            self?.dismiss(animated: true)
         }))
         present(alert, animated: true)
     }

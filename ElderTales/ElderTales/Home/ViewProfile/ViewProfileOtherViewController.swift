@@ -7,26 +7,83 @@
 
 import UIKit
 
-class ViewProfileOtherViewController: UIViewController, UITableViewDataSource, ViewProfileOtherTableViewCellDelegate {
-    func didTapListenButton(for cell: ViewProfileOtherTableViewCell) {
-        
+class ViewProfileOtherViewController: UIViewController, UITableViewDataSource, HomePostTableViewCellDelegate, ViewProfileOtherTableViewCellDelegate {
+    
+    func didTapListenButton(for cell: HomePostTableViewCell) {
+        if let nowPlayingVC = storyboard?.instantiateViewController(withIdentifier: "nowPlayingViewController") as? NowPlayingViewController {
+            if let uuid = cell.uuid {
+                nowPlayingVC.postId = uuid
+//                nowPlayingVC.post = fetchPost(with: uuid)
+                navigationController?.pushViewController(nowPlayingVC, animated: true)
+            }
+        }
     }
     
-    func didTapSaveButton(for cell: ViewProfileOtherTableViewCell) {
+    func didTapSaveButton(for cell: HomePostTableViewCell) {
+        guard let postIndex = posts.firstIndex(where: {$0.id == cell.uuid}) else { return }
+        let post = posts[postIndex]
         
+        if let savedIndex = currentUser?.savedPosts.firstIndex(where: {$0.id == post.id}) {
+            // Post is already saved, so unsave it
+            currentUser?.savedPosts.remove(at: savedIndex)
+            cell.saveButton.setImage(UIImage(systemName: "square.and.arrow.down"), for: .normal) // Icon for unsaved
+            cell.saveLabel.text = "Save" // Text for unsaved state
+        } else {
+            // Post is not saved, so save it
+            currentUser?.savedPosts.append(post)
+            cell.saveButton.setImage(UIImage(systemName: "square.and.arrow.down.fill"), for: .normal) // Icon for saved
+            cell.saveLabel.text = "Saved" // Text for saved state
+        }
+    }
+
+    
+    func didTapLikeButton(for cell: HomePostTableViewCell) {
+        if let uuid = cell.uuid {
+            if let postIndex = posts.firstIndex(where: { $0.id == uuid }) {
+                let isCurrentlyLiked = cell.likeButton.currentImage == UIImage(systemName: "heart.fill")
+                // Toggle the like state based on the current image
+                posts[postIndex].likePost(liked: !isCurrentlyLiked)
+                currentUser?.likePost(post: posts[postIndex], liked: !isCurrentlyLiked)
+                
+                // Update the button's image and like count display
+                let newImageName = isCurrentlyLiked ? "heart" : "heart.fill"
+                cell.likeButton.setImage(UIImage(systemName: newImageName), for: .normal)
+                cell.likeCount.text = "\(posts[postIndex].likes)"
+                
+            } else {
+                print("Post with UUID: \(uuid) not found.")
+            }
+        }
     }
     
-    func didTapLikeButton(for cell: ViewProfileOtherTableViewCell) {
-        
+    func didTapShareButton(for cell: HomePostTableViewCell) {
+        if let uuid = cell.uuid {
+                let postLink = "https://eldertales.com/post/\(uuid)"
+                sharePostLink(postLink)
+            }
     }
     
-    func didTapShareButton(for cell: ViewProfileOtherTableViewCell) {
-        
+    func didTapCommentButton(for cell: HomePostTableViewCell) {
+        print("hello")
     }
     
-    func didTapCommentButton(for cell: ViewProfileOtherTableViewCell) {
-        
+    func didTapProfilePhoto(for cell: HomePostTableViewCell) {
     }
+    
+    func didTapFollowButton(for cell: HomePostTableViewCell) {
+    }
+    func sharePostLink(_ link: String) {
+        let items = [link]
+        let activityViewController = UIActivityViewController(activityItems: items, applicationActivities: nil)
+        // If using an iPad, configure the popover presentation controller.
+        if let popoverController = activityViewController.popoverPresentationController {
+            popoverController.sourceView = self.view // or button/view that triggered the sharing
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            popoverController.permittedArrowDirections = [] // Adjust if needed
+        }
+        self.present(activityViewController, animated: true)
+    }
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch segmentedControl.selectedSegmentIndex {
@@ -68,31 +125,54 @@ class ViewProfileOtherViewController: UIViewController, UITableViewDataSource, V
 
     
     func configurePostCell(for tableView: UITableView, at indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "postMyProfile", for: indexPath) as! ViewProfileOtherTableViewCell
-        let post = selectedPosts[indexPath.row]
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! HomePostTableViewCell
 
-        // Configure the cell for a post
+        let post = selectedPosts[indexPath.row]
+        let isSaved = currentUser?.savedPosts.contains(where: {$0.id == post.id}) ?? false
+
         cell.uuid = post.id
-        cell.profilePhotoUIImage.image = post.postedBy.image ?? UIImage(named: "defaultProfilePhoto")
+        
+        cell.profilePhotoUIImage.image = post.postedBy.image
         cell.usernameLabel.text = post.postedBy.name
         cell.storyTitleLabel.text = post.title
-        cell.thumbnailUIImage.image = UIImage(named: "defaultThumbnail")
+        cell.thumbnailUIImage.image = UIImage(named: "youngster")
         
-        let currentUserLikes = currentUser?.likedPosts.contains(where:{$0.id == post.id})
-        let currentUserSaved = currentUser?.savedPosts.contains(where: {$0.id == post.id})
-        // Interaction buttons and counts
-        cell.likeButton.setImage(UIImage(systemName: currentUserLikes! ? "heart.fill" : "heart"), for: .normal)
-        cell.saveButton.setImage(UIImage(systemName: currentUserSaved! ? "square.and.arrow.down.fill" : "square.and.arrow.down"), for: .normal)
+        // Set the interaction buttons and counts
+        var heartState = ""
+        if(currentUser!.likedPosts.contains(where: { $0.id == post.id})){
+            heartState = "heart.fill"
+        }
+        else {heartState = "heart"}
+            cell.likeButton.setImage(UIImage(systemName: heartState), for: .normal)
+        
+//        if(currentUser?.following.contains(where: {$0.id == post.postedBy.id}) ?? false){
+//            cell.followButton.isHidden = true
+//        } else {
+//            cell.followButton.isHidden = false
+//        }
+        cell.followButton.isHidden = true
+        cell.likeCount.text = "\(post.likes)"
         
         cell.shareButton.setImage(UIImage(systemName: "arrowshape.turn.up.right"), for: .normal)
-        
-        cell.likeCount.text = "\(post.likes)"
         cell.shareCount.text = "\(post.shares)"
+        
         cell.commentButton.setImage(UIImage(systemName: "message"), for: .normal)
         cell.commentCount.text = "\(post.comments.count)"
-        cell.saveLabel.text = "Save"
-        cell.delegate = self
+        
+        if isSaved {
+                cell.saveButton.setImage(UIImage(systemName: "square.and.arrow.down.fill"), for: .normal)
+                cell.saveLabel.text = "Saved"
+            } else {
+                cell.saveButton.setImage(UIImage(systemName: "square.and.arrow.down"), for: .normal)
+                cell.saveLabel.text = "Save"
+            }
+        
+        cell.audioVideoIndicatorImage.image = UIImage(systemName: post.hasVideo ? "video.fill" : "headphones")
+        cell.listenButton.titleLabel?.text = post.hasVideo ? "Play" : "Listen"
 
+
+        cell.delegate = self
         return cell
     }
 
@@ -134,6 +214,8 @@ class ViewProfileOtherViewController: UIViewController, UITableViewDataSource, V
             followButton.layer.borderWidth = 0
             
         }
+        let nib = UINib(nibName: "postCell", bundle: nil)
+        viewOtherProfileTableView.register(nib, forCellReuseIdentifier: "postCell")
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)

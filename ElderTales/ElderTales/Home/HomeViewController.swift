@@ -21,10 +21,13 @@ class HomeViewController: UIViewController, UITableViewDataSource,UITableViewDel
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        let nib = UINib(nibName: "postCell", bundle: nil)
+            homeTableView.register(nib, forCellReuseIdentifier: "postCell")
         clearFilterButton.isHidden = true
         homeTableView.dataSource = self
         homeTableView.delegate = self
     }
+    
     override func viewDidAppear(_ animated: Bool) {
         homeTableView.reloadData()
     }
@@ -56,16 +59,17 @@ class HomeViewController: UIViewController, UITableViewDataSource,UITableViewDel
     var selectedPosts: [Post] {
         get {
             // Filter posts based on whether they are from followed users or all users
+            let other_posts = posts.filter({$0.postedBy.id != currentUser?.id})
             let basePosts: [Post] = {
                 switch forYouSegmentedControl.selectedSegmentIndex {
                 case 0:  // "For You" - Posts from followed users
-                    return posts.filter { post in
+                    return other_posts.filter { post in
                         currentUser!.following.contains { followedUser in
                             followedUser.id == post.postedBy.id
                         }
                     }
-                case 1:  // "Explore" - All posts
-                    return posts
+                case 1:
+                    return other_posts
                 default:
                     return []
                 }
@@ -119,15 +123,32 @@ class HomeViewController: UIViewController, UITableViewDataSource,UITableViewDel
   
     
     func didTapListenButton(for cell: HomePostTableViewCell) {
-        performSegue(withIdentifier: "nowPlayingSegue", sender: cell)
-
+        if let nowPlayingVC = storyboard?.instantiateViewController(withIdentifier: "nowPlayingViewController") as? NowPlayingViewController {
+            if let uuid = cell.uuid {
+                nowPlayingVC.postId = uuid
+//                nowPlayingVC.post = fetchPost(with: uuid)
+                navigationController?.pushViewController(nowPlayingVC, animated: true)
+            }
+        }
     }
     
     func didTapSaveButton(for cell: HomePostTableViewCell) {
-        let postIndex = posts.firstIndex(where: {$0.id == cell.uuid})!
-        currentUser?.savedPosts.append(posts[postIndex])
-        cell.saveButton.setImage(UIImage(systemName: "square.and.arrow.down.fill"), for: .normal)
+        guard let postIndex = posts.firstIndex(where: {$0.id == cell.uuid}) else { return }
+        let post = posts[postIndex]
+        
+        if let savedIndex = currentUser?.savedPosts.firstIndex(where: {$0.id == post.id}) {
+            // Post is already saved, so unsave it
+            currentUser?.savedPosts.remove(at: savedIndex)
+            cell.saveButton.setImage(UIImage(systemName: "square.and.arrow.down"), for: .normal) // Icon for unsaved
+            cell.saveLabel.text = "Save" // Text for unsaved state
+        } else {
+            // Post is not saved, so save it
+            currentUser?.savedPosts.append(post)
+            cell.saveButton.setImage(UIImage(systemName: "square.and.arrow.down.fill"), for: .normal) // Icon for saved
+            cell.saveLabel.text = "Saved" // Text for saved state
+        }
     }
+
     
     func didTapFollowButton(for cell: HomePostTableViewCell) {
         guard let postId = cell.uuid else { return  }
@@ -204,10 +225,11 @@ class HomeViewController: UIViewController, UITableViewDataSource,UITableViewDel
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "postHome", for: indexPath) as! HomePostTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! HomePostTableViewCell
 
         let post = selectedPosts[indexPath.row]
         cell.uuid = post.id
+        let isSaved = currentUser?.savedPosts.contains(where: {$0.id == post.id}) ?? false
         
         cell.profilePhotoUIImage.image = post.postedBy.image
         cell.usernameLabel.text = post.postedBy.name
@@ -216,23 +238,25 @@ class HomeViewController: UIViewController, UITableViewDataSource,UITableViewDel
         
         // Set the interaction buttons and counts
         var heartState = ""
-        var saveState = ""
         if(currentUser!.likedPosts.contains(where: { $0.id == post.id})){
             heartState = "heart.fill"
         }
         else {heartState = "heart"}
             cell.likeButton.setImage(UIImage(systemName: heartState), for: .normal)
-        
-        if(currentUser!.savedPosts.contains(where: { $0.id == post.id})){
-            saveState = "square.and.arrow.down.fill"
-        }
-        else {saveState = "square.and.arrow.down"}
-            cell.likeButton.setImage(UIImage(systemName: heartState), for: .normal)
+
         
         if(currentUser?.following.contains(where: {$0.id == post.postedBy.id}) ?? false){
             cell.followButton.isHidden = true
         } else {
             cell.followButton.isHidden = false
+        }
+        
+        if isSaved {
+            cell.saveButton.setImage(UIImage(systemName: "square.and.arrow.down.fill"), for: .normal)
+            cell.saveLabel.text = "Saved"
+        } else {
+            cell.saveButton.setImage(UIImage(systemName: "square.and.arrow.down"), for: .normal)
+            cell.saveLabel.text = "Save"
         }
             
         cell.likeCount.text = "\(post.likes)"
@@ -242,12 +266,10 @@ class HomeViewController: UIViewController, UITableViewDataSource,UITableViewDel
         
         cell.commentButton.setImage(UIImage(systemName: "message"), for: .normal)
         cell.commentCount.text = "\(post.comments.count)"
-        
-        cell.saveButton.setImage(UIImage(systemName: saveState), for: .normal)
+
         cell.audioVideoIndicatorImage.image = UIImage(systemName: post.hasVideo ? "video.fill" : "headphones")
         cell.listenButton.titleLabel?.text = post.hasVideo ? "Play" : "Listen"
 
-        cell.saveLabel.text = "Save"
         cell.delegate = self
         return cell
     }
