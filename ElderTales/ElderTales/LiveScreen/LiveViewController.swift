@@ -9,7 +9,12 @@ import EventKit
 
 class LiveViewController: UIViewController, UITableViewDataSource, LiveOtherViewCellDelegate{
     func didTapProfilePhoto(for cell: LiveOtherTableViewCell) {
-        if let destinationVC = storyboard?.instantiateViewController(withIdentifier: "viewProfileController") as? ViewProfileOtherViewController,let live = dataController.fetchLive(liveId: cell.uuid){
+        guard let live = dataController.fetchLive(liveId: cell.uuid) else {return}
+        if(live.postedBy == dataController.currentUser?.id) {
+            self.tabBarController?.selectedIndex = 3
+            return
+        }
+        if let destinationVC = storyboard?.instantiateViewController(withIdentifier: "viewProfileController") as? ViewProfileOtherViewController{
             destinationVC.userId = live.postedBy
             self.navigationController?.pushViewController(destinationVC, animated: true)
         }

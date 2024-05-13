@@ -21,13 +21,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="398" height="135"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Experience with general class train" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6ch-iD-Zpg">
-                                <rect key="frame" x="60" y="10" width="216" height="44"/>
+                                <rect key="frame" x="52" y="10" width="224" height="44"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sharda Rathi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="34p-B8-sau">
-                                <rect key="frame" x="59.999999999999993" y="52" width="77.333333333333314" height="20.666666666666671"/>
+                                <rect key="frame" x="51.999999999999993" y="52" width="77.333333333333314" height="20.666666666666671"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -40,7 +40,7 @@
                                 </constraints>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="elder" translatesAutoresizingMaskIntoConstraints="NO" id="IBb-LE-GFI">
-                                <rect key="frame" x="8" y="21.999999999999996" width="44" height="43.666666666666657"/>
+                                <rect key="frame" x="0.0" y="21.999999999999996" width="44" height="43.666666666666657"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="44" id="dBp-9i-wvN"/>
                                 </constraints>
@@ -169,7 +169,7 @@
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cek-WM-ipn">
-                                <rect key="frame" x="139.33333333333334" y="51" width="74" height="23"/>
+                                <rect key="frame" x="131.33333333333334" y="51" width="74" height="23"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="74" id="LIE-EG-kmb"/>
                                     <constraint firstAttribute="height" constant="23" id="nxG-bq-bVZ"/>
@@ -192,13 +192,13 @@
                             <constraint firstItem="K8p-5W-Elr" firstAttribute="centerY" secondItem="J5O-95-W1u" secondAttribute="centerY" id="E1D-hx-DYt"/>
                             <constraint firstItem="7Ef-g6-lIc" firstAttribute="leading" secondItem="6ch-iD-Zpg" secondAttribute="trailing" constant="8" symbolic="YES" id="Hkw-Hm-lPl"/>
                             <constraint firstItem="6ch-iD-Zpg" firstAttribute="top" secondItem="a2n-x5-C71" secondAttribute="top" constant="10" id="KLG-2X-Z1o"/>
+                            <constraint firstItem="IBb-LE-GFI" firstAttribute="leading" secondItem="a2n-x5-C71" secondAttribute="leading" id="KaX-kj-0je"/>
                             <constraint firstItem="7Ef-g6-lIc" firstAttribute="centerY" secondItem="a2n-x5-C71" secondAttribute="centerY" id="O1V-hu-Pja"/>
                             <constraint firstAttribute="trailing" secondItem="Cxw-zJ-G7M" secondAttribute="trailing" constant="12" id="S0S-ez-F9Z"/>
                             <constraint firstItem="K8p-5W-Elr" firstAttribute="leading" secondItem="a2n-x5-C71" secondAttribute="leading" constant="16" id="SKL-S3-ucb"/>
                             <constraint firstAttribute="bottom" secondItem="IBb-LE-GFI" secondAttribute="bottom" constant="69.333333333333343" id="U90-FU-746"/>
                             <constraint firstItem="J5O-95-W1u" firstAttribute="leading" secondItem="K8p-5W-Elr" secondAttribute="trailing" constant="8" symbolic="YES" id="UNN-9N-EAF"/>
                             <constraint firstAttribute="height" constant="135" id="Ud7-to-3iQ"/>
-                            <constraint firstItem="IBb-LE-GFI" firstAttribute="leading" secondItem="a2n-x5-C71" secondAttribute="leadingMargin" id="XOB-bx-cOd"/>
                             <constraint firstItem="cek-WM-ipn" firstAttribute="centerY" secondItem="34p-B8-sau" secondAttribute="centerY" id="ZNi-ox-HB8"/>
                             <constraint firstItem="34p-B8-sau" firstAttribute="top" secondItem="a2n-x5-C71" secondAttribute="top" constant="52" id="cCb-3X-B36"/>
                             <constraint firstAttribute="bottom" secondItem="Cxw-zJ-G7M" secondAttribute="bottom" constant="20" id="cQ5-Fx-woa"/>
@@ -244,7 +244,7 @@
         <image name="arrowshape.turn.up.right" catalog="system" width="128" height="104"/>
         <image name="elder" width="700" height="400"/>
         <image name="headphones" catalog="system" width="128" height="121"/>
-        <image name="heart" catalog="system" width="32" height="32"/>
+        <image name="heart" catalog="system" width="128" height="107"/>
         <image name="message" catalog="system" width="128" height="116"/>
         <image name="square.and.arrow.down" catalog="system" width="112" height="128"/>
         <image name="youngster" width="1024" height="1024"/>
