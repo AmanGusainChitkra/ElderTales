@@ -8,20 +8,20 @@
 import Foundation
 import SwiftUI
 
-struct User {
+struct User: Codable {
     var id: String
     var name: String
     var email: String
     var isElderly: Bool
     var password: String
-    var image: UIImage?
-    var likedPosts: [Post]
-    var savedPosts: [Post]
-    var following: [User]
-    var interests: [Category]
+    var image: String?  // Use base64 string or URL/path
+    var likedPosts: [String]  // Array of post IDs
+    var savedPosts: [String]  // Array of post IDs
+    var following: [String]  // Array of user IDs
+    var interests: [String]  // Array of category titles or IDs
     var description: String
 
-    init(name: String, email: String, isElderly: Bool, password: String, image: UIImage? = nil, description: String? = nil) {
+    init(name: String, email: String, isElderly: Bool, password: String, image: String? = nil, description: String? = nil) {
         self.id = UUID().uuidString
         self.name = name
         self.email = email
@@ -35,46 +35,43 @@ struct User {
         self.description = description ?? ""
     }
     
-    mutating func likePost(post: Post, liked: Bool) {
+    mutating func likePost(postId: String, liked: Bool) {
         if liked {
-            // Add the post to the likedPosts array if it's not already there
-            if !likedPosts.contains(where: { $0.id == post.id }) {
-                likedPosts.append(post)
+            if !likedPosts.contains(postId) {
+                likedPosts.append(postId)
             }
         } else {
-            // Remove the post from the likedPosts array if it's there
-            likedPosts.removeAll { $0.id == post.id }
+            likedPosts.removeAll { $0 == postId }
         }
     }
     
-    mutating func savePost(post: Post, saved: Bool) {
+    mutating func savePost(postId: String, saved: Bool) {
         if saved {
-            if !savedPosts.contains(where: { $0.id == post.id }) {
-                savedPosts.append(post)
+            if !savedPosts.contains(postId) {
+                savedPosts.append(postId)
             }
         } else {
-            // Remove the post from the savedPosts array if it's there
-            savedPosts.removeAll { $0.id == post.id }
+            savedPosts.removeAll { $0 == postId }
         }
     }
-    
 }
 
-struct Post {
+
+struct Post:Codable {
     var id: String
-    var postedBy: User
+    var postedBy: String  // User ID
     var postedOn: Date
     var length: Int
     var title: String
-    var cover: UIImage
+    var cover: String  // Path or base64 string
     var link: String
     var likes: Int
-    var comments: [Comment]
+    var comments: [String]  // Array of comment IDs
     var shares: Int
     var hasVideo: Bool
-    var suitableCategories: [Category]
+    var suitableCategories: [String]  // Array of category IDs or titles
 
-    init(postedBy: User, length: Int, title: String, cover: UIImage, link: String, hasVideo: Bool) {
+    init(postedBy: String, length: Int, title: String, cover: String, link: String, hasVideo: Bool, suitableCategories:String? = nil) {
         self.id = UUID().uuidString
         self.postedBy = postedBy
         self.postedOn = Date()
@@ -85,8 +82,11 @@ struct Post {
         self.likes = 0
         self.comments = []
         self.shares = 0
-        self.suitableCategories = []
         self.hasVideo = hasVideo
+        self.suitableCategories = []
+        if let suitableCategory = suitableCategories{
+            self.suitableCategories.append(suitableCategory)
+        }
     }
     
     mutating func likePost(liked: Bool){
@@ -98,48 +98,53 @@ struct Post {
     }
 }
 
-struct Live {
+struct Live:Codable {
     var id: String
-    var postedBy: User
+    var postedBy: String  // User ID
     var postedOn: Date
     var beginsOn: Date
-    var interested: [User]
+    var interested: [String]  // Array of user IDs
     var title: String
     var isOngoing: Bool
+    var isFinished: Bool
 
-    init(postedBy: User, postedOn: Date, beginsOn: Date, title: String) {
+    init(postedBy: String, postedOn: Date, beginsOn: Date, title: String, isOngoing:Bool? = false) {
         self.id = UUID().uuidString
         self.postedBy = postedBy
         self.postedOn = postedOn
         self.beginsOn = beginsOn
         self.title = title
         self.interested = []
-        self.isOngoing = false
+        self.isOngoing = isOngoing!
+        self.isFinished = false
     }
 }
 
-struct Comment {
-    var postedBy: User
+struct Comment:Codable {
+    var id: String
+    var postedBy: String  // User ID
     var postedOn: Date
     var body: String
+    var postId:String
     var isQuestion: Bool
 
-    init(postedBy: User, postedOn: Date, body: String, isQuestion: Bool) {
+    init(postedBy: String, postedOn: Date, postId:String, body: String, isQuestion: Bool) {
+        self.id = UUID().uuidString
         self.postedBy = postedBy
         self.postedOn = postedOn
         self.body = body
         self.isQuestion = isQuestion
+        self.postId = postId
     }
     
 }
 
-struct Category {
+struct Category:Codable {
     var title: String
-    var image: UIImage
+    var image: String  // Path or base64 string
 
-    init(title: String, image: UIImage) {
+    init(title: String, image: String) {
         self.title = title
         self.image = image
     }
-    
 }

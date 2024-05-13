@@ -6,8 +6,103 @@
 //
 
 import UIKit
+import EventKit
 
-class ViewProfileOtherViewController: UIViewController, UITableViewDataSource, HomePostTableViewCellDelegate, ViewProfileOtherTableViewCellDelegate {
+class ViewProfileOtherViewController: UIViewController, UITableViewDataSource, HomePostTableViewCellDelegate, LiveOtherViewCellDelegate {
+    func didTapProfilePhoto(for cell: LiveOtherTableViewCell) {
+    }
+    
+    func didTapDeleteLiveButton(for cell: LiveOtherTableViewCell) {
+        let alert = UIAlertController(title: "Delete Live", message: "Are you sure you want to delete this live session?", preferredStyle: .alert)
+        
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
+            guard let strongSelf = self else { return }
+            dataController.deleteLive(liveId: cell.uuid)
+            // Optionally, update UI or pop viewController if needed
+            if(self?.segmentedControl.selectedSegmentIndex == 1){
+                self?.viewOtherProfileTableView.reloadData()
+            }
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        
+        alert.addAction(deleteAction)
+        alert.addAction(cancelAction)
+        
+        self.present(alert, animated: true)
+    }
+
+    
+    
+    func didTapAddEventButton(for cell: LiveOtherTableViewCell) {
+        guard let live = dataController.fetchLive(liveId: cell.uuid) else {
+            return
+        }
+        
+        requestAccessToCalendar { [weak self] granted in
+            guard granted, let strongSelf = self else {
+                print("Access to calendar denied.")
+                return
+            }
+            cell.addEventButton.setTitle("Event Added", for: .normal)
+            cell.addEventButton.backgroundColor = .clear
+            strongSelf.addEventToCalendar(live: live)
+        }
+    }
+    let eventStore = EKEventStore()
+
+    func addEventToCalendar(live: Live) {
+        let event = EKEvent(eventStore: eventStore)
+        event.title = live.title
+        event.startDate = live.beginsOn
+        event.endDate = live.beginsOn.addingTimeInterval(2 * 60 * 60) // Assume 2 hours duration
+        event.calendar = eventStore.defaultCalendarForNewEvents
+        if let user = dataController.fetchUser(userId: live.postedBy){
+            event.notes = "Live event hosted by \(user.name)"
+        }
+        
+        
+        // Add an alarm to the event to remind the user
+        let alarm = EKAlarm(relativeOffset: -1800)  // 1 hour before the event
+        event.addAlarm(alarm)
+
+        do {
+            try eventStore.save(event, span: .thisEvent)
+            showAlertWith(title: "Success", message: "Event added to calendar successfully, with a reminder set for 1 hour before the event.")
+        } catch let error as NSError {
+            showAlertWith(title: "Error", message: "Failed to save event: \(error.localizedDescription)")
+        }
+    }
+    func requestAccessToCalendar(completion: @escaping (Bool) -> Void) {
+        eventStore.requestWriteOnlyAccessToEvents { granted, error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    print("Error requesting event access: \(error)")
+                }
+                completion(granted)
+            }
+        }
+    }
+    
+    func showAlertWith(title: String, message: String) {
+        DispatchQueue.main.async { [weak self] in
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            self?.present(alert, animated: true, completion: nil)
+        }
+    }
+
+    func didTapJoinLiveOtherButton(for cell: LiveOtherTableViewCell) {
+        if let liveOngoingMyViewController = storyboard?.instantiateViewController(withIdentifier: "liveOngoingOtherViewController") as? MyLiveOngoingViewController {
+            liveOngoingMyViewController.liveId = cell.uuid
+            self.navigationController?.pushViewController(liveOngoingMyViewController, animated: true)
+        }
+        
+    }
+    
+    func didTapJoinLiveMyButton(for cell: LiveOtherTableViewCell) {
+        
+    }
+    
     
     func didTapListenButton(for cell: HomePostTableViewCell) {
         if let nowPlayingVC = storyboard?.instantiateViewController(withIdentifier: "nowPlayingViewController") as? NowPlayingViewController {
@@ -20,39 +115,32 @@ class ViewProfileOtherViewController: UIViewController, UITableViewDataSource, H
     }
     
     func didTapSaveButton(for cell: HomePostTableViewCell) {
-        guard let postIndex = posts.firstIndex(where: {$0.id == cell.uuid}) else { return }
-        let post = posts[postIndex]
-        
-        if let savedIndex = currentUser?.savedPosts.firstIndex(where: {$0.id == post.id}) {
-            // Post is already saved, so unsave it
-            currentUser?.savedPosts.remove(at: savedIndex)
-            cell.saveButton.setImage(UIImage(systemName: "square.and.arrow.down"), for: .normal) // Icon for unsaved
-            cell.saveLabel.text = "Save" // Text for unsaved state
-        } else {
-            // Post is not saved, so save it
-            currentUser?.savedPosts.append(post)
-            cell.saveButton.setImage(UIImage(systemName: "square.and.arrow.down.fill"), for: .normal) // Icon for saved
-            cell.saveLabel.text = "Saved" // Text for saved state
-        }
-    }
+        guard let post = dataController.fetchPost(postId: cell.uuid!) else { return }
 
+        // Toggle save status in the data model
+        dataController.toggleSavePost(postId: post.id)
+
+        // Update the UI based on the new state
+        let isNowSaved = dataController.currentUser?.savedPosts.contains(post.id) ?? false
+        
+        cell.saveButton.setImage(UIImage(systemName: isNowSaved ? "square.and.arrow.down.fill" : "square.and.arrow.down"), for: .normal)
+        cell.saveLabel.text = isNowSaved ? "Saved" : "Save"
+    }
     
     func didTapLikeButton(for cell: HomePostTableViewCell) {
-        if let uuid = cell.uuid {
-            if let postIndex = posts.firstIndex(where: { $0.id == uuid }) {
-                let isCurrentlyLiked = cell.likeButton.currentImage == UIImage(systemName: "heart.fill")
-                // Toggle the like state based on the current image
-                posts[postIndex].likePost(liked: !isCurrentlyLiked)
-                currentUser?.likePost(post: posts[postIndex], liked: !isCurrentlyLiked)
-                
-                // Update the button's image and like count display
-                let newImageName = isCurrentlyLiked ? "heart" : "heart.fill"
-                cell.likeButton.setImage(UIImage(systemName: newImageName), for: .normal)
-                cell.likeCount.text = "\(posts[postIndex].likes)"
-                
-            } else {
-                print("Post with UUID: \(uuid) not found.")
-            }
+        guard let post = dataController.fetchPost(postId: cell.uuid!) else { return }
+
+        // Toggle like status in the data model
+        DataController.shared.toggleLikePost(postId: post.id)
+
+        // Update the UI based on the new state
+        let isNowLiked = dataController.currentUser?.likedPosts.contains(post.id) ?? false
+        cell.likeButton.setImage(UIImage(systemName: isNowLiked ? "heart.fill" : "heart"), for: .normal)
+
+        // Update like count display
+        if let updatedPostIndex = dataController.posts.firstIndex(where: { $0.id == post.id }) {
+            let updatedLikeCount = dataController.posts[updatedPostIndex].likes
+            cell.likeCount.text = "\(updatedLikeCount)"
         }
     }
     
@@ -109,18 +197,41 @@ class ViewProfileOtherViewController: UIViewController, UITableViewDataSource, H
 
     func configureLiveCell(for tableView: UITableView, at indexPath: IndexPath) -> UITableViewCell {
         let live = selectedLives[indexPath.row]
-        let identifier = live.isOngoing ? "liveOther" : "liveOtherLive"
-        let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! ViewProfileOtherTableViewCell
+        var identifier = live.isOngoing ? "liveOtherLiveCell" : "liveOtherCell"
+        
+            identifier = live.isOngoing ? "liveOtherLiveCell" : "liveOtherCell"
 
-        // Configure the cell for a live session
-        cell.profilePhotoUIImage.image = live.postedBy.image
-        cell.usernameLabel.text = live.postedBy.name
-        cell.storyTitleLabel.text = live.title
-        cell.thumbnailUIImage.image = UIImage(named: "defaultThumbnail")
+        let cell = viewOtherProfileTableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! LiveOtherTableViewCell
+
+        // Format and set the date of the live event
+        cell.dateOfLive.text = formatDate(live.beginsOn)
+        cell.timeOfLive.text = formatTime(live.beginsOn)
+
+         // Assuming you have a default or placeholder image
+        cell.storyTitle.text = live.title
+        cell.thumbnailUIImage.image = UIImage(named: "otherPhoto") // Placeholder or default image
+        
+        if let user = dataController.fetchUser(userId: live.postedBy){
+            print("\(user.image)")
+            cell.username.text = user.name
+            cell.profilePhotoUIImage.image = dataController.fetchImage(imagePath: user.image) ?? UIImage(systemName: "person.circle.fill")
+        }
         cell.uuid = live.id
         cell.delegate = self
-
+        
         return cell
+    }
+    
+    private func formatDate(_ date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "d MMM" // e.g., 2 March
+        return dateFormatter.string(from: date)
+    }
+
+    private func formatTime(_ date: Date) -> String {
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateFormat = "h:mm a" // e.g., 6:00 PM
+        return timeFormatter.string(from: date)
     }
 
     
@@ -129,29 +240,40 @@ class ViewProfileOtherViewController: UIViewController, UITableViewDataSource, H
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! HomePostTableViewCell
 
         let post = selectedPosts[indexPath.row]
-        let isSaved = currentUser?.savedPosts.contains(where: {$0.id == post.id}) ?? false
-
         cell.uuid = post.id
+        let isSaved = dataController.currentUser?.savedPosts.contains(post.id) ?? false
         
-        cell.profilePhotoUIImage.image = post.postedBy.image
-        cell.usernameLabel.text = post.postedBy.name
+        if let user = dataController.fetchUser(userId: post.postedBy){
+            cell.usernameLabel.text = user.name
+            cell.profilePhotoUIImage.image = dataController.fetchImage(imagePath: user.image) ?? UIImage(systemName: "person.circle.fill")
+        }
+        
         cell.storyTitleLabel.text = post.title
         cell.thumbnailUIImage.image = UIImage(named: "youngster")
         
         // Set the interaction buttons and counts
         var heartState = ""
-        if(currentUser!.likedPosts.contains(where: { $0.id == post.id})){
+        if(dataController.currentUser!.likedPosts.contains(post.id)){
             heartState = "heart.fill"
         }
         else {heartState = "heart"}
             cell.likeButton.setImage(UIImage(systemName: heartState), for: .normal)
+
         
-//        if(currentUser?.following.contains(where: {$0.id == post.postedBy.id}) ?? false){
-//            cell.followButton.isHidden = true
-//        } else {
-//            cell.followButton.isHidden = false
-//        }
-        cell.followButton.isHidden = true
+        if(dataController.currentUser?.following.contains(post.postedBy) ?? false){
+            cell.followButton.isHidden = true
+        } else {
+            cell.followButton.isHidden = false
+        }
+        
+        if isSaved {
+            cell.saveButton.setImage(UIImage(systemName: "square.and.arrow.down.fill"), for: .normal)
+            cell.saveLabel.text = "Saved"
+        } else {
+            cell.saveButton.setImage(UIImage(systemName: "square.and.arrow.down"), for: .normal)
+            cell.saveLabel.text = "Save"
+        }
+            
         cell.likeCount.text = "\(post.likes)"
         
         cell.shareButton.setImage(UIImage(systemName: "arrowshape.turn.up.right"), for: .normal)
@@ -159,18 +281,9 @@ class ViewProfileOtherViewController: UIViewController, UITableViewDataSource, H
         
         cell.commentButton.setImage(UIImage(systemName: "message"), for: .normal)
         cell.commentCount.text = "\(post.comments.count)"
-        
-        if isSaved {
-                cell.saveButton.setImage(UIImage(systemName: "square.and.arrow.down.fill"), for: .normal)
-                cell.saveLabel.text = "Saved"
-            } else {
-                cell.saveButton.setImage(UIImage(systemName: "square.and.arrow.down"), for: .normal)
-                cell.saveLabel.text = "Save"
-            }
-        
+
         cell.audioVideoIndicatorImage.image = UIImage(systemName: post.hasVideo ? "video.fill" : "headphones")
         cell.listenButton.titleLabel?.text = post.hasVideo ? "Play" : "Listen"
-
 
         cell.delegate = self
         return cell
@@ -199,63 +312,91 @@ class ViewProfileOtherViewController: UIViewController, UITableViewDataSource, H
         setupData()
         viewOtherProfileTableView.dataSource = self
         guard let user = user else { return }
-
-        if let index = currentUser?.following.firstIndex(where: { $0.id == user.id }) {
-            followButton.layer.cornerRadius = 17
-            followButton.setTitle("Unfollow", for: .normal)
-            followButton.tintColor = .clear
-            followButton.layer.borderWidth = 1
-        } else {
-            // Follow the user
-            
-            followButton.layer.cornerRadius = 17
-            followButton.setTitle("Follow", for: .normal)
-            followButton.tintColor = .blue
-            followButton.layer.borderWidth = 0
-            
-        }
+        
+        updateFollowButton(for: user, followButton: self.followButton)
+        
         let nib = UINib(nibName: "postCell", bundle: nil)
         viewOtherProfileTableView.register(nib, forCellReuseIdentifier: "postCell")
+        registerCellsToTable()
+        self.navigationItem.title = user.name
+        self.navigationItem.largeTitleDisplayMode = .never
     }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         
     }
     
+    func updateFollowButton(for user: User, followButton: UIButton) {
+        // Check if the current user is already following this user by user ID
+        if let currentUser = DataController.shared.currentUser,
+           currentUser.following.contains(user.id) {
+            // User is currently followed, configure button to show "Unfollow"
+            followButton.layer.cornerRadius = 17
+            followButton.setTitle("Unfollow", for: .normal)
+            followButton.backgroundColor = .clear
+            followButton.layer.borderWidth = 1
+            followButton.layer.borderColor = UIColor.blue.cgColor
+            followButton.setTitleColor(.blue, for: .normal)
+        } else {
+            // User is not followed, configure button to show "Follow"
+            followButton.layer.cornerRadius = 17
+            followButton.setTitle("Follow", for: .normal)
+            followButton.backgroundColor = .blue
+            followButton.layer.borderWidth = 0
+            followButton.setTitleColor(.white, for: .normal)
+        }
+    }
+
+    
+    func registerCellsToTable(){
+        let cells = ["liveOtherCell", "liveMyLiveCell", "liveMyCell","liveOtherLiveCell", "postCell"]
+        for nibName in cells{
+            let nib = UINib(nibName: nibName, bundle: nil)
+            viewOtherProfileTableView.register(nib, forCellReuseIdentifier: nibName)
+        }
+    }
+    
     func loadData(){
-        user = users.first(where: {$0.id == userId})
-        selectedPosts = posts.filter({$0.postedBy.id == user?.id})
-        selectedLives = lives.filter({$0.postedBy.id == user?.id})
+        self.user = dataController.fetchUser(userId: userId)
+        selectedPosts = dataController.fetchPosts(postedBy: userId)
+        selectedLives = dataController.fetchLives(postedBy: userId)
     }
     
     func setupData(){
-        profileImage.image = user?.image
+        profileImage.image = dataController.fetchImage(imagePath: user?.image)
         userNameLabel.text = user?.name
         descriptionText.text = user?.description
-        
     }
     
     
     @IBAction func didTapFollow(_ sender: UIButton) {
         guard let user = user else { return }
 
-        if let index = currentUser?.following.firstIndex(where: { $0.id == user.id }) {
-            // User is already followed, unfollow them
-            currentUser?.following.remove(at: index)
-            followButton.layer.cornerRadius = 17
-            followButton.setTitle("Follow", for: .normal)
-            followButton.tintColor = .blue
-            followButton.layer.borderWidth = 0
-        } else {
-            // Follow the user
-            currentUser?.following.append(user)
-            followButton.layer.cornerRadius = 17
-            followButton.setTitle("Unfollow", for: .normal)
-            followButton.tintColor = .clear
-            followButton.layer.borderWidth = 1
-            
+        if let currentUser = DataController.shared.currentUser {
+            let isFollowing = currentUser.following.contains(user.id)
+
+            if isFollowing {
+                // Unfollow the user
+                DataController.shared.toggleFollowUser(userId: user.id)
+                followButton.layer.cornerRadius = 17
+                followButton.setTitle("Follow", for: .normal)
+                followButton.backgroundColor = .blue
+                followButton.setTitleColor(.white, for: .normal)
+                followButton.layer.borderWidth = 0
+            } else {
+                // Follow the user
+                DataController.shared.toggleFollowUser(userId: user.id)
+                followButton.layer.cornerRadius = 17
+                followButton.setTitle("Unfollow", for: .normal)
+                followButton.backgroundColor = .clear
+                followButton.setTitleColor(.blue, for: .normal)
+                followButton.layer.borderWidth = 1
+                followButton.layer.borderColor = UIColor.blue.cgColor
+            }
         }
     }
+
 
     
     @IBAction func segmenteChanged(_ sender: UISegmentedControl) {

@@ -16,9 +16,11 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource, UITable
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = commentsTableView.dequeueReusableCell(withIdentifier: "commentTableCell", for: indexPath) as! CommentTableViewCell
-        let comment = post!.comments[indexPath.row]
-        cell.userProfileImage.image = comment.postedBy.image
-        cell.usernameLabel.text = comment.postedBy.name
+        let comment = postComments[indexPath.row]
+        if let user = dataController.fetchUser(userId: comment.postedBy){
+            cell.userProfileImage.image = dataController.fetchImage(imagePath: user.image) ?? UIImage(systemName: "person.circle.fill")
+            cell.usernameLabel.text = user.name
+        }
         cell.commentTextView.text = comment.body
         print("cell created")
         return cell
@@ -33,6 +35,7 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource, UITable
             commentsTableView.reloadData()
         }
     }
+    var postComments:[Comment] = []
     
     @IBOutlet weak var videoPlayView: UIView!
     @IBOutlet weak var playPauseButton: UIButton!
@@ -61,28 +64,31 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource, UITable
         commentsTableView.dataSource = self
         commentsTableView.delegate = self
     }
+    var videoURL:URL?
     
     private func setupVideoPlayer() {
-        // Create a variable for the URL to be used with AVPlayer
-        var videoURL: URL?
-        guard let post = self.post else {return}
+        guard let post = self.post else { return }
         
-        // Check if there's a link in the post and it points to a valid file
+        print("Attempting to load video from link: \(post.link)")
+
+        // Create a URL from the post link assuming it's a valid file path
+        videoURL = URL(fileURLWithPath: post.link)
+
+        // Check if the file exists at the given path
         if FileManager.default.fileExists(atPath: post.link) {
-            videoURL = URL(string: post.link)
+            print("File exists at path: \(post.link)")
         } else {
+            print("File does not exist, loading default video")
             // Fallback to the default video included in the app bundle
-            videoURL = Bundle.main.url(forResource: "videoSong", withExtension: "mp4")
-        }
-        
-        // Make sure there's a URL to play, otherwise log an error
-        guard let validVideoURL = videoURL else {
-            print("No valid video file found.")
-            return
+            guard let fallbackURL = Bundle.main.url(forResource: "videoSong", withExtension: "mp4") else {
+                print("Failed to load fallback video.")
+                return
+            }
+            videoURL = fallbackURL
         }
         
         // Initialize the player with the chosen video URL
-        player = AVPlayer(url: validVideoURL)
+        player = AVPlayer(url: videoURL!)
         let playerLayer = AVPlayerLayer(player: player)
         playerLayer.frame = videoPlayView.bounds
         playerLayer.videoGravity = .resizeAspect
@@ -92,6 +98,7 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource, UITable
         isPlaying = false
         playPauseButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
     }
+
 
     
     private func setupPlaybackControls() {
@@ -146,28 +153,27 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     private func loadPost() {
-        guard let currentPost = posts.first(where: { $0.id == postId }),
-              let currentUser = currentUser else {
-            print("Post or current user not found")
-            return
-        }
-        
+        guard let currentPost = dataController.fetchPost(postId: postId) else {return}
         self.post = currentPost
-        // Update basic UI elements
-        postedByImage.image = currentPost.postedBy.image ?? UIImage(systemName: "person.circle.fill")
+        self.postComments = dataController.fetchCommentsForPost(post: currentPost)
+        
+                // Update basic UI elements
+        guard let user = dataController.fetchUser(userId: currentPost.postedBy) else {return}
+        
+        postedByImage.image = UIImage(contentsOfFile: user.image ?? "") ?? UIImage(named: user.image ?? "") ?? UIImage(systemName: "person.circle.fill")
         postedByImage.layer.cornerRadius = postedByImage.frame.width/2
-        postedByName.text = currentPost.postedBy.name
+        postedByName.text = user.name
         likeCountLabel.text = "\(currentPost.likes)"
         shareCountLabel.text = "\(currentPost.shares)"
         commentCountLabel.text = "\(currentPost.comments.count)"
         
         // Update save status
-        let isSaved = currentUser.savedPosts.contains(where: { $0.id == currentPost.id })
+        let isSaved = dataController.currentUser!.savedPosts.contains(currentPost.id)
         saveTextLabel.text = isSaved ? "Saved" : "Save"
         saveButton.setImage(UIImage(systemName: isSaved ? "square.and.arrow.down.fill" : "square.and.arrow.down"), for: .normal)
         
         // Update like status
-        let isLiked = currentUser.likedPosts.contains(where: { $0.id == currentPost.id })
+        let isLiked = dataController.currentUser!.likedPosts.contains(currentPost.id)
         likeButton.setImage(UIImage(systemName: isLiked ? "heart.fill" : "heart"), for: .normal)
         
         setupProfilePhotoGesture()
@@ -212,43 +218,42 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource, UITable
             strongSelf.timeSlider.value = Float(seconds / durationSeconds)
         }
     }
+    
     @IBAction func didTapSaveButton() {
+        guard let post = self.post else { return }
 
-        if let savedIndex = currentUser?.savedPosts.firstIndex(where: {$0.id == post?.id}) {
-            // Post is already saved, so unsave it
-            currentUser?.savedPosts.remove(at: savedIndex)
-            saveButton.setImage(UIImage(systemName: "square.and.arrow.down"), for: .normal) // Icon for unsaved
-            saveTextLabel.text = "Save" // Text for unsaved state
-        } else {
-            // Post is not saved, so save it
-            currentUser?.savedPosts.append(post!)
-            saveButton.setImage(UIImage(systemName: "square.and.arrow.down.fill"), for: .normal) // Icon for saved
-            saveTextLabel.text = "Saved" // Text for saved state
+        // Toggle save status in the data model
+        dataController.toggleSavePost(postId: post.id)
+
+        // Update the UI based on the new state
+        let isNowSaved = dataController.currentUser?.savedPosts.contains(post.id) ?? false
+        
+        saveButton.setImage(UIImage(systemName: isNowSaved ? "square.and.arrow.down.fill" : "square.and.arrow.down"), for: .normal)
+        saveTextLabel.text = isNowSaved ? "Saved" : "Save"
+    }
+
+    @IBAction func didTapLikeButton() {
+        guard let post = self.post else { return }
+
+        // Toggle like status in the data model
+        DataController.shared.toggleLikePost(postId: post.id)
+
+        // Update the UI based on the new state
+        let isNowLiked = dataController.currentUser?.likedPosts.contains(post.id) ?? false
+        likeButton.setImage(UIImage(systemName: isNowLiked ? "heart.fill" : "heart"), for: .normal)
+
+        // Update like count display
+        if let updatedPostIndex = dataController.posts.firstIndex(where: { $0.id == post.id }) {
+            let updatedLikeCount = dataController.posts[updatedPostIndex].likes
+            likeCountLabel.text = "\(updatedLikeCount)"
         }
     }
-    
-    @IBAction func didTapLikeButton() {
-        if let postIndex = posts.firstIndex(where: { $0.id == postId }) {
-                let isCurrentlyLiked = likeButton.currentImage == UIImage(systemName: "heart.fill")
-                // Toggle the like state based on the current image
-                posts[postIndex].likePost(liked: !isCurrentlyLiked)
-                currentUser?.likePost(post: posts[postIndex], liked: !isCurrentlyLiked)
-                
-                // Update the button's image and like count display
-                let newImageName = isCurrentlyLiked ? "heart" : "heart.fill"
-              likeButton.setImage(UIImage(systemName: newImageName), for: .normal)
-               likeCountLabel.text = "\(posts[postIndex].likes)"
-                
-            } else {
-                print("Post with UUID: \(postId) not found.")
-            }
-        }
+
     
     func didTapProfilePhoto() {
-        if let destinationVC = storyboard?.instantiateViewController(withIdentifier: "viewProfileController") as? ViewProfileOtherViewController,
-           let uuid = post?.id{
-            let postedBy = posts.first(where: {$0.id == uuid})?.postedBy
-            destinationVC.userId = postedBy?.id ?? ""
+        if let destinationVC = storyboard?.instantiateViewController(withIdentifier: "viewProfileController") as? ViewProfileOtherViewController{
+            let postedBy = post!.postedBy
+            destinationVC.userId = postedBy
             self.navigationController?.pushViewController(destinationVC, animated: true)
         }
     }
@@ -263,17 +268,7 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource, UITable
             showAlert(message: "Please enter a comment before sending.")
             return
         }
-
-        // Step 3: Create a new Comment
-        let newComment = Comment(postedBy: currentUser!, postedOn: Date(), body: commentText, isQuestion: false) // Adjust `isQuestion` as needed
-
-        // Step 4: Find the current post and add the comment to it
-        if let index = posts.firstIndex(where: { $0.id == postId }) {
-            posts[index].comments.append(newComment)
-        }
-        post?.comments.append(newComment)
-
-        // Step 5: Reload the comment table
+        dataController.newComment(post: post!, postedBy: dataController.currentUser!, body: commentText)
         commentsTableView.reloadData()
     }
 

@@ -11,14 +11,14 @@ class CustomTabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        generateDummyData()
+//        dataController.generateDummyData()
         configureTabsBasedOnUserRole()
     }
     
     private func configureTabsBasedOnUserRole() {
 //        guard let user = fetchCurrentUser() else { return }
 
-        if !(currentUser!.isElderly) {
+        if !(dataController.currentUser!.isElderly) {
             var viewControllers = self.viewControllers
             viewControllers?.remove(at: 2) // Assuming "Add New" tab is at index 2
             self.viewControllers = viewControllers

@@ -110,6 +110,9 @@
                             </backgroundConfiguration>
                             <color key="baseForegroundColor" systemColor="systemRedColor"/>
                         </buttonConfiguration>
+                        <connections>
+                            <action selector="didTapDeleteLive:" destination="9hl-19-kqF" eventType="touchUpInside" id="d9d-KE-XWh"/>
+                        </connections>
                     </button>
                 </subviews>
                 <constraints>

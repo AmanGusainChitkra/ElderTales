@@ -12,20 +12,22 @@ class CategoriesViewController: UIViewController, UICollectionViewDataSource, UI
     weak var delegate: CategoriesViewControllerDelegate?
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return categories.count
+        return dataController.categories.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "categoryCell", for: indexPath) as! CategoriesCollectionViewCell
-        let category = categories[indexPath.row]
-        cell.categoryImage.image = category.image
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "categoryMainCell", for: indexPath) as! CategoriesCollectionViewCell
+        let category = dataController.categories[indexPath.row]
+
         cell.categoryNameLabel.text = category.title
+        print(category.image)
+        cell.categoryImage.image = dataController.fetchImage(imagePath: category.image) ?? UIImage(systemName: "apple.terminal")
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! CategoriesCollectionViewCell
-        let category = categories.first(where: {$0.title == cell.categoryNameLabel.text})
+        let category = dataController.categories.first(where: {$0.title == cell.categoryNameLabel.text})
         
         delegate?.categoryViewController(self, didSelectCategory: category!)
             dismiss(animated: true, completion: nil)
@@ -38,26 +40,32 @@ class CategoriesViewController: UIViewController, UICollectionViewDataSource, UI
         configureCollectionViewLayout()
         collectionView.dataSource = self
         collectionView.delegate = self
+        let nib = UINib(nibName: "categoryCell", bundle: nil)
+        self.collectionView.register(nib, forCellWithReuseIdentifier: "categoryMainCell")
     }
+    
+    
     private func configureCollectionViewLayout() {
         collectionView.collectionViewLayout = UICollectionViewCompositionalLayout { sectionIndex, layoutEnvironment in
             // Define the size for each item
-            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .fractionalHeight(0.8)) // Adjusted width and height
+            let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(150), heightDimension: .absolute(110))
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
-            item.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10) // Adjusted padding for better centering
-            
-            // Define the size for the group
-            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(250)) // Adjusted group height to absolute value for better control
-            let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item]) // Changed to vertical group for stacking
+            item.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
+
+            // Define the size for the group. We use .estimated here for height to accommodate various device orientations and sizes.
+            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(260))
+            // Create a horizontal group to line up items in a row.
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
 
             // Define the section
             let section = NSCollectionLayoutSection(group: group)
             section.interGroupSpacing = 20
-            section.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 15, bottom: 20, trailing: 15) // Adjusted insets for overall section
-            
+            section.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 15, bottom: 20, trailing: 15)
+
             return section
         }
     }
+
 
 
     

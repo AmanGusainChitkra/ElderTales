@@ -21,6 +21,7 @@ class HomeViewController: UIViewController, UITableViewDataSource,UITableViewDel
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         let nib = UINib(nibName: "postCell", bundle: nil)
             homeTableView.register(nib, forCellReuseIdentifier: "postCell")
         clearFilterButton.isHidden = true
@@ -59,13 +60,13 @@ class HomeViewController: UIViewController, UITableViewDataSource,UITableViewDel
     var selectedPosts: [Post] {
         get {
             // Filter posts based on whether they are from followed users or all users
-            let other_posts = posts.filter({$0.postedBy.id != currentUser?.id})
+            let other_posts = dataController.fetchAllPosts()
             let basePosts: [Post] = {
                 switch forYouSegmentedControl.selectedSegmentIndex {
                 case 0:  // "For You" - Posts from followed users
                     return other_posts.filter { post in
-                        currentUser!.following.contains { followedUser in
-                            followedUser.id == post.postedBy.id
+                        dataController.currentUser!.following.contains { followedUserId in
+                            followedUserId == post.postedBy
                         }
                     }
                 case 1:
@@ -92,7 +93,7 @@ class HomeViewController: UIViewController, UITableViewDataSource,UITableViewDel
             // Further filter by the selected category, if any
             if let selectedCategory = selectedCategory {
                 return mediaFilteredPosts.filter { post in
-                    post.suitableCategories.contains(where: { $0.title == selectedCategory.title })
+                    post.suitableCategories.contains(selectedCategory.title)
                 }
             } else {
                 return mediaFilteredPosts
@@ -106,9 +107,9 @@ class HomeViewController: UIViewController, UITableViewDataSource,UITableViewDel
     
     func didTapProfilePhoto(for cell: HomePostTableViewCell) {
         if let destinationVC = storyboard?.instantiateViewController(withIdentifier: "viewProfileController") as? ViewProfileOtherViewController,
-           let uuid = cell.uuid{
-            let postedBy = posts.first(where: {$0.id == uuid})?.postedBy
-            destinationVC.userId = postedBy?.id ?? ""
+           let uuid = cell.uuid,
+           let post = dataController.fetchPost(postId: uuid){
+            destinationVC.userId = post.postedBy
             self.navigationController?.pushViewController(destinationVC, animated: true)
         }
     }
@@ -137,41 +138,32 @@ class HomeViewController: UIViewController, UITableViewDataSource,UITableViewDel
     }
     
     func didTapSaveButton(for cell: HomePostTableViewCell) {
-        guard let postIndex = posts.firstIndex(where: {$0.id == cell.uuid}) else { return }
-        let post = posts[postIndex]
+        guard let post = dataController.fetchPost(postId: cell.uuid!) else { return }
+
+        // Toggle save status in the data model
+        dataController.toggleSavePost(postId: post.id)
+
+        // Update the UI based on the new state
+        let isNowSaved = dataController.currentUser?.savedPosts.contains(post.id) ?? false
         
-        if let savedIndex = currentUser?.savedPosts.firstIndex(where: {$0.id == post.id}) {
-            // Post is already saved, so unsave it
-            currentUser?.savedPosts.remove(at: savedIndex)
-            cell.saveButton.setImage(UIImage(systemName: "square.and.arrow.down"), for: .normal) // Icon for unsaved
-            cell.saveLabel.text = "Save" // Text for unsaved state
-        } else {
-            // Post is not saved, so save it
-            currentUser?.savedPosts.append(post)
-            cell.saveButton.setImage(UIImage(systemName: "square.and.arrow.down.fill"), for: .normal) // Icon for saved
-            cell.saveLabel.text = "Saved" // Text for saved state
-        }
+        cell.saveButton.setImage(UIImage(systemName: isNowSaved ? "square.and.arrow.down.fill" : "square.and.arrow.down"), for: .normal)
+        cell.saveLabel.text = isNowSaved ? "Saved" : "Save"
     }
 
     
     func didTapFollowButton(for cell: HomePostTableViewCell) {
-        guard let postId = cell.uuid else { return  }
-        guard let post = posts.first(where: {$0.id == postId}) else {
+        guard let postId = cell.uuid,
+              let post = DataController.shared.fetchPost(postId: postId) else {
             print("Post not found.")
             return
         }
 
-        if let index = currentUser?.following.firstIndex(where: { $0.id == post.postedBy.id }) {
-            // User is already followed, unfollow them
-            currentUser?.following.remove(at: index)
-            configureFollowButton(cell.followButton, isFollowing: false)
-            print("unfollowed")
-        } else {
-            // Follow the user
-            currentUser?.following.append(post.postedBy)
-            configureFollowButton(cell.followButton, isFollowing: true)
-            print("followed")
-        }
+        // Toggle follow status in the data model
+        DataController.shared.toggleFollowUser(userId: post.postedBy)
+
+        // Update the UI based on the new state
+        let isFollowing = DataController.shared.currentUser?.following.contains(post.postedBy) ?? false
+        configureFollowButton(cell.followButton, isFollowing: isFollowing)
     }
 
     func configureFollowButton(_ button: UIButton, isFollowing: Bool) {
@@ -192,21 +184,19 @@ class HomeViewController: UIViewController, UITableViewDataSource,UITableViewDel
 
     
     func didTapLikeButton(for cell: HomePostTableViewCell) {
-        if let uuid = cell.uuid {
-            if let postIndex = posts.firstIndex(where: { $0.id == uuid }) {
-                let isCurrentlyLiked = cell.likeButton.currentImage == UIImage(systemName: "heart.fill")
-                // Toggle the like state based on the current image
-                posts[postIndex].likePost(liked: !isCurrentlyLiked)
-                currentUser?.likePost(post: posts[postIndex], liked: !isCurrentlyLiked)
-                
-                // Update the button's image and like count display
-                let newImageName = isCurrentlyLiked ? "heart" : "heart.fill"
-                cell.likeButton.setImage(UIImage(systemName: newImageName), for: .normal)
-                cell.likeCount.text = "\(posts[postIndex].likes)"
-                
-            } else {
-                print("Post with UUID: \(uuid) not found.")
-            }
+        guard let post = dataController.fetchPost(postId: cell.uuid!) else { return }
+
+        // Toggle like status in the data model
+        DataController.shared.toggleLikePost(postId: post.id)
+
+        // Update the UI based on the new state
+        let isNowLiked = dataController.currentUser?.likedPosts.contains(post.id) ?? false
+        cell.likeButton.setImage(UIImage(systemName: isNowLiked ? "heart.fill" : "heart"), for: .normal)
+
+        // Update like count display
+        if let updatedPostIndex = dataController.posts.firstIndex(where: { $0.id == post.id }) {
+            let updatedLikeCount = dataController.posts[updatedPostIndex].likes
+            cell.likeCount.text = "\(updatedLikeCount)"
         }
     }
 
@@ -233,23 +223,26 @@ class HomeViewController: UIViewController, UITableViewDataSource,UITableViewDel
 
         let post = selectedPosts[indexPath.row]
         cell.uuid = post.id
-        let isSaved = currentUser?.savedPosts.contains(where: {$0.id == post.id}) ?? false
+        let isSaved = dataController.currentUser?.savedPosts.contains(post.id) ?? false
         
-        cell.profilePhotoUIImage.image = post.postedBy.image
-        cell.usernameLabel.text = post.postedBy.name
+        if let user = dataController.fetchUser(userId: post.postedBy){
+            cell.usernameLabel.text = user.name
+            cell.profilePhotoUIImage.image = dataController.fetchImage(imagePath: user.image) ?? UIImage(systemName: "person.circle.fill")
+        }
+        
         cell.storyTitleLabel.text = post.title
         cell.thumbnailUIImage.image = UIImage(named: "youngster")
         
         // Set the interaction buttons and counts
         var heartState = ""
-        if(currentUser!.likedPosts.contains(where: { $0.id == post.id})){
+        if(dataController.currentUser!.likedPosts.contains(post.id)){
             heartState = "heart.fill"
         }
         else {heartState = "heart"}
             cell.likeButton.setImage(UIImage(systemName: heartState), for: .normal)
 
         
-        if(currentUser?.following.contains(where: {$0.id == post.postedBy.id}) ?? false){
+        if(dataController.currentUser?.following.contains(post.postedBy) ?? false){
             cell.followButton.isHidden = true
         } else {
             cell.followButton.isHidden = false
@@ -292,22 +285,22 @@ class HomeViewController: UIViewController, UITableViewDataSource,UITableViewDel
 
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "nowPlayingSegue" {
-                if let destinationVC = segue.destination as? NowPlayingViewController,
-                   let cell = sender as? HomePostTableViewCell,
-                   let uuid = cell.uuid{
-                    print("UUID: \(uuid)")
-                    destinationVC.postId = uuid
-                }
-            }
-        if segue.identifier == "viewProfileSegue"{
-            if let destinationVC = segue.destination as? ViewProfileOtherViewController,
-               let cell = sender as? HomePostTableViewCell,
-               let uuid = cell.uuid{
-                let postedBy = posts.first(where: {$0.id == uuid})?.postedBy
-                destinationVC.userId = postedBy?.id ?? ""
-            }
-        }
+//        if segue.identifier == "nowPlayingSegue" {
+//                if let destinationVC = segue.destination as? NowPlayingViewController,
+//                   let cell = sender as? HomePostTableViewCell,
+//                   let uuid = cell.uuid{
+//                    print("UUID: \(uuid)")
+//                    destinationVC.postId = uuid
+//                }
+//            }
+//        if segue.identifier == "viewProfileSegue"{
+//            if let destinationVC = segue.destination as? ViewProfileOtherViewController,
+//               let cell = sender as? HomePostTableViewCell,
+//               let uuid = cell.uuid{
+//                let postedBy = posts.first(where: {$0.id == uuid})?.postedBy
+//                destinationVC.userId = postedBy?.id ?? ""
+//            }
+//        }
     }
     
 

@@ -99,6 +99,9 @@
                             </backgroundConfiguration>
                             <color key="baseForegroundColor" systemColor="systemRedColor"/>
                         </buttonConfiguration>
+                        <connections>
+                            <action selector="didTapDeleteLive:" destination="R3s-4h-biy" eventType="touchUpInside" id="mJf-6T-OaE"/>
+                        </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2 March" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9vz-BC-9yd">
                         <rect key="frame" x="152" y="87" width="88" height="25"/>

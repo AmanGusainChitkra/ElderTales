@@ -26,8 +26,14 @@ class MyLiveOngoingViewController: UIViewController, UITableViewDataSource {
         let cell = commentTableView.dequeueReusableCell(withIdentifier: "liveCommentCell", for: indexPath) as! LiveCommentTableViewCell
         
         let comment = comments[indexPath.row]
-        cell.profileImage.image = comment.postedBy.image
-        cell.userNameLabel.text = comment.postedBy.name
+        guard let user = dataController.fetchUser(userId: comment.postedBy) else {return cell}
+        
+        if let imagePath = user.image{
+            cell.profileImage.image = UIImage(contentsOfFile: imagePath) ?? UIImage(named: imagePath)
+        } else {
+            cell.profileImage.image = UIImage(systemName: "person.circle.fill")
+        }
+        cell.userNameLabel.text = user.name
         cell.commentTextView.text = comment.body
         
         return cell
@@ -41,11 +47,13 @@ class MyLiveOngoingViewController: UIViewController, UITableViewDataSource {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        live = lives.first(where: {$0.id == liveId})
+        live = dataController.fetchLive(liveId: liveId)
         commentTableView.dataSource = self
         startCommentSimulation()
         setupVideoCapture()
         self.navigationItem.title = live?.title
+        self.navigationItem.largeTitleDisplayMode = .never
+
     }
     
     func setupVideoCapture() {
@@ -87,7 +95,7 @@ class MyLiveOngoingViewController: UIViewController, UITableViewDataSource {
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] timer in
             guard let self = self else { return }
             // Create a new comment
-            let newComment = Comment(postedBy: users[1], postedOn: Date(), body: "New comment coming in!", isQuestion: false)
+            let newComment = Comment(postedBy: dataController.users[1].id, postedOn: Date(), postId: liveId, body: "New comment coming in!", isQuestion: false)
 
             DispatchQueue.main.async {
                 // Append the new comment to the data source first
@@ -118,6 +126,7 @@ class MyLiveOngoingViewController: UIViewController, UITableViewDataSource {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         captureSession?.stopRunning()
+        dataController.endLive(liveId: live!.id)
     }
 
     @IBAction func didTapCancel(_ sender: Any) {

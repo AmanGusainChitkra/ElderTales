@@ -9,7 +9,8 @@ import UIKit
 
 class EditProfileViewController: UIViewController, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     var userId:String = ""
-    var userIndex:Int?
+    var user:User?
+    var imagePath:String?
     var sections:[String] = ["nameCell", "usernameCell", "bioCell"]
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         sections.count
@@ -19,15 +20,17 @@ class EditProfileViewController: UIViewController, UITableViewDataSource, UIImag
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = editTableView.dequeueReusableCell(withIdentifier: sections[indexPath.row], for: indexPath) as! EditProfileTableViewCell
-        switch indexPath.row{
-        case 0:
-            cell.nameTextField.text = users[self.userIndex!].name
-        case 1:
-            cell.usernameTextField.text = users[self.userIndex!].email
-        case 2:
-            cell.bioTextField.text = users[self.userIndex!].description
-        default:
-            print("invalid")
+        if let user = user{
+            switch indexPath.row{
+            case 0:
+                cell.nameTextField.text = user.name
+            case 1:
+                cell.usernameTextField.text = user.email
+            case 2:
+                cell.bioTextField.text = user.description
+            default:
+                print("invalid")
+            }
         }
         return cell
     }
@@ -39,10 +42,9 @@ class EditProfileViewController: UIViewController, UITableViewDataSource, UIImag
     override func viewDidLoad() {
         super.viewDidLoad()
         editTableView.dataSource = self
-        guard let userIndex = users.firstIndex(where: {$0.id == userId}) else { return }
-        self.userIndex = userIndex
-        let user = users[userIndex]
-        self.profileImage.image = user.image
+        guard let user = dataController.fetchUser(userId: userId) else { return }
+        self.user = user
+        self.profileImage.image = dataController.fetchImage(imagePath: user.image) ?? UIImage(systemName: "person.circle.fill")
         self.profileImage.layer.borderWidth = 1
         self.profileImage.layer.cornerRadius = self.profileImage.frame.width/2
         
@@ -92,52 +94,58 @@ class EditProfileViewController: UIViewController, UITableViewDataSource, UIImag
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let editedImage = info[.editedImage] as? UIImage {
-            if let userIndex = users.firstIndex(where: {$0.id == userId}){
-                self.profileImage.image = editedImage
-            }
+            self.profileImage.image = editedImage
+            saveImage(image: editedImage)
         } else if let originalImage = info[.originalImage] as? UIImage {
-            // Use the original image
+            self.profileImage.image = originalImage
+            saveImage(image: originalImage)
         }
         picker.dismiss(animated: true, completion: nil)
     }
 
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        picker.dismiss(animated: true, completion: nil)
+    private func saveImage(image: UIImage) {
+        if let data = image.jpegData(compressionQuality: 1.0) {
+            let filename = getDocumentsDirectory().appendingPathComponent("profile_image.jpg")
+            try? data.write(to: filename)
+            self.imagePath = filename.path
+        }
+    }
+
+    private func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
     }
 
     @IBAction func didTapSave(_ sender: Any) {
-        // Assuming 'users' is an array of a user struct that is accessible in this context
-        
-        guard let userIndex = userIndex else { return }
-        
-        // Retrieve data from cells
         let nameCell = editTableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? EditProfileTableViewCell
-        let usernameCell = editTableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? EditProfileTableViewCell
+        let emailCell = editTableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? EditProfileTableViewCell
         let bioCell = editTableView.cellForRow(at: IndexPath(row: 2, section: 0)) as? EditProfileTableViewCell
-        
-        if nameCell?.nameTextField.text?.isEmpty ?? true || usernameCell?.usernameTextField.text?.isEmpty ?? true {
-            // Alert the user that they need to fill out all fields
-            let alert = UIAlertController(title: "Error", message: "Please fill out all fields.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default))
-            present(alert, animated: true)
+
+        guard let newName = nameCell?.nameTextField.text,
+              let newEmail = emailCell?.usernameTextField.text,
+              !newName.isEmpty, !newEmail.isEmpty else {
+            presentAlert(title: "Error", message: "Please fill out all fields.")
             return
         }
 
-        // Update the user in the array
-        users[userIndex].name = nameCell?.nameTextField.text ?? ""
-        users[userIndex].email = usernameCell?.usernameTextField.text ?? ""
-        users[userIndex].description = bioCell?.bioTextField.text ?? ""
-        users[userIndex].image = profileImage.image
-        dismiss(animated: true, completion: nil)
-        
-        let alert = UIAlertController(title: "Saved", message: "Details updated successfully", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
-        present(alert, animated: true)
-        
+        let newDescription = bioCell?.bioTextField.text ?? ""
+        let imagePath = self.imagePath ?? user?.image
 
+        dataController.updateUserDetails(name: newName, email: newEmail, description: newDescription, imagePath: imagePath)
+        
+        presentAlert(title: "Saved", message: "Details updated successfully")
     }
 
-    
+    private func presentAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak self] _ in
+            // Pop the view controller
+            self?.dismiss(animated: true)
+        }))
+        
+        present(alert, animated: true)
+    }
+
     @IBAction func didTapCancel(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }

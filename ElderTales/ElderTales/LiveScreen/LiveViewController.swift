@@ -8,6 +8,29 @@ import SwiftUI
 import EventKit
 
 class LiveViewController: UIViewController, UITableViewDataSource, LiveOtherViewCellDelegate{
+    func didTapProfilePhoto(for cell: LiveOtherTableViewCell) {
+        if let destinationVC = storyboard?.instantiateViewController(withIdentifier: "viewProfileController") as? ViewProfileOtherViewController,let live = dataController.fetchLive(liveId: cell.uuid){
+            destinationVC.userId = live.postedBy
+            self.navigationController?.pushViewController(destinationVC, animated: true)
+        }
+    }
+    
+    func didTapDeleteLiveButton(for cell: LiveOtherTableViewCell) {
+        let alert = UIAlertController(title: "Delete Live", message: "Are you sure you want to delete this live session?", preferredStyle: .alert)
+        
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
+            dataController.deleteLive(liveId: cell.uuid)
+            // Optionally, update UI or pop viewController if needed
+            self?.liveTableView.reloadData()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        
+        alert.addAction(deleteAction)
+        alert.addAction(cancelAction)
+        
+        self.present(alert, animated: true)
+    }
+    
     func didTapJoinLiveOtherButton(for cell: LiveOtherTableViewCell) {
         //push destination controller and set destination.liveId to cell.uuid
         if let liveOngoingViewController = storyboard?.instantiateViewController(withIdentifier: "liveOngoingOtherViewController") as? LiveOngoingViewController {
@@ -17,8 +40,8 @@ class LiveViewController: UIViewController, UITableViewDataSource, LiveOtherView
     }
     
     func didTapJoinLiveMyButton(for cell: LiveOtherTableViewCell) {
-
-        if let liveOngoingMyViewController = storyboard?.instantiateViewController(withIdentifier: "liveOngoingOtherViewController") as? MyLiveOngoingViewController {
+        
+        if let liveOngoingMyViewController = storyboard?.instantiateViewController(withIdentifier: "liveOngoingMyViewController") as? MyLiveOngoingViewController {
             liveOngoingMyViewController.liveId = cell.uuid
             self.navigationController?.pushViewController(liveOngoingMyViewController, animated: true)
         }
@@ -26,7 +49,12 @@ class LiveViewController: UIViewController, UITableViewDataSource, LiveOtherView
     
     
     func didTapJoinLiveButton(for cell: LiveOtherTableViewCell) {
-        performSegue(withIdentifier: "joinLiveSegue", sender: cell)
+        
+        print("Join Live tapped")
+        if let joinLiveViewController = storyboard?.instantiateViewController(withIdentifier: "liveOngoingOtherViewController") as? MyLiveOngoingViewController {
+            joinLiveViewController.liveId = cell.uuid
+            self.navigationController?.pushViewController(joinLiveViewController, animated: true)
+        }
     }
     
     
@@ -35,9 +63,11 @@ class LiveViewController: UIViewController, UITableViewDataSource, LiveOtherView
             // Determine which posts to return based on the segmented control's selection.
             switch segmentedControl.selectedSegmentIndex {
             case 0:
-                return lives.filter { $0.postedBy.id != currentUser?.id}
+                let allLives = dataController.fetchAllLives()
+                return allLives.filter { $0.postedBy != dataController.currentUser?.id && !$0.isFinished}
+                
             case 1:
-                return lives.filter { $0.postedBy.id == currentUser?.id }
+                return dataController.fetchLives(postedBy: dataController.currentUser!.id)
             default:
                 return []
             }
@@ -60,6 +90,8 @@ class LiveViewController: UIViewController, UITableViewDataSource, LiveOtherView
             identifier = live.isOngoing ? "liveOtherLiveCell" : "liveOtherCell"
         case 1:
             identifier = live.isOngoing ? "liveMyLiveCell" : "liveMyLiveCell"
+            if(live.isFinished){identifier = "liveFinishedCell"}
+            
         default:
             identifier = "liveOtherLiveCell"
         }
@@ -69,13 +101,20 @@ class LiveViewController: UIViewController, UITableViewDataSource, LiveOtherView
         cell.dateOfLive.text = formatDate(live.beginsOn)
         cell.timeOfLive.text = formatTime(live.beginsOn)
 
-        cell.profilePhotoUIImage.image = UIImage(named: "otherPhoto") // Assuming you have a default or placeholder image
-        cell.username.text = live.postedBy.name
+         // Assuming you have a default or placeholder image
         cell.storyTitle.text = live.title
         cell.thumbnailUIImage.image = UIImage(named: "otherPhoto") // Placeholder or default image
+        
+        if let user = dataController.fetchUser(userId: live.postedBy){
+            cell.username.text = user.name
+            cell.profilePhotoUIImage.image = dataController.fetchImage(imagePath: user.image) ?? UIImage(systemName: "person.circle.fill")
+        }
         cell.uuid = live.id
         cell.delegate = self
         
+        if(live.isFinished){
+            cell.joinLiveButton.isEnabled = false
+        }
         return cell
     }
 
@@ -98,8 +137,6 @@ class LiveViewController: UIViewController, UITableViewDataSource, LiveOtherView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        generateDummyData()
         super.viewDidLoad()
        liveTableView.dataSource = self
 //        addLiveButton.layer.borderWidth = 2
@@ -108,7 +145,7 @@ class LiveViewController: UIViewController, UITableViewDataSource, LiveOtherView
     }
     
     func registerCellsToTable(){
-        let cells = ["liveOtherCell", "liveMyLiveCell", "liveMyCell","liveOtherLiveCell"]
+        let cells = ["liveOtherCell", "liveMyLiveCell", "liveMyCell","liveOtherLiveCell","liveFinishedCell"]
         for nibName in cells{
             let nib = UINib(nibName: nibName, bundle: nil)
             liveTableView.register(nib, forCellReuseIdentifier: nibName)
@@ -123,7 +160,7 @@ class LiveViewController: UIViewController, UITableViewDataSource, LiveOtherView
     }
     
     func didTapAddEventButton(for cell: LiveOtherTableViewCell) {
-        guard let live = lives.first(where: {$0.id == cell.uuid}) else {
+        guard let live = dataController.fetchLive(liveId: cell.uuid) else {
             return
         }
         
@@ -133,6 +170,7 @@ class LiveViewController: UIViewController, UITableViewDataSource, LiveOtherView
                 return
             }
             cell.addEventButton.setTitle("Event Added", for: .normal)
+            
             cell.addEventButton.backgroundColor = .clear
             strongSelf.addEventToCalendar(live: live)
         }
@@ -144,7 +182,10 @@ class LiveViewController: UIViewController, UITableViewDataSource, LiveOtherView
         event.startDate = live.beginsOn
         event.endDate = live.beginsOn.addingTimeInterval(2 * 60 * 60) // Assume 2 hours duration
         event.calendar = eventStore.defaultCalendarForNewEvents
-        event.notes = "Live event hosted by \(live.postedBy.name)"
+        if let user = dataController.fetchUser(userId: live.postedBy){
+            event.notes = "Live event hosted by \(user.name)"
+        }
+        
         
         // Add an alarm to the event to remind the user
         let alarm = EKAlarm(relativeOffset: -1800)  // 1 hour before the event
@@ -183,14 +224,14 @@ class LiveViewController: UIViewController, UITableViewDataSource, LiveOtherView
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "joinLiveSegue" {
-                if let destinationVC = segue.destination as? LiveOngoingViewController,
-                   let cell = sender as? LiveOtherTableViewCell{
-                   let uuid = cell.uuid
-                    print("UUID: \(uuid)")
-                    destinationVC.liveId = uuid
-                }
-            }
+//        if segue.identifier == "joinLiveSegue" {
+//                if let destinationVC = segue.destination as? LiveOngoingViewController,
+//                   let cell = sender as? LiveOtherTableViewCell{
+//                   let uuid = cell.uuid
+//                    print("UUID: \(uuid)")
+//                    destinationVC.liveId = uuid
+//                }
+//            }
 //        if segue.identifier == "viewProfileSegue"{
 //            if let destinationVC = segue.destination as? ViewProfileOtherViewController,
 //               let cell = sender as? HomePostTableViewCell,
@@ -210,6 +251,45 @@ class LiveViewController: UIViewController, UITableViewDataSource, LiveOtherView
             }
         }
     }
+    
+    @IBAction func didTapGoLive(_ sender: Any) {
+        let alertController = UIAlertController(title: "Start Live Session", message: "Enter the title for your live session.", preferredStyle: .alert)
+        
+        alertController.addTextField { textField in
+            textField.placeholder = "Live Session Title"
+        }
+        
+        let startAction = UIAlertAction(title: "Start Live", style: .default) { [weak self] _ in
+            guard let self = self, let title = alertController.textFields?.first?.text, !title.isEmpty else {
+                self?.presentAlert(title: "Error", message: "The title cannot be empty.")
+                return
+            }
+            
+            // Create a new live session
+            let newLive = Live(postedBy: dataController.currentUser!.id, postedOn: Date(), beginsOn: Date(), title: title, isOngoing: true)
+            dataController.addNewLive(live: newLive)
+            
+            // Navigate to the ongoing live session page
+            if let liveOngoingMyViewController = self.storyboard?.instantiateViewController(withIdentifier: "liveOngoingMyViewController") as? MyLiveOngoingViewController {
+                liveOngoingMyViewController.liveId = newLive.id
+                self.navigationController?.pushViewController(liveOngoingMyViewController, animated: true)
+            }
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        
+        alertController.addAction(startAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true)
+    }
+
+    private func presentAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
+
     
 
 }

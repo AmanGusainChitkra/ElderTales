@@ -30,6 +30,7 @@ class NewPostCameraViewController: UIViewController {
         ensureCameraPermission()
     }
     
+    
     func ensureCameraPermission(){
         switch AVCaptureDevice.authorizationStatus(for: .video) {
                 case .authorized:
@@ -133,7 +134,7 @@ class NewPostCameraViewController: UIViewController {
 //                    let outputPath = documentsPath.appendingPathComponent("output_\(dateString).mov")
                     print("Recording to: \(outputPath!)")
                     output.startRecording(to: outputPath!, recordingDelegate: self)
-                    recordButton.backgroundColor = UIColor.gray // Starts recording, button becomes gray
+                    recordButton.backgroundColor = UIColor.red // Starts recording, button becomes gray
                 }
             }
     }

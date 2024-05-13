@@ -7,6 +7,7 @@
 
 import UIKit
 
+
 class LiveOtherTableViewCell: UITableViewCell {
 
     
@@ -36,10 +37,16 @@ class LiveOtherTableViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         profilePhotoUIImage.layer.cornerRadius = profilePhotoUIImage.frame.width/2
+        setupProfilePhotoGesture()
     }
-    
-    
 
+    private func setupProfilePhotoGesture() {
+            let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(profilePhotoTapped))
+            profilePhotoUIImage.isUserInteractionEnabled = true
+            profilePhotoUIImage.addGestureRecognizer(tapGestureRecognizer)
+//        usernameLabel.addGestureRecognizer(tapGestureRecognizer)
+        }
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         super.setSelected(false, animated: animated)
@@ -62,6 +69,15 @@ class LiveOtherTableViewCell: UITableViewCell {
         delegate?.didTapJoinLiveMyButton(for: self)
     }
     
+    @IBAction func didTapDeleteLive(_ sender: Any) {
+        self.delegate?.didTapDeleteLiveButton(for: self)
+    }
+    
+    @objc private func profilePhotoTapped() {
+        // Call delegate or handle navigation to profile page
+        delegate?.didTapProfilePhoto(for: self)
+    }
+    
     weak var delegate: LiveOtherViewCellDelegate?
 
 }
@@ -74,5 +90,8 @@ protocol LiveOtherViewCellDelegate: AnyObject {
     func didTapJoinLiveOtherButton(for cell: LiveOtherTableViewCell)
     
     func didTapJoinLiveMyButton(for cell: LiveOtherTableViewCell)
-
+    
+    func didTapDeleteLiveButton(for cell: LiveOtherTableViewCell)
+    
+    func didTapProfilePhoto(for cell: LiveOtherTableViewCell)
 }

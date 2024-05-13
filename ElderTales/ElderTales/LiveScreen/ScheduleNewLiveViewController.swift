@@ -95,10 +95,10 @@ class ScheduleNewLiveViewController: UIViewController {
     @IBAction func scheduleLiveButtonTapped(_ sender: UIButton) {
         // Create the live session
         guard let title = titleTextField.text else {return}
-        let newLive = Live(postedBy: currentUser!, postedOn: Date(), beginsOn: datePicker.date, title: title)
+        let newLive = Live(postedBy: dataController.currentUser!.id, postedOn: Date(), beginsOn: datePicker.date, title: title)
         
         // Add to the global lives array
-        lives.insert(newLive, at: 0)
+        dataController.addNewLive(live: newLive)
         // Optionally, show confirmation to user
         showConfirmationAndPop()
     }
