@@ -15,6 +15,7 @@ class EditProfileViewController: UIViewController, UITableViewDataSource, UIImag
         sections.count
     }
     
+    var onDismiss: (() -> Void)?
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = editTableView.dequeueReusableCell(withIdentifier: sections[indexPath.row], for: indexPath) as! EditProfileTableViewCell
@@ -47,7 +48,13 @@ class EditProfileViewController: UIViewController, UITableViewDataSource, UIImag
         
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        onDismiss?()
+    }
     
+    deinit{
+        onDismiss?()
+    }
     @IBAction func didTapEditProfile(_ sender: Any) {
         let actionSheet = UIAlertController(title: "Edit Profile Picture", message: "Choose a source", preferredStyle: .actionSheet)
         

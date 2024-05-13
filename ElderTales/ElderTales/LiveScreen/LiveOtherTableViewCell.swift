@@ -54,6 +54,14 @@ class LiveOtherTableViewCell: UITableViewCell {
         delegate?.didTapAddEventButton(for: self)
     }
     
+    @IBAction func tappedJoinLiveOther(_ sender: Any) {
+        delegate?.didTapJoinLiveOtherButton(for: self)
+    }
+    
+    @IBAction func tappedJoinMyLive(_ sender: Any) {
+        delegate?.didTapJoinLiveMyButton(for: self)
+    }
+    
     weak var delegate: LiveOtherViewCellDelegate?
 
 }
@@ -63,6 +71,8 @@ protocol LiveOtherViewCellDelegate: AnyObject {
     
     func didTapAddEventButton(for cell: LiveOtherTableViewCell)
     
-    func didTapJoinLiveButton(for cell: LiveOtherTableViewCell)
+    func didTapJoinLiveOtherButton(for cell: LiveOtherTableViewCell)
     
+    func didTapJoinLiveMyButton(for cell: LiveOtherTableViewCell)
+
 }

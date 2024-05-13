@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MyProfileViewController:  UIViewController, UITableViewDataSource, HomePostTableViewCellDelegate {
+class MyProfileViewController:  UIViewController, UITableViewDataSource, HomePostTableViewCellDelegate, UITableViewDelegate {
     
     func didTapListenButton(for cell: HomePostTableViewCell) {
         if let nowPlayingVC = storyboard?.instantiateViewController(withIdentifier: "nowPlayingViewController") as? NowPlayingViewController {
@@ -67,8 +67,6 @@ class MyProfileViewController:  UIViewController, UITableViewDataSource, HomePos
     }
     
     func didTapProfilePhoto(for cell: HomePostTableViewCell) {
-        performSegue(withIdentifier: "viewProfileSegue", sender: cell)
-
     }
     
     func didTapFollowButton(for cell: HomePostTableViewCell) {
@@ -160,11 +158,8 @@ class MyProfileViewController:  UIViewController, UITableViewDataSource, HomePos
             cell.likeButton.setImage(UIImage(systemName: heartState), for: .normal)
 
         
-        if(currentUser?.following.contains(where: {$0.id == post.postedBy.id}) ?? false){
-            cell.followButton.isHidden = true
-        } else {
-            cell.followButton.isHidden = false
-        }
+        cell.followButton.isHidden = true
+        
             
         cell.likeCount.text = "\(post.likes)"
         
@@ -207,6 +202,7 @@ class MyProfileViewController:  UIViewController, UITableViewDataSource, HomePos
         setDetails()
         selectedPosts = []
         profileTableView.dataSource = self
+        profileTableView.delegate = self
         profileImage.clipsToBounds = true
         profileImage.layer.cornerRadius = 35
         profileImage.layer.borderWidth = 1
@@ -257,6 +253,10 @@ class MyProfileViewController:  UIViewController, UITableViewDataSource, HomePos
         dismiss(animated: true, completion: nil)
     }
 
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath) as? HomePostTableViewCell
+            cell?.delegate?.didTapListenButton(for: cell!)
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         self.profileTableView.reloadData()
@@ -282,6 +282,14 @@ class MyProfileViewController:  UIViewController, UITableViewDataSource, HomePos
     }
     
     @IBAction func didTapEditProfile(_ sender: Any) {
+        if let editProfileNavigation = storyboard?.instantiateViewController(withIdentifier: "editProfileNavigation") as? UINavigationController{
+            editProfileNavigation.modalPresentationStyle = .formSheet
+            if let editProfileVC = editProfileNavigation.viewControllers.first as? EditProfileViewController {
+             editProfileVC.userId = currentUser?.id ?? ""
+                editProfileVC.onDismiss = {[weak self] in self?.setDetails()}
+            present(editProfileNavigation, animated: true, completion: nil)
+         }
+        }
     }
     
     
@@ -322,7 +330,6 @@ class MyProfileViewController:  UIViewController, UITableViewDataSource, HomePos
                 if let navigationController = segue.destination as? UINavigationController,
                    let editProfileVC = navigationController.viewControllers.first as? EditProfileViewController {
                     editProfileVC.userId = currentUser?.id ?? ""
-                    // Set any other data needed for the EditProfileViewController
                 }
             }
     }

@@ -14,11 +14,14 @@
 		3F164C722BDFC103002BE024 /* MyProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F164C712BDFC103002BE024 /* MyProfileViewController.swift */; };
 		3F164C742BDFC177002BE024 /* MyProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F164C732BDFC177002BE024 /* MyProfileTableViewCell.swift */; };
 		3F202E592BEFBE51005DB6AB /* postCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F202E582BEFBE51005DB6AB /* postCell.xib */; };
-		3F202E5E2BF0B2CF005DB6AB /* liveCells.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F202E5D2BF0B2CF005DB6AB /* liveCells.xib */; };
+		3F202E5E2BF0B2CF005DB6AB /* liveOtherCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F202E5D2BF0B2CF005DB6AB /* liveOtherCell.xib */; };
 		3F4FAEEC2BD8CB48002DF688 /* MAIN.c in Sources */ = {isa = PBXBuildFile; fileRef = 3F4FAEEB2BD8CB48002DF688 /* MAIN.c */; };
 		3F4FAEEE2BD902E9002DF688 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4FAEED2BD902E9002DF688 /* HomeViewController.swift */; };
 		3F4FD6212BD917BC003A495E /* HomePostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4FD6202BD917BC003A495E /* HomePostTableViewCell.swift */; };
 		3F6B9BC32BDF71CA00A89409 /* NowPlayingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6B9BC22BDF71CA00A89409 /* NowPlayingViewController.swift */; };
+		3F6E32732BF0BB1300340E25 /* liveOtherLiveCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F6E32722BF0BB1300340E25 /* liveOtherLiveCell.xib */; };
+		3F6E32752BF0BB8E00340E25 /* liveMyCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F6E32742BF0BB8E00340E25 /* liveMyCell.xib */; };
+		3F6E32772BF0BC1600340E25 /* liveMyLiveCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F6E32762BF0BC1600340E25 /* liveMyLiveCell.xib */; };
 		3F6F3E2B2BEE3A9F001DCC19 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6F3E2A2BEE3A9F001DCC19 /* EditProfileViewController.swift */; };
 		3F6F3E2D2BEE3B4D001DCC19 /* EditProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6F3E2C2BEE3B4D001DCC19 /* EditProfileTableViewCell.swift */; };
 		3F71FA272BE88BE000D174CE /* CategoriesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F71FA262BE88BE000D174CE /* CategoriesCollectionViewCell.swift */; };
@@ -50,11 +53,14 @@
 		3F164C712BDFC103002BE024 /* MyProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileViewController.swift; sourceTree = "<group>"; };
 		3F164C732BDFC177002BE024 /* MyProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileTableViewCell.swift; sourceTree = "<group>"; };
 		3F202E582BEFBE51005DB6AB /* postCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = postCell.xib; sourceTree = "<group>"; };
-		3F202E5D2BF0B2CF005DB6AB /* liveCells.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = liveCells.xib; sourceTree = "<group>"; };
+		3F202E5D2BF0B2CF005DB6AB /* liveOtherCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = liveOtherCell.xib; sourceTree = "<group>"; };
 		3F4FAEEB2BD8CB48002DF688 /* MAIN.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = MAIN.c; sourceTree = "<group>"; };
 		3F4FAEED2BD902E9002DF688 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		3F4FD6202BD917BC003A495E /* HomePostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePostTableViewCell.swift; sourceTree = "<group>"; };
 		3F6B9BC22BDF71CA00A89409 /* NowPlayingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingViewController.swift; sourceTree = "<group>"; };
+		3F6E32722BF0BB1300340E25 /* liveOtherLiveCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = liveOtherLiveCell.xib; sourceTree = "<group>"; };
+		3F6E32742BF0BB8E00340E25 /* liveMyCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = liveMyCell.xib; sourceTree = "<group>"; };
+		3F6E32762BF0BC1600340E25 /* liveMyLiveCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = liveMyLiveCell.xib; sourceTree = "<group>"; };
 		3F6F3E2A2BEE3A9F001DCC19 /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		3F6F3E2C2BEE3B4D001DCC19 /* EditProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileTableViewCell.swift; sourceTree = "<group>"; };
 		3F71FA262BE88BE000D174CE /* CategoriesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -105,7 +111,10 @@
 			isa = PBXGroup;
 			children = (
 				3F202E582BEFBE51005DB6AB /* postCell.xib */,
-				3F202E5D2BF0B2CF005DB6AB /* liveCells.xib */,
+				3F202E5D2BF0B2CF005DB6AB /* liveOtherCell.xib */,
+				3F6E32722BF0BB1300340E25 /* liveOtherLiveCell.xib */,
+				3F6E32742BF0BB8E00340E25 /* liveMyCell.xib */,
+				3F6E32762BF0BC1600340E25 /* liveMyLiveCell.xib */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -295,12 +304,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F6E32732BF0BB1300340E25 /* liveOtherLiveCell.xib in Resources */,
 				3FE537752BD6574800E3330C /* Assets.xcassets in Resources */,
 				3FE537782BD6574800E3330C /* Base in Resources */,
 				3FF269AF2BE103D200E39CF0 /* videoSong.mp4 in Resources */,
 				3F202E592BEFBE51005DB6AB /* postCell.xib in Resources */,
+				3F6E32752BF0BB8E00340E25 /* liveMyCell.xib in Resources */,
 				3FE537732BD6574600E3330C /* Base in Resources */,
-				3F202E5E2BF0B2CF005DB6AB /* liveCells.xib in Resources */,
+				3F6E32772BF0BC1600340E25 /* liveMyLiveCell.xib in Resources */,
+				3F202E5E2BF0B2CF005DB6AB /* liveOtherCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -45,6 +45,7 @@ class MyLiveOngoingViewController: UIViewController, UITableViewDataSource {
         commentTableView.dataSource = self
         startCommentSimulation()
         setupVideoCapture()
+        self.navigationItem.title = live?.title
     }
     
     func setupVideoCapture() {

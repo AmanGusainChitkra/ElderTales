@@ -8,6 +8,22 @@ import SwiftUI
 import EventKit
 
 class LiveViewController: UIViewController, UITableViewDataSource, LiveOtherViewCellDelegate{
+    func didTapJoinLiveOtherButton(for cell: LiveOtherTableViewCell) {
+        //push destination controller and set destination.liveId to cell.uuid
+        if let liveOngoingViewController = storyboard?.instantiateViewController(withIdentifier: "liveOngoingOtherViewController") as? LiveOngoingViewController {
+            liveOngoingViewController.liveId = cell.uuid
+            self.navigationController?.pushViewController(liveOngoingViewController, animated: true)
+        }
+    }
+    
+    func didTapJoinLiveMyButton(for cell: LiveOtherTableViewCell) {
+
+        if let liveOngoingMyViewController = storyboard?.instantiateViewController(withIdentifier: "liveOngoingOtherViewController") as? MyLiveOngoingViewController {
+            liveOngoingMyViewController.liveId = cell.uuid
+            self.navigationController?.pushViewController(liveOngoingMyViewController, animated: true)
+        }
+    }
+    
     
     func didTapJoinLiveButton(for cell: LiveOtherTableViewCell) {
         performSegue(withIdentifier: "joinLiveSegue", sender: cell)
@@ -38,14 +54,14 @@ class LiveViewController: UIViewController, UITableViewDataSource, LiveOtherView
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let live = selectedLives[indexPath.row]
-        var identifier = live.isOngoing ? "liveOtherLive" : "liveOther"
+        var identifier = live.isOngoing ? "liveOtherLiveCell" : "liveOtherCell"
         switch(segmentedControl.selectedSegmentIndex) {
         case 0:
-            identifier = live.isOngoing ? "liveOtherLive" : "liveOther"
+            identifier = live.isOngoing ? "liveOtherLiveCell" : "liveOtherCell"
         case 1:
-            identifier = live.isOngoing ? "liveMyLive" : "liveMy"
+            identifier = live.isOngoing ? "liveMyLiveCell" : "liveMyLiveCell"
         default:
-            identifier = "liveOtherLive"
+            identifier = "liveOtherLiveCell"
         }
         let cell = liveTableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! LiveOtherTableViewCell
 
@@ -88,8 +104,16 @@ class LiveViewController: UIViewController, UITableViewDataSource, LiveOtherView
        liveTableView.dataSource = self
 //        addLiveButton.layer.borderWidth = 2
 //        addLiveButton.layer.cornerRadius = 10
+        registerCellsToTable()
     }
     
+    func registerCellsToTable(){
+        let cells = ["liveOtherCell", "liveMyLiveCell", "liveMyCell","liveOtherLiveCell"]
+        for nibName in cells{
+            let nib = UINib(nibName: nibName, bundle: nil)
+            liveTableView.register(nib, forCellReuseIdentifier: nibName)
+        }
+    }
     @IBAction func segmentedChanged(_ sender: UISegmentedControl) {
         selectedLives = []
     }
@@ -108,6 +132,8 @@ class LiveViewController: UIViewController, UITableViewDataSource, LiveOtherView
                 print("Access to calendar denied.")
                 return
             }
+            cell.addEventButton.setTitle("Event Added", for: .normal)
+            cell.addEventButton.backgroundColor = .clear
             strongSelf.addEventToCalendar(live: live)
         }
     }

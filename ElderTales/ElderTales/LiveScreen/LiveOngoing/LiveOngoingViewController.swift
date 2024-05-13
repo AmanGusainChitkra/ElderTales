@@ -45,6 +45,7 @@ class LiveOngoingViewController: UIViewController, UITableViewDataSource {
         commentTableView.dataSource = self
         startCommentSimulation()
         configureVideoPlayer()
+        self.navigationItem.title = live?.title
     }
 
     func configureVideoPlayer() {

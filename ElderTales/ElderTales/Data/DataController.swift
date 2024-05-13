@@ -107,3 +107,5 @@ func generateDummyData(){
         posts[index].comments.append(contentsOf: comments)
     }
 }
+
+

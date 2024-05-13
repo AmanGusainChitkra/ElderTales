@@ -39,14 +39,22 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource, UITable
     @IBOutlet weak var timeSlider: UISlider!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var commentsTableView: UITableView!
+    @IBOutlet weak var postedByImage: UIImageView!
+    @IBOutlet weak var postedByName: UILabel!
+    @IBOutlet weak var likeCountLabel: UILabel!
+    @IBOutlet weak var shareCountLabel: UILabel!
+    @IBOutlet weak var commentCountLabel: UILabel!
+    @IBOutlet weak var saveTextLabel: UILabel!
+    @IBOutlet weak var likeButton: UIButton!
+    @IBOutlet weak var saveButton: UIButton!
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupVideoPlayer()
         loadPost()
-        if let postTitle = post?.title {
-            titleLabel.text = postTitle
-        }
+        print("Post loaded")
         player?.play()
         setupPlaybackControls()
         updatePlayPauseButtonForPlayingState()
@@ -136,9 +144,63 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource, UITable
             timeSlider.maximumValue = Float(duration)
         }
     }
+    
     private func loadPost() {
-        // Assume 'posts' is accessible within the scope
-        self.post = posts.first(where: { $0.id == postId })
+        guard let currentPost = posts.first(where: { $0.id == postId }),
+              let currentUser = currentUser else {
+            print("Post or current user not found")
+            return
+        }
+        
+        self.post = currentPost
+        // Update basic UI elements
+        postedByImage.image = currentPost.postedBy.image ?? UIImage(systemName: "person.circle.fill")
+        postedByImage.layer.cornerRadius = postedByImage.frame.width/2
+        postedByName.text = currentPost.postedBy.name
+        likeCountLabel.text = "\(currentPost.likes)"
+        shareCountLabel.text = "\(currentPost.shares)"
+        commentCountLabel.text = "\(currentPost.comments.count)"
+        
+        // Update save status
+        let isSaved = currentUser.savedPosts.contains(where: { $0.id == currentPost.id })
+        saveTextLabel.text = isSaved ? "Saved" : "Save"
+        saveButton.setImage(UIImage(systemName: isSaved ? "square.and.arrow.down.fill" : "square.and.arrow.down"), for: .normal)
+        
+        // Update like status
+        let isLiked = currentUser.likedPosts.contains(where: { $0.id == currentPost.id })
+        likeButton.setImage(UIImage(systemName: isLiked ? "heart.fill" : "heart"), for: .normal)
+        
+        setupProfilePhotoGesture()
+    }
+    
+    private func setupProfilePhotoGesture() {
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(profilePhotoTapped))
+        postedByImage.isUserInteractionEnabled = true
+        postedByImage.addGestureRecognizer(tapGestureRecognizer)
+//        usernameLabel.addGestureRecognizer(tapGestureRecognizer)
+    }
+    
+    @objc private func profilePhotoTapped() {
+        // Call delegate or handle navigation to profile page
+        self.didTapProfilePhoto()
+    }
+    
+    @IBAction func didTapShareButton() {
+        let postLink = "https://eldertales.com/post/\(postId)"
+        sharePostLink(postLink)
+            
+    }
+
+    func sharePostLink(_ link: String) {
+        let items = [link]
+        let activityViewController = UIActivityViewController(activityItems: items, applicationActivities: nil)
+        // If using an iPad, configure the popover presentation controller.
+        if let popoverController = activityViewController.popoverPresentationController {
+            popoverController.sourceView = self.view // or button/view that triggered the sharing
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            popoverController.permittedArrowDirections = [] // Adjust if needed
+        }
+        self.present(activityViewController, animated: true)
     }
     
     private func addTimeObserver() {
@@ -150,6 +212,47 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource, UITable
             strongSelf.timeSlider.value = Float(seconds / durationSeconds)
         }
     }
+    @IBAction func didTapSaveButton() {
+
+        if let savedIndex = currentUser?.savedPosts.firstIndex(where: {$0.id == post?.id}) {
+            // Post is already saved, so unsave it
+            currentUser?.savedPosts.remove(at: savedIndex)
+            saveButton.setImage(UIImage(systemName: "square.and.arrow.down"), for: .normal) // Icon for unsaved
+            saveTextLabel.text = "Save" // Text for unsaved state
+        } else {
+            // Post is not saved, so save it
+            currentUser?.savedPosts.append(post!)
+            saveButton.setImage(UIImage(systemName: "square.and.arrow.down.fill"), for: .normal) // Icon for saved
+            saveTextLabel.text = "Saved" // Text for saved state
+        }
+    }
+    
+    @IBAction func didTapLikeButton() {
+        if let postIndex = posts.firstIndex(where: { $0.id == postId }) {
+                let isCurrentlyLiked = likeButton.currentImage == UIImage(systemName: "heart.fill")
+                // Toggle the like state based on the current image
+                posts[postIndex].likePost(liked: !isCurrentlyLiked)
+                currentUser?.likePost(post: posts[postIndex], liked: !isCurrentlyLiked)
+                
+                // Update the button's image and like count display
+                let newImageName = isCurrentlyLiked ? "heart" : "heart.fill"
+              likeButton.setImage(UIImage(systemName: newImageName), for: .normal)
+               likeCountLabel.text = "\(posts[postIndex].likes)"
+                
+            } else {
+                print("Post with UUID: \(postId) not found.")
+            }
+        }
+    
+    func didTapProfilePhoto() {
+        if let destinationVC = storyboard?.instantiateViewController(withIdentifier: "viewProfileController") as? ViewProfileOtherViewController,
+           let uuid = post?.id{
+            let postedBy = posts.first(where: {$0.id == uuid})?.postedBy
+            destinationVC.userId = postedBy?.id ?? ""
+            self.navigationController?.pushViewController(destinationVC, animated: true)
+        }
+    }
+    
     
     @IBOutlet weak var commentTextField: UITextField!
     

@@ -105,8 +105,12 @@ class HomeViewController: UIViewController, UITableViewDataSource,UITableViewDel
 
     
     func didTapProfilePhoto(for cell: HomePostTableViewCell) {
-        performSegue(withIdentifier: "viewProfileSegue", sender: cell)
-
+        if let destinationVC = storyboard?.instantiateViewController(withIdentifier: "viewProfileController") as? ViewProfileOtherViewController,
+           let uuid = cell.uuid{
+            let postedBy = posts.first(where: {$0.id == uuid})?.postedBy
+            destinationVC.userId = postedBy?.id ?? ""
+            self.navigationController?.pushViewController(destinationVC, animated: true)
+        }
     }
     
     func categoryViewController(_ controller: CategoriesViewController, didSelectCategory category: Category) {
