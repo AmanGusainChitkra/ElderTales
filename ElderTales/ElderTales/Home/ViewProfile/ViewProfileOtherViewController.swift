@@ -16,7 +16,6 @@ class ViewProfileOtherViewController: UIViewController, UITableViewDataSource, H
         let alert = UIAlertController(title: "Delete Live", message: "Are you sure you want to delete this live session?", preferredStyle: .alert)
         
         let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
-            guard let strongSelf = self else { return }
             dataController.deleteLive(liveId: cell.uuid)
             // Optionally, update UI or pop viewController if needed
             if(self?.segmentedControl.selectedSegmentIndex == 1){
@@ -396,12 +395,39 @@ class ViewProfileOtherViewController: UIViewController, UITableViewDataSource, H
             }
         }
     }
+    
+    @IBAction func didTapShareProfile(_ sender: Any) {
+        guard let userId = self.user?.id else {
+               print("User ID is unavailable")
+               return
+           }
+           
+           let urlString = "https://eldertales.com/userId=\(userId)"
+           guard let url = URL(string: urlString) else {
+               print("Failed to create URL")
+               return
+           }
+           
+           // Proceed to share the URL
+           shareUserProfile(url: url)
+    }
 
 
     
     @IBAction func segmenteChanged(_ sender: UISegmentedControl) {
         viewOtherProfileTableView.reloadData()
     }
-    
+   func shareUserProfile(url: URL) {
+        let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        
+        // For iPad, you must present the activity view controller in a popover.
+        if let popoverController = activityViewController.popoverPresentationController {
+            popoverController.sourceView = self.view  // Configure the view from which the popover arises
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            popoverController.permittedArrowDirections = []  // No arrow directions
+        }
+        
+        self.present(activityViewController, animated: true, completion: nil)
+    }
 
 }
