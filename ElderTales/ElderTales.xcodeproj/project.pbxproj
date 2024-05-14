@@ -511,11 +511,12 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 276MLJ4GC8;
+				DEVELOPMENT_TEAM = 6A8ZX8YBJ5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ElderTales/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "Please grant access to camera";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Please provide camera access";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Please provide access to microphone";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Please provide photo library access";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -527,7 +528,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ghost.ElderTales;
+				PRODUCT_BUNDLE_IDENTIFIER = ghostrider.ElderTales;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -545,11 +546,12 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 276MLJ4GC8;
+				DEVELOPMENT_TEAM = 6A8ZX8YBJ5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ElderTales/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "Please grant access to camera";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Please provide camera access";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Please provide access to microphone";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Please provide photo library access";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -561,7 +563,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ghost.ElderTales;
+				PRODUCT_BUNDLE_IDENTIFIER = ghostrider.ElderTales;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

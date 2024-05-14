@@ -18,23 +18,7 @@ class EditProfileViewController: UIViewController, UITableViewDataSource, UIImag
     
     var onDismiss: (() -> Void)?
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = editTableView.dequeueReusableCell(withIdentifier: sections[indexPath.row], for: indexPath) as! EditProfileTableViewCell
-        if let user = user{
-            switch indexPath.row{
-            case 0:
-                cell.nameTextField.text = user.name
-            case 1:
-                cell.usernameTextField.text = user.email
-            case 2:
-                cell.bioTextField.text = user.description
-            default:
-                print("invalid")
-            }
-        }
-        return cell
-    }
-    
+
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var editTableView: UITableView!
     
@@ -91,6 +75,24 @@ class EditProfileViewController: UIViewController, UITableViewDataSource, UIImag
         
         
     }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = editTableView.dequeueReusableCell(withIdentifier: sections[indexPath.row], for: indexPath) as! EditProfileTableViewCell
+        if let user = user{
+            switch indexPath.row{
+            case 0:
+                cell.nameTextField.text = user.name
+            case 1:
+                cell.usernameTextField.text = user.email
+            case 2:
+                cell.bioTextField.text = user.description
+            default:
+                print("invalid")
+            }
+        }
+        return cell
+    }
+    
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let editedImage = info[.editedImage] as? UIImage {

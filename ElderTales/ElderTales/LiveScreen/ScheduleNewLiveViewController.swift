@@ -111,6 +111,11 @@ class ScheduleNewLiveViewController: UIViewController {
         }))
         present(alert, animated: true)
     }
-
+    
+    
+    @IBAction func didTapCancel(_ sender: Any) {
+        self.dismiss(animated: true)
+    }
+    
 
 }

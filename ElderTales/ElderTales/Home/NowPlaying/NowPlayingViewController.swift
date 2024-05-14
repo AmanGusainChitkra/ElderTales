@@ -63,8 +63,16 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource, UITable
         updatePlayPauseButtonForPlayingState()
         commentsTableView.dataSource = self
         commentsTableView.delegate = self
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+            tapGesture.cancelsTouchesInView = false // Prevent the gesture from blocking other touch events
+            view.addGestureRecognizer(tapGesture)
     }
     var videoURL:URL?
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true) // Dismiss the keyboard
+    }
     
     private func setupVideoPlayer() {
         guard let post = self.post else { return }
@@ -163,6 +171,7 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource, UITable
         postedByImage.image = UIImage(contentsOfFile: user.image ?? "") ?? UIImage(named: user.image ?? "") ?? UIImage(systemName: "person.circle.fill")
         postedByImage.layer.cornerRadius = postedByImage.frame.width/2
         postedByName.text = user.name
+        titleLabel.text = post?.title
         likeCountLabel.text = "\(currentPost.likes)"
         shareCountLabel.text = "\(currentPost.shares)"
         commentCountLabel.text = "\(currentPost.comments.count)"
@@ -268,6 +277,8 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource, UITable
             showAlert(message: "Please enter a comment before sending.")
             return
         }
+        
+        commentTextField.text = ""
         dataController.newComment(post: post!, postedBy: dataController.currentUser!, body: commentText)
         commentsTableView.reloadData()
     }

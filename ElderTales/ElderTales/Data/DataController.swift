@@ -119,9 +119,9 @@ class DataController {
         let newComment = Comment(postedBy: postedBy.id, postedOn: Date(), postId: post.id, body: body, isQuestion: isQuestion!)
         
         if let postIndex = posts.firstIndex(where: {$0.id == post.id}){
-            posts[postIndex].comments.append(newComment.id)
+            posts[postIndex].comments.insert(newComment.id, at: 0)
         }
-        comments.append(newComment)
+        comments.insert(newComment, at: 0)
         saveToDisk()
     }
     
